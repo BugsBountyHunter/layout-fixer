@@ -6,6 +6,9 @@ updates:
       interval: weekly
     open-pull-requests-limit: 5
     groups:
+      # vitest and its coverage plugin must share a major version, so they update together — majors included.
+      vitest:
+        patterns: ['vitest', '@vitest/*']
       # Build and test tooling moves together; one weekly PR instead of many.
       dev-tooling:
         dependency-type: development

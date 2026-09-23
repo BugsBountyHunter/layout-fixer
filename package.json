@@ -31,7 +31,8 @@
     "check": "npm run lint && npm run build && npm run test:coverage && npm run lint:firefox && npm run test:e2e",
     "playground": "vite playground --port 4321 --open",
     "lint": "biome check .",
-    "lint:fix": "biome check --write ."
+    "lint:fix": "biome check --write .",
+    "store:screenshots": "npm run build:e2e && docker run --rm --ipc=host -v \"$PWD\":/work -w /work mcr.microsoft.com/playwright:v1.63.0-noble sh -c 'fc-list :lang=ar | grep -q . || (apt-get update -qq && apt-get install -y -qq fonts-noto-core >/dev/null); for l in en ar; do node scripts/store-screenshots.mjs --locale $l; done'"
   },
   "dependencies": {
     "react": "^19.3.0",

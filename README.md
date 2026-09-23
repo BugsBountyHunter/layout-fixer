@@ -45,11 +45,15 @@ First run of the end-to-end tests needs the Playwright browser: `npx playwright 
 
 ## Release
 
+Bump the version and add a `CHANGELOG.md` entry in a pull request, then tag `main`:
+
 ```bash
-npm run check
-npm run package:chrome    # artifacts/layout-fixer-chrome-<version>.zip → Chrome Web Store, Edge Add-ons
-npm run package:firefox   # artifacts/layout-fixer-firefox-<version>.zip → addons.mozilla.org
+git tag v1.0.0 && git push origin v1.0.0
 ```
+
+The release workflow runs every check and publishes a GitHub Release with the Chrome package
+(`layout-fixer-chrome-<version>.zip`) for the Chrome Web Store. Store images:
+`npm run store:screenshots` (needs Docker).
 
 Store texts, permission justifications and the asset checklist are in
 [docs/store/listing.md](docs/store/listing.md). Architecture and engineering rules are in

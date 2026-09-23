@@ -1,6 +1,7 @@
 # Store listing — Layout Fixer 1.0
 
-Use for Chrome Web Store, Microsoft Edge Add-ons and addons.mozilla.org.
+**v1.0 ships on the Chrome Web Store only.** Edge Add-ons (same Chrome package) and
+addons.mozilla.org come later; the Firefox build stays in the repository and CI meanwhile.
 
 ## Name
 - **English:** Layout Fixer — Arabic ⇄ English keyboard fix
@@ -55,7 +56,7 @@ Everything happens on your device. No data collection, no tracking, no network r
 كل شيء يحدث على جهازك. لا جمع بيانات، ولا تتبع، ولا اتصال بالإنترنت.
 
 ## Category
-Productivity (Chrome) · Productivity (Edge) · Language Support (Firefox)
+Productivity (Chrome Web Store)
 
 ## Single purpose (Chrome Web Store)
 Convert text typed with the wrong keyboard layout between Arabic and English.
@@ -71,9 +72,19 @@ Convert text typed with the wrong keyboard layout between Arabic and English.
 ## Data usage disclosures
 Collects no user data. Does not sell or transfer data. Does not use data for purposes unrelated to the single purpose.
 
-## Assets checklist
-- [ ] Icon 128×128 — `public/icons/icon-128.png` ✅
-- [ ] Screenshots 1280×800 (popup, settings, before/after on a page) — English and Arabic
-- [ ] Promo tile 440×280 (Chrome)
-- [ ] Short before/after GIF or video
-- [ ] Privacy policy URL — host `PRIVACY.md` (e.g. GitHub Pages)
+## Assets
+
+Generated from the real extension with `npm run store:screenshots` (Docker, Linux — so shortcut
+labels match Windows, where most Chrome users are). Upload the `en` set to the default listing and
+the `ar` set to the Arabic localized listing.
+
+| Asset | Size | Files |
+|-------|------|-------|
+| Store icon | 128×128 | `public/icons/icon-128.png` |
+| Screenshots (5) | 1280×800 | `docs/store/screenshots/{en,ar}/01…05-*.png` |
+| Small promo tile | 440×280 | `docs/store/screenshots/{en,ar}/promo-tile-440x280.png` |
+| Marquee promo tile | 1400×560 | `docs/store/screenshots/{en,ar}/marquee-1400x560.png` |
+| Privacy policy URL | — | https://github.com/BugsBountyHunter/layout-fixer/blob/main/PRIVACY.md |
+| Package | — | `layout-fixer-chrome-<version>.zip` from the GitHub Release |
+
+Optional later: a short before/after video for the listing.

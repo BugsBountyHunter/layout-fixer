@@ -80,7 +80,7 @@ the `ar` set to the Arabic localized listing.
 
 | Asset | Size | Files |
 |-------|------|-------|
-| Store icon | 128×128 | `public/icons/icon-128.png` |
+| Store icon | 128×128 (96×96 artwork + 16px padding) | `docs/store/store-icon-128.png` (`npm run icons`) |
 | Screenshots (5) | 1280×800 | `docs/store/screenshots/{en,ar}/01…05-*.png` |
 | Small promo tile | 440×280 | `docs/store/screenshots/{en,ar}/promo-tile-440x280.png` |
 | Marquee promo tile | 1400×560 | `docs/store/screenshots/{en,ar}/marquee-1400x560.png` |

@@ -7,6 +7,9 @@ ROOT = Path(__file__).resolve().parent.parent
 SIZES = (16, 32, 48, 128)
 CANVAS = 1024
 OUT_DIR = ROOT / "public" / "icons"
+STORE_ICON = ROOT / "docs" / "store" / "store-icon-128.png"
+# Chrome Web Store: 128×128 file with 96×96 artwork and 16px transparent padding on each side.
+STORE_ARTWORK = 96
 # The logo glyph uses Plex (OFL allows it in artwork); SF Arabic's license does not.
 FONT = ROOT / "node_modules" / "@fontsource" / "ibm-plex-sans-arabic" / "files" / "ibm-plex-sans-arabic-arabic-600-normal.woff"
 TILE = (0, 113, 227)  # --lf-accent in src/ui/tokens.css
@@ -26,7 +29,11 @@ def main() -> None:
     master = render()
     for size in SIZES:
         master.resize((size, size), Image.LANCZOS).save(OUT_DIR / f"icon-{size}.png", optimize=True)
-    print(f"Wrote {len(SIZES)} icons to {OUT_DIR}")
+    store = Image.new("RGBA", (128, 128))
+    offset = (128 - STORE_ARTWORK) // 2
+    store.paste(master.resize((STORE_ARTWORK, STORE_ARTWORK), Image.LANCZOS), (offset, offset))
+    store.save(STORE_ICON, optimize=True)
+    print(f"Wrote {len(SIZES)} icons to {OUT_DIR} and the store icon to {STORE_ICON}")
 
 
 if __name__ == "__main__":

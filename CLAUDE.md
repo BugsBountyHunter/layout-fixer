@@ -165,6 +165,7 @@ npm run test:e2e        # builds dist/e2e and runs Playwright in real Chromium
 npm run lint:firefox    # web-ext lint (AMO validation)
 npm run lint            # Biome: lint + format check (npm run lint:fix to apply)
 npm run check           # everything above — run before every commit
+npm run store:screenshots  # store images (en + ar) rendered on Linux via Docker
 npm run playground      # local test page (http://localhost:4321) for docs/testing/manual-checklist.md
 npm run package:chrome  # zip for Chrome Web Store / Edge Add-ons
 npm run package:firefox # zip for addons.mozilla.org
@@ -213,13 +214,22 @@ python3 scripts/generate-layout.py <macOS id> <layout id>   # key data from a fi
 - **v1.3:** macOS "Arabic" layout, Persian, Urdu, Hebrew, Russian maps
 - **v2:** Safari (macOS/iOS) via Xcode Safari Web Extension converter
 
-## 9. Publishing checklist
+## 9. Releasing and publishing
 
-Release texts live in `docs/store/listing.md`; the privacy policy is `PRIVACY.md`.
+**v1.0 targets the Chrome Web Store only.** Firefox and Edge come later; the Firefox build,
+manifest tests and `web-ext lint` stay in CI so it keeps working.
 
-- [ ] Replace the placeholder gecko id `layout-fixer@layoutfixer.app` with one you own
-- [ ] Chrome Web Store (one-time $5) and Edge Add-ons (free) — upload `package:chrome` zip
-- [ ] addons.mozilla.org (free) — upload `package:firefox` zip, mark Android compatible
-- [ ] Screenshots 1280×800 + a before/after GIF, listing in Arabic and English
-- [x] Privacy policy contact → GitHub Issues; public URL = `PRIVACY.md` in the repository
-- [x] License: MIT (`LICENSE`); repository: github.com/BugsBountyHunter/layout-fixer
+Release process (every change reaches `main` through a pull request; the ruleset requires CI):
+1. Bump `version` in `package.json` and add a `## [x.y.z]` section to `CHANGELOG.md` in a PR.
+2. After it merges, tag `main`: `git tag vX.Y.Z && git push origin vX.Y.Z`.
+3. `.github/workflows/release.yml` checks the tag matches `package.json`, runs `npm run check`, and
+   publishes a GitHub Release with the Chrome zip and the changelog section as notes.
+4. Upload that zip in the Chrome Web Store dashboard. Texts, permission justifications and the
+   asset table are in `docs/store/listing.md`; images come from `npm run store:screenshots`.
+
+Checklist:
+- [x] License MIT; repository github.com/BugsBountyHunter/layout-fixer; privacy policy = `PRIVACY.md`
+- [x] Store images (en + ar), promo tile and marquee — `docs/store/screenshots/`
+- [ ] Chrome Web Store developer account (one-time $5) and first submission
+- [ ] Later: Edge Add-ons (same zip); addons.mozilla.org — first replace the placeholder gecko id
+  `layout-fixer@layoutfixer.app` (permanent after the first upload)

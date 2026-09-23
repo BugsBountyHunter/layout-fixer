@@ -1,0 +1,188 @@
+{
+  "extName": {
+    "message": "Layout Fixer"
+  },
+  "extDescription": {
+    "message": "Fix text typed with the wrong keyboard layout — Arabic ⇄ English."
+  },
+  "commandFix": {
+    "message": "Fix keyboard layout of the selected text"
+  },
+  "menuFix": {
+    "message": "Fix keyboard layout"
+  },
+  "inputLabel": {
+    "message": "Text typed with the wrong layout"
+  },
+  "inputPlaceholder": {
+    "message": "Paste or type here… e.g. hgsghl ugd;l"
+  },
+  "outputLabel": {
+    "message": "Fixed text"
+  },
+  "outputEmpty": {
+    "message": "The fixed text appears here."
+  },
+  "directionLabel": {
+    "message": "Direction"
+  },
+  "directionAuto": {
+    "message": "Auto"
+  },
+  "directionEnAr": {
+    "message": "EN → AR"
+  },
+  "directionArEn": {
+    "message": "AR → EN"
+  },
+  "copy": {
+    "message": "Copy"
+  },
+  "copied": {
+    "message": "Copied"
+  },
+  "clear": {
+    "message": "Clear"
+  },
+  "shortcutHint": {
+    "message": "Select text on any page and press"
+  },
+  "shortcutNotSet": {
+    "message": "Set a keyboard shortcut"
+  },
+  "contextMenuHint": {
+    "message": "or right-click → Fix keyboard layout"
+  },
+  "toastCopied": {
+    "message": "Can't edit here — fixed text copied"
+  },
+  "toastShown": {
+    "message": "Fixed text"
+  },
+  "toastEmpty": {
+    "message": "Select the text you want to fix first"
+  },
+  "textDirection": {
+    "message": "ltr",
+    "description": "Direction of this locale's UI text: ltr or rtl."
+  },
+  "openSettings": {
+    "message": "Settings"
+  },
+  "settingsTitle": {
+    "message": "Settings"
+  },
+  "saved": {
+    "message": "Saved"
+  },
+  "version": {
+    "message": "Version $VERSION$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "layoutSectionTitle": {
+    "message": "Arabic keyboard layout"
+  },
+  "layoutSectionHint": {
+    "message": "Choose the Arabic layout you type with, so your keys are read correctly."
+  },
+  "layoutAuto": {
+    "message": "Automatic"
+  },
+  "layoutAutoHint": {
+    "message": "Uses the Mac layout on macOS and the PC layout everywhere else. Now using: $LAYOUT$.",
+    "placeholders": {
+      "layout": {
+        "content": "$1"
+      }
+    }
+  },
+  "layoutPc": {
+    "message": "PC"
+  },
+  "layoutPcHint": {
+    "message": "Windows “Arabic (101)”, macOS “Arabic – PC”, Linux and ChromeOS."
+  },
+  "layoutMac": {
+    "message": "Mac"
+  },
+  "layoutMacHint": {
+    "message": "The default “Arabic” layout on macOS."
+  },
+  "layoutExample": {
+    "message": "Typing $KEYS$ gives $WORD$",
+    "placeholders": {
+      "keys": {
+        "content": "$1"
+      },
+      "word": {
+        "content": "$2"
+      }
+    }
+  },
+  "popupLayout": {
+    "message": "Arabic keyboard: $LAYOUT$",
+    "placeholders": {
+      "layout": {
+        "content": "$1"
+      }
+    }
+  },
+  "shortcutSectionTitle": {
+    "message": "Keyboard shortcut"
+  },
+  "shortcutSectionHint": {
+    "message": "Select text on any page and press the shortcut to fix it."
+  },
+  "changeShortcut": {
+    "message": "Change shortcut"
+  },
+  "toastSectionTitle": {
+    "message": "On-page messages"
+  },
+  "toastSectionLabel": {
+    "message": "Show a message after copying fixed text or when nothing is selected"
+  },
+  "toastSectionHint": {
+    "message": "If the fixed text can’t be copied, it is always shown so you can read it."
+  },
+  "privacyTitle": {
+    "message": "Privacy"
+  },
+  "privacyBody": {
+    "message": "Layout Fixer works entirely on your device. It reads text only when you ask it to — with the shortcut, the menu, or the selection button — and never collects, stores or sends it."
+  },
+  "selectionSectionTitle": {
+    "message": "Selection button"
+  },
+  "selectionSectionLabel": {
+    "message": "Show a button when I select text"
+  },
+  "selectionSectionHint": {
+    "message": "Select text on any page, click the button and choose a language. Your browser will ask to allow access to websites — text is still read only when you select it, and never leaves your device."
+  },
+  "selectionPermissionDenied": {
+    "message": "Access wasn’t allowed, so the button stays off."
+  },
+  "selectionPromo": {
+    "message": "Show a button when you select text"
+  },
+  "turnOn": {
+    "message": "Turn on"
+  },
+  "languagesSectionTitle": {
+    "message": "Languages"
+  },
+  "languagesSectionHint": {
+    "message": "Text is converted between these two languages. More languages are coming soon."
+  },
+  "firstLanguage": {
+    "message": "First language"
+  },
+  "secondLanguage": {
+    "message": "Second language"
+  }
+}

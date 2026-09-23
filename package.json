@@ -1,0 +1,56 @@
+{
+  "name": "layout-fixer",
+  "version": "1.0.0",
+  "description": "Fix text typed with the wrong keyboard layout — Arabic ⇄ English. Browser extension for Chrome, Edge, Firefox and more.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BugsBountyHunter/layout-fixer.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --mode chrome",
+    "dev:firefox": "vite --mode firefox",
+    "build": "npm run typecheck && npm run build:chrome && npm run build:firefox",
+    "build:chrome": "vite build --mode chrome",
+    "build:firefox": "vite build --mode firefox",
+    "build:e2e": "vite build --mode e2e",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "npm run build:e2e && playwright test",
+    "lint:firefox": "web-ext lint --source-dir dist/firefox",
+    "package:chrome": "web-ext build --source-dir dist/chrome --artifacts-dir artifacts --filename layout-fixer-chrome-{version}.zip --overwrite-dest",
+    "package:firefox": "web-ext build --source-dir dist/firefox --artifacts-dir artifacts --filename layout-fixer-firefox-{version}.zip --overwrite-dest",
+    "icons": "python3 scripts/generate-icons.py",
+    "check": "npm run lint && npm run build && npm run test:coverage && npm run lint:firefox && npm run test:e2e",
+    "playground": "vite playground --port 4321 --open",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write ."
+  },
+  "dependencies": {
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.14",
+    "@crxjs/vite-plugin": "^2.7.1",
+    "@fontsource/ibm-plex-sans-arabic": "5.3.0",
+    "@playwright/test": "^1.63.0",
+    "@types/chrome": "^0.3.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "@vitest/coverage-v8": "^4.1.11",
+    "happy-dom": "^20.14.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.0",
+    "vitest": "^4.1.11",
+    "web-ext": "^10.7.0"
+  }
+}

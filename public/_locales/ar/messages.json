@@ -1,0 +1,188 @@
+{
+  "extName": {
+    "message": "مصحح لغة الكيبورد"
+  },
+  "extDescription": {
+    "message": "صحّح النص المكتوب بلغة الكيبورد الخطأ — عربي ⇄ إنجليزي."
+  },
+  "commandFix": {
+    "message": "تصحيح لغة الكيبورد للنص المحدد"
+  },
+  "menuFix": {
+    "message": "تصحيح لغة الكيبورد"
+  },
+  "inputLabel": {
+    "message": "النص المكتوب بلغة خطأ"
+  },
+  "inputPlaceholder": {
+    "message": "الصق أو اكتب هنا… مثال: hgsghl ugd;l"
+  },
+  "outputLabel": {
+    "message": "النص بعد التصحيح"
+  },
+  "outputEmpty": {
+    "message": "سيظهر النص المصحح هنا."
+  },
+  "directionLabel": {
+    "message": "الاتجاه"
+  },
+  "directionAuto": {
+    "message": "تلقائي"
+  },
+  "directionEnAr": {
+    "message": "إنجليزي إلى عربي"
+  },
+  "directionArEn": {
+    "message": "عربي إلى إنجليزي"
+  },
+  "copy": {
+    "message": "نسخ"
+  },
+  "copied": {
+    "message": "تم النسخ"
+  },
+  "clear": {
+    "message": "مسح"
+  },
+  "shortcutHint": {
+    "message": "حدد النص في أي صفحة واضغط"
+  },
+  "shortcutNotSet": {
+    "message": "عيّن اختصار لوحة المفاتيح"
+  },
+  "contextMenuHint": {
+    "message": "أو انقر بالزر الأيمن ← تصحيح لغة الكيبورد"
+  },
+  "toastCopied": {
+    "message": "لا يمكن التعديل هنا — تم نسخ النص المصحح"
+  },
+  "toastShown": {
+    "message": "النص المصحح"
+  },
+  "toastEmpty": {
+    "message": "حدد النص الذي تريد تصحيحه أولًا"
+  },
+  "textDirection": {
+    "message": "rtl",
+    "description": "Direction of this locale's UI text: ltr or rtl."
+  },
+  "openSettings": {
+    "message": "الإعدادات"
+  },
+  "settingsTitle": {
+    "message": "الإعدادات"
+  },
+  "saved": {
+    "message": "تم الحفظ"
+  },
+  "version": {
+    "message": "الإصدار $VERSION$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "layoutSectionTitle": {
+    "message": "تخطيط لوحة المفاتيح العربية"
+  },
+  "layoutSectionHint": {
+    "message": "اختر التخطيط العربي الذي تكتب به حتى تُقرأ مفاتيحك بشكل صحيح."
+  },
+  "layoutAuto": {
+    "message": "تلقائي"
+  },
+  "layoutAutoHint": {
+    "message": "يستخدم تخطيط Mac على macOS وتخطيط PC في غيره. المستخدم الآن: $LAYOUT$.",
+    "placeholders": {
+      "layout": {
+        "content": "$1"
+      }
+    }
+  },
+  "layoutPc": {
+    "message": "PC"
+  },
+  "layoutPcHint": {
+    "message": "‏Windows «العربية (101)»، وmacOS «العربية – PC»، وLinux وChromeOS."
+  },
+  "layoutMac": {
+    "message": "Mac"
+  },
+  "layoutMacHint": {
+    "message": "تخطيط «العربية» الافتراضي على macOS."
+  },
+  "layoutExample": {
+    "message": "كتابة $KEYS$ تعطي $WORD$",
+    "placeholders": {
+      "keys": {
+        "content": "$1"
+      },
+      "word": {
+        "content": "$2"
+      }
+    }
+  },
+  "popupLayout": {
+    "message": "الكيبورد العربي: $LAYOUT$",
+    "placeholders": {
+      "layout": {
+        "content": "$1"
+      }
+    }
+  },
+  "shortcutSectionTitle": {
+    "message": "اختصار لوحة المفاتيح"
+  },
+  "shortcutSectionHint": {
+    "message": "حدد النص في أي صفحة واضغط الاختصار لتصحيحه."
+  },
+  "changeShortcut": {
+    "message": "تغيير الاختصار"
+  },
+  "toastSectionTitle": {
+    "message": "الرسائل داخل الصفحة"
+  },
+  "toastSectionLabel": {
+    "message": "إظهار رسالة بعد نسخ النص المصحح أو عند عدم تحديد نص"
+  },
+  "toastSectionHint": {
+    "message": "إذا تعذّر نسخ النص المصحح فسيظهر دائمًا حتى تتمكن من قراءته."
+  },
+  "privacyTitle": {
+    "message": "الخصوصية"
+  },
+  "privacyBody": {
+    "message": "يعمل مصحح لغة الكيبورد بالكامل على جهازك. لا يقرأ النص إلا عندما تطلب ذلك — بالاختصار أو القائمة أو زر التحديد — ولا يجمعه أو يخزّنه أو يرسله أبدًا."
+  },
+  "selectionSectionTitle": {
+    "message": "زر التحديد"
+  },
+  "selectionSectionLabel": {
+    "message": "إظهار زر عند تحديد نص"
+  },
+  "selectionSectionHint": {
+    "message": "حدد نصًا في أي صفحة، ثم انقر الزر واختر اللغة. سيطلب المتصفح السماح بالوصول إلى المواقع — ولا يُقرأ النص إلا عند تحديده، ولا يغادر جهازك أبدًا."
+  },
+  "selectionPermissionDenied": {
+    "message": "لم يُسمح بالوصول، لذلك سيبقى الزر متوقفًا."
+  },
+  "selectionPromo": {
+    "message": "أظهر زرًا عند تحديد النص"
+  },
+  "turnOn": {
+    "message": "تفعيل"
+  },
+  "languagesSectionTitle": {
+    "message": "اللغات"
+  },
+  "languagesSectionHint": {
+    "message": "يُحوَّل النص بين هاتين اللغتين. ستتوفر لغات أخرى قريبًا."
+  },
+  "firstLanguage": {
+    "message": "اللغة الأولى"
+  },
+  "secondLanguage": {
+    "message": "اللغة الثانية"
+  }
+}

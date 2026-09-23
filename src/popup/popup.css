@@ -1,0 +1,205 @@
+body {
+  width: 360px;
+}
+
+@media (pointer: coarse) {
+  body {
+    width: auto;
+  }
+}
+
+.popup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lf-space-3);
+  padding: var(--lf-space-3) var(--lf-space-4) var(--lf-space-4);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--lf-space-2);
+  margin-inline-end: -6px;
+}
+
+.header img {
+  border-radius: 5px;
+}
+
+h1 {
+  flex: 1;
+  font-size: var(--lf-text-headline);
+  font-weight: var(--lf-weight-semibold);
+}
+
+/* The converter is one object: input, direction, result. The result is the hero (clarity). */
+.pane {
+  border: 1px solid var(--lf-control-border);
+  border-radius: var(--lf-radius-lg);
+  background: var(--lf-bg);
+  overflow: hidden;
+  transition: box-shadow var(--lf-duration-fast) var(--lf-ease);
+}
+
+.pane:focus-within {
+  border-color: var(--lf-focus);
+  box-shadow: 0 0 0 3px var(--lf-accent-soft);
+}
+
+.pane-source {
+  position: relative;
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 84px;
+  padding-block: var(--lf-space-3);
+  padding-inline: 14px 36px;
+  border: 0;
+  outline: 0;
+  resize: none;
+  background: transparent;
+  color: var(--lf-label);
+  font: inherit;
+  font-size: var(--lf-text-headline);
+  line-height: 1.55;
+}
+
+textarea::placeholder {
+  color: var(--lf-label-secondary);
+}
+
+textarea:focus-visible {
+  outline: none;
+}
+
+.clear {
+  position: absolute;
+  inset-block-start: 6px;
+  inset-inline-end: 6px;
+  width: 26px;
+  min-height: 26px;
+  border-radius: var(--lf-radius-full);
+}
+
+.pane-bar {
+  padding: 6px var(--lf-space-2);
+  border-block-start: 1px solid var(--lf-separator);
+}
+
+.pane-target {
+  display: grid;
+  gap: 10px;
+  padding: var(--lf-space-3) 14px;
+  background: var(--lf-fill);
+}
+
+.output {
+  display: block;
+  min-height: 46px;
+  font-size: var(--lf-text-title3);
+  font-weight: var(--lf-weight-semibold);
+  line-height: var(--lf-leading-tight);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.output.empty {
+  color: var(--lf-label-secondary);
+  font-size: var(--lf-text-body);
+  font-weight: var(--lf-weight-regular);
+}
+
+.pane-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--lf-space-2);
+}
+
+.pane-actions .primary {
+  min-width: 96px;
+}
+
+.layout-note {
+  font-size: var(--lf-text-footnote);
+}
+
+/* Apple segmented control: gray capsule track, raised selected segment. */
+.segmented {
+  display: flex;
+  gap: 2px;
+  margin: 0;
+  padding: 2px;
+  border: 0;
+  border-radius: var(--lf-radius-full);
+  background: var(--lf-fill);
+}
+
+.segment {
+  flex: 1;
+  position: relative;
+}
+
+.segment input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.segment span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(var(--lf-control-height) - 4px);
+  border-radius: var(--lf-radius-full);
+  color: var(--lf-label);
+  font-size: var(--lf-text-footnote);
+  white-space: nowrap;
+  transition:
+    background-color var(--lf-duration-fast) var(--lf-ease),
+    box-shadow var(--lf-duration-fast) var(--lf-ease);
+}
+
+.segment input:checked + span {
+  background: var(--lf-bg);
+  font-weight: var(--lf-weight-semibold);
+  box-shadow: var(--lf-shadow-raised);
+}
+
+.segment input:focus-visible + span {
+  outline: 2px solid var(--lf-focus);
+  outline-offset: 1px;
+}
+
+.promo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--lf-space-2);
+  padding: var(--lf-space-2) var(--lf-space-3);
+  border-radius: var(--lf-radius-md);
+  background: var(--lf-accent-soft);
+  font-size: var(--lf-text-callout);
+}
+
+.hint {
+  display: grid;
+  gap: 2px;
+  font-size: var(--lf-text-footnote);
+  color: var(--lf-label-secondary);
+}
+
+.hint p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.kbd-button:hover:not(:disabled) {
+  text-decoration: none;
+}

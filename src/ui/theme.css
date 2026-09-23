@@ -1,0 +1,192 @@
+@import './tokens.css';
+
+:root {
+  color-scheme: light dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/*
+ * Set on body, not :root: Chromium gives extension pages a default
+ * `body { font-family: system-ui; font-size: 75% }` that would override inherited values.
+ */
+body {
+  margin: 0;
+  background: var(--lf-bg);
+  color: var(--lf-label);
+  font-family: var(--lf-font);
+  font-size: var(--lf-text-body);
+  line-height: var(--lf-leading-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+/* Latin display tracking; Arabic is never letter-spaced (it breaks joining). */
+:lang(en) h1 {
+  letter-spacing: var(--lf-tracking-display);
+}
+
+input,
+select,
+textarea,
+button {
+  font-family: inherit;
+}
+
+/* Apple's gray "bordered" button is the default; `.primary` is the one filled action per surface. */
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: var(--lf-control-height);
+  padding-inline: 14px;
+  border: 0;
+  border-radius: var(--lf-radius-md);
+  background: var(--lf-fill);
+  color: var(--lf-label);
+  font: inherit;
+  font-weight: var(--lf-weight-semibold);
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  background: var(--lf-fill-strong);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+button.primary {
+  background: var(--lf-accent);
+  color: var(--lf-label-on-accent);
+}
+
+button.primary:hover:not(:disabled) {
+  background: var(--lf-accent-pressed);
+}
+
+button.link {
+  min-height: auto;
+  padding: 0;
+  background: none;
+  color: var(--lf-link);
+  font-weight: var(--lf-weight-regular);
+}
+
+button.link:hover:not(:disabled) {
+  background: none;
+  text-decoration: underline;
+}
+
+button.icon {
+  width: var(--lf-control-height);
+  padding: 0;
+  background: none;
+  color: var(--lf-label-secondary);
+}
+
+button.icon:hover:not(:disabled) {
+  background: var(--lf-fill);
+  color: var(--lf-label);
+}
+
+button svg {
+  flex: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--lf-focus);
+  outline-offset: 2px;
+}
+
+.muted {
+  color: var(--lf-label-secondary);
+}
+
+.kbd-group {
+  display: inline-flex;
+  gap: 3px;
+  vertical-align: middle;
+}
+
+kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding-inline: 5px;
+  border-radius: var(--lf-radius-sm);
+  background: var(--lf-fill);
+  color: var(--lf-label);
+  font-family: inherit;
+  font-size: var(--lf-text-footnote);
+  font-weight: var(--lf-weight-semibold);
+  line-height: 1;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Off track keeps a 3:1 ring (WCAG 1.4.11); Apple's stock gray track alone is too faint. */
+.switch {
+  appearance: none;
+  flex: none;
+  position: relative;
+  width: var(--lf-switch-width);
+  height: var(--lf-switch-height);
+  margin: 0;
+  border-radius: var(--lf-radius-full);
+  background: var(--lf-fill-strong);
+  box-shadow: inset 0 0 0 1px var(--lf-control-border);
+  cursor: pointer;
+  transition:
+    background-color var(--lf-duration-base) var(--lf-ease),
+    box-shadow var(--lf-duration-base) var(--lf-ease);
+}
+
+.switch::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 2px;
+  inset-inline-start: 2px;
+  width: calc(var(--lf-switch-height) - 4px);
+  height: calc(var(--lf-switch-height) - 4px);
+  border-radius: 50%;
+  background: white;
+  box-shadow: var(--lf-shadow-raised);
+  transition: inset-inline-start var(--lf-duration-base) var(--lf-ease-spring);
+}
+
+.switch:checked {
+  background: var(--lf-accent);
+  box-shadow: none;
+}
+
+.switch:checked::after {
+  inset-inline-start: calc(var(--lf-switch-width) - var(--lf-switch-height) + 2px);
+}
+
+button {
+  transition:
+    background-color var(--lf-duration-fast) var(--lf-ease),
+    color var(--lf-duration-fast) var(--lf-ease);
+}

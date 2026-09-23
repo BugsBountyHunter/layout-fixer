@@ -1,0 +1,17 @@
+node_modules/
+dist/
+artifacts/
+coverage/
+playwright-report/
+test-results/
+*.zip
+.DS_Store
+
+# Local tooling
+.mcp.json
+.env
+.env.*
+.claude/
+.vscode/
+.idea/
+*.log

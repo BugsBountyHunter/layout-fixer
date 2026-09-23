@@ -1,0 +1,167 @@
+/*
+ * Layout Fixer design tokens — the single source for every surface.
+ * Direction: Apple Human Interface Guidelines (clarity, deference, depth), tuned so every
+ * pair meets WCAG AA — some stock Apple colors don't (systemBlue on white is 4.02:1).
+ * `:host` makes the same file work inside shadow roots (selection menu, toast): import it
+ * with `?inline` there. `all: initial` on :host does not reset custom properties.
+ * Spec and usage rules: docs/design-system.md
+ */
+
+:root,
+:host {
+  /* Backgrounds. `grouped` pages (settings) sit on gray with white groups, like System Settings. */
+  --lf-bg: #ffffff;
+  --lf-bg-grouped: #f2f2f7;
+  --lf-group: #ffffff;
+
+  /* Fills — translucent grays for secondary buttons, segmented tracks, hover. Apple systemFill ramp. */
+  --lf-fill: rgb(120 120 128 / 0.12);
+  --lf-fill-strong: rgb(120 120 128 / 0.2);
+
+  /* Materials — translucent blurred surfaces for UI floating over web pages (menu, toast).
+   * 92% opacity keeps `label-on-material` ≥ 4.5:1 over any page, black or white. */
+  --lf-material: rgb(255 255 255 / 0.92);
+  --lf-material-solid: #ffffff;
+  --lf-material-filter: saturate(180%) blur(20px);
+
+  /* Labels */
+  --lf-label: #1d1d1f;
+  --lf-label-secondary: #6e6e73;
+  --lf-label-on-accent: #ffffff;
+  --lf-label-on-material: #636366;
+
+  /* Lines. `separator` divides rows; `control-border` outlines inputs and switch-off (≥ 3:1, WCAG 1.4.11). */
+  --lf-separator: rgb(60 60 67 / 0.18);
+  --lf-control-border: #86868b;
+
+  /* Accent. `accent` fills (buttons, switch, logo); `link` is accent-colored text, darker to stay ≥ 4.5:1. */
+  --lf-accent: #0071e3;
+  --lf-accent-pressed: #0066cc;
+  --lf-accent-soft: #eef5fd;
+  --lf-link: #0066cc;
+  --lf-focus: #0071e3;
+
+  /* Status — Apple system hues, deepened for text contrast. */
+  --lf-success: #1e7b34;
+  --lf-danger: #d70015;
+  --lf-warning: #c93400;
+
+  /* Typography. SF Pro / SF Arabic on Apple devices; each other OS gets its own native face
+   * (SF can't be licensed for non-Apple platforms, and native beats imitation). */
+  --lf-font:
+    system-ui, -apple-system, 'SF Pro Text', 'SF Arabic', 'Segoe UI Variable Text', 'Segoe UI', 'Noto Sans Arabic',
+    'Noto Sans', Tahoma, sans-serif;
+  --lf-font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  /* Apple macOS text styles, nudged up one step because Arabic needs the size. px, not rem:
+   * on-page UI can't trust the host page's root font size. */
+  --lf-text-footnote: 12px;
+  --lf-text-callout: 13px;
+  --lf-text-body: 14px;
+  --lf-text-headline: 15px;
+  --lf-text-title3: 17px;
+  --lf-text-title: 20px;
+  --lf-text-large-title: 26px;
+  /* 590 is SF's semibold; non-variable fonts round it to 600. */
+  --lf-weight-regular: 400;
+  --lf-weight-semibold: 590;
+  --lf-weight-bold: 700;
+  --lf-leading-tight: 1.25;
+  --lf-leading-normal: 1.47;
+  /* Display tracking for Latin titles only — never letter-space Arabic, it breaks joining. */
+  --lf-tracking-display: -0.022em;
+
+  /* Spacing — 4px grid. */
+  --lf-space-1: 4px;
+  --lf-space-2: 8px;
+  --lf-space-3: 12px;
+  --lf-space-4: 16px;
+  --lf-space-5: 20px;
+  --lf-space-6: 24px;
+  --lf-space-8: 32px;
+  --lf-space-12: 48px;
+
+  /* Radius. Nested radius = outer − padding (group 14, row inset 4 → item 10). */
+  --lf-radius-sm: 6px;
+  --lf-radius-md: 10px;
+  --lf-radius-lg: 14px;
+  --lf-radius-full: 999px;
+
+  /* Depth — one lift for floating UI, one for the raised segment/thumb. No shadows on in-page cards. */
+  --lf-shadow-raised: 0 1px 2px rgb(0 0 0 / 0.12), 0 0 0 0.5px rgb(0 0 0 / 0.04);
+  --lf-shadow-float: 0 12px 32px rgb(0 0 0 / 0.16), 0 0 0 0.5px rgb(0 0 0 / 0.12);
+
+  /* Motion — Apple-style ease-out; spring-like overshoot only on the switch thumb. */
+  --lf-duration-fast: 150ms;
+  --lf-duration-base: 250ms;
+  --lf-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --lf-ease-spring: cubic-bezier(0.34, 1.36, 0.64, 1);
+
+  /* Sizing */
+  --lf-control-height: 32px;
+  --lf-switch-width: 42px;
+  --lf-switch-height: 26px;
+
+  /* Layering — on-page UI must sit above everything the host page renders. */
+  --lf-z-page-overlay: 2147483647;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root,
+  :host {
+    --lf-bg: #1c1c1e;
+    --lf-bg-grouped: #000000;
+    --lf-group: #1c1c1e;
+    --lf-fill: rgb(118 118 128 / 0.24);
+    --lf-fill-strong: rgb(118 118 128 / 0.36);
+    --lf-material: rgb(40 40 42 / 0.92);
+    --lf-material-solid: #2c2c2e;
+    --lf-label: #f5f5f7;
+    --lf-label-secondary: #98989d;
+    --lf-label-on-material: #aeaeb2;
+    --lf-separator: rgb(84 84 88 / 0.6);
+    --lf-control-border: #7c7c80;
+    --lf-accent-soft: #11243a;
+    --lf-link: #2997ff;
+    --lf-focus: #2997ff;
+    --lf-success: #30d158;
+    --lf-danger: #ff453a;
+    --lf-warning: #ff9f0a;
+    --lf-shadow-raised: 0 1px 2px rgb(0 0 0 / 0.5), 0 0 0 0.5px rgb(255 255 255 / 0.06);
+    --lf-shadow-float: 0 12px 32px rgb(0 0 0 / 0.5), 0 0 0 0.5px rgb(255 255 255 / 0.1);
+  }
+}
+
+/* Touch devices, e.g. Firefox for Android, where extension pages open as full tabs. */
+@media (pointer: coarse) {
+  :root,
+  :host {
+    --lf-control-height: 44px;
+    --lf-text-body: 16px;
+    --lf-text-headline: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  :host {
+    --lf-duration-fast: 0ms;
+    --lf-duration-base: 0ms;
+  }
+}
+
+/* Apple's "Reduce transparency" setting, and browsers without backdrop-filter. */
+@media (prefers-reduced-transparency: reduce) {
+  :root,
+  :host {
+    --lf-material: var(--lf-material-solid);
+    --lf-material-filter: none;
+  }
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  :root,
+  :host {
+    --lf-material: var(--lf-material-solid);
+    --lf-material-filter: none;
+  }
+}

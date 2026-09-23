@@ -24,7 +24,10 @@ Manual testing: `npm run playground` and follow [docs/testing/manual-checklist.m
 - Comments explain *why*, not *what*.
 - No network requests, analytics or data collection.
 
-## Reporting bugs
+## Reporting bugs and requesting features
 
-Open an issue with the browser and version, OS, the site or test-page card, what you did, what
-you expected and what happened.
+Use the [issue forms](https://github.com/BugsBountyHunter/layout-fixer/issues/new/choose) — they
+ask for the browser, OS and keyboard layout we need to reproduce a problem. Security issues go
+through [SECURITY.md](SECURITY.md), not a public issue.
+
+By taking part you agree to the [Code of Conduct](CODE_OF_CONDUCT.md).

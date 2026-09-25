@@ -7,6 +7,7 @@
 **Fix text typed with the wrong keyboard layout — Arabic ⇄ English — in one keystroke.**
 
 [![CI](https://github.com/BugsBountyHunter/layout-fixer/actions/workflows/ci.yml/badge.svg)](https://github.com/BugsBountyHunter/layout-fixer/actions/workflows/ci.yml)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/cikmlhdhgneblnmkkmiolciffcgbgljj?label=chrome%20web%20store)](https://chromewebstore.google.com/detail/cikmlhdhgneblnmkkmiolciffcgbgljj)
 [![Release](https://img.shields.io/github/v/release/BugsBountyHunter/layout-fixer?label=release)](https://github.com/BugsBountyHunter/layout-fixer/releases/latest)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Manifest V3](https://img.shields.io/badge/manifest-v3-blue.svg)](https://developer.chrome.com/docs/extensions/develop/migrate/what-is-mv3)
@@ -36,7 +37,7 @@ Select the text and press <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd>
 
 | Browser | How |
 | --- | --- |
-| Chrome, Edge, Brave, Opera, Vivaldi | Chrome Web Store listing coming soon. Until then: download `layout-fixer-chrome-<version>.zip` from the [latest release](https://github.com/BugsBountyHunter/layout-fixer/releases/latest), unzip it, open `chrome://extensions`, turn on **Developer mode** and choose **Load unpacked**. |
+| Chrome, Edge, Brave, Opera, Vivaldi | [**Add to Chrome** from the Chrome Web Store](https://chromewebstore.google.com/detail/cikmlhdhgneblnmkkmiolciffcgbgljj). To install a specific version by hand: download `layout-fixer-chrome-<version>.zip` from [Releases](https://github.com/BugsBountyHunter/layout-fixer/releases), unzip it, open `chrome://extensions`, turn on **Developer mode** and choose **Load unpacked**. |
 | Firefox (desktop and Android) | Planned. You can [build it from source](#development) today. |
 
 ## Features

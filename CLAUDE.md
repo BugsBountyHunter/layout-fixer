@@ -230,6 +230,7 @@ Release process (every change reaches `main` through a pull request; the ruleset
 Checklist:
 - [x] License MIT; repository github.com/BugsBountyHunter/layout-fixer; privacy policy = `PRIVACY.md`
 - [x] Store images (en + ar), promo tile and marquee — `docs/store/screenshots/`
-- [ ] Chrome Web Store developer account (one-time $5) and first submission
+- [x] Chrome Web Store developer account and first submission — v1.0.0 live at
+  https://chromewebstore.google.com/detail/cikmlhdhgneblnmkkmiolciffcgbgljj
 - [ ] Later: Edge Add-ons (same zip); addons.mozilla.org — first replace the placeholder gecko id
   `layout-fixer@layoutfixer.app` (permanent after the first upload)

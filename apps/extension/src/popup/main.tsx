@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { t, uiDirection, uiLanguage } from '../platform/i18n'
 import { App } from './App'
-import '../ui/theme.css'
+import '@layout-fixer/ui/theme.css'
 import './popup.css'
 
 document.documentElement.lang = uiLanguage()

@@ -1,0 +1,29 @@
+/* One grouped window, like a macOS System Settings pane. Lists come from @layout-fixer/ui/grouped.css. */
+.settings {
+  display: grid;
+  gap: var(--lf-space-6);
+  padding: var(--lf-space-6) var(--lf-space-4) var(--lf-space-8);
+}
+
+.settings-header {
+  display: grid;
+  gap: 2px;
+  padding-inline: var(--lf-space-4);
+}
+
+.settings-header h1 {
+  font-size: var(--lf-text-title);
+  font-weight: var(--lf-weight-bold);
+  line-height: var(--lf-leading-tight);
+}
+
+.settings-header p {
+  color: var(--lf-label-secondary);
+  font-size: var(--lf-text-callout);
+}
+
+.notice {
+  padding-inline: var(--lf-space-4);
+  color: var(--lf-danger);
+  font-size: var(--lf-text-callout);
+}

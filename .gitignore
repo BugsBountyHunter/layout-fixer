@@ -5,6 +5,10 @@ coverage/
 playwright-report/
 test-results/
 *.zip
+
+# Desktop (Tauri): Rust build output and generated schemas
+target/
+apps/desktop/src-tauri/gen/
 .DS_Store
 
 # Local tooling

@@ -1,5 +1,5 @@
+import { CheckIcon } from '@layout-fixer/ui/icons'
 import { t } from '../../platform/i18n'
-import { CheckIcon } from '../../ui/icons'
 
 export function PageHeader({ saved }: { readonly saved: boolean }) {
   return (

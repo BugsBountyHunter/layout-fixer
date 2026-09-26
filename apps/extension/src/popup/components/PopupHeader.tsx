@@ -1,5 +1,5 @@
+import { SettingsIcon } from '@layout-fixer/ui/icons'
 import { t } from '../../platform/i18n'
-import { SettingsIcon } from '../../ui/icons'
 import { openSettings } from '../navigation'
 
 export function PopupHeader() {

@@ -13,7 +13,9 @@
   "type": "module",
   "workspaces": [
     "packages/core",
-    "apps/extension"
+    "packages/ui",
+    "apps/extension",
+    "apps/desktop"
   ],
   "scripts": {
     "dev": "npm run dev -w @layout-fixer/extension",
@@ -25,12 +27,15 @@
     "test:e2e": "npm run test:e2e -w @layout-fixer/extension",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
-    "check": "npm run lint && npm run typecheck -w @layout-fixer/core && npm run test:coverage -w @layout-fixer/core && npm run check -w @layout-fixer/extension",
+    "check": "npm run lint && npm run typecheck -w @layout-fixer/core -w @layout-fixer/ui && npm run test:coverage -w @layout-fixer/core -w @layout-fixer/ui && npm run check -w @layout-fixer/extension",
     "package:chrome": "npm run package:chrome -w @layout-fixer/extension",
     "package:firefox": "npm run package:firefox -w @layout-fixer/extension",
     "playground": "npm run playground -w @layout-fixer/extension",
     "store:screenshots": "npm run store:screenshots -w @layout-fixer/extension",
-    "icons": "npm run icons -w @layout-fixer/extension"
+    "icons": "npm run icons -w @layout-fixer/extension",
+    "desktop:dev": "npm run dev -w @layout-fixer/desktop",
+    "desktop:build": "npm run build -w @layout-fixer/desktop",
+    "check:desktop": "npm run typecheck -w @layout-fixer/desktop && npm run test:coverage -w @layout-fixer/desktop && npm run build:web -w @layout-fixer/desktop"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.14"

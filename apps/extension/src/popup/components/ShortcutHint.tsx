@@ -1,5 +1,5 @@
+import { ShortcutKeys } from '@layout-fixer/ui/ShortcutKeys'
 import { t } from '../../platform/i18n'
-import { ShortcutKeys } from '../../ui/ShortcutKeys'
 import type { Platform } from '../../ui/usePlatform'
 
 export function ShortcutHint({ hasShortcuts, shortcutKeys, openShortcutSettings }: Platform) {

@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "What the Settings window may call. Nothing else is exposed to web content.",
+  "windows": ["settings"],
+  "permissions": ["core:default", "store:default"]
+}

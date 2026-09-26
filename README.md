@@ -130,6 +130,8 @@ An npm workspaces monorepo:
 
 ```text
 packages/core/        # @layout-fixer/core: converter and keyboard layouts (pure TypeScript, no DOM)
+packages/ui/          # @layout-fixer/ui: design tokens, theme, icons shared by the apps
+apps/desktop/         # desktop app for macOS, Windows and Linux (Tauri 2, in development)
 apps/extension/       # the browser extension
 ├── src/
 │   ├── platform/     # shortcuts, OS detection, i18n, validated settings
@@ -141,7 +143,9 @@ apps/extension/       # the browser extension
 └── e2e/              # Playwright tests against the built extension
 ```
 
-Run scripts from the repository root; they forward to the right workspace.
+Run scripts from the repository root; they forward to the right workspace. The desktop app also needs
+[Rust](https://rustup.rs) (and on Linux the [Tauri system libraries](https://tauri.app/start/prerequisites/)):
+`npm run desktop:dev`.
 
 ## Release
 

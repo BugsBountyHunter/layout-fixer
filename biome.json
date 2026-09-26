@@ -9,7 +9,9 @@
       "!**/artifacts",
       "!**/test-results",
       "!**/playwright-report",
-      "!packages/core/src/layouts/fixtures"
+      "!packages/core/src/layouts/fixtures",
+      "!**/target",
+      "!apps/desktop/src-tauri/gen"
     ]
   },
   "formatter": {

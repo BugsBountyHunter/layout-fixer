@@ -1,6 +1,6 @@
+import { CloseIcon } from '@layout-fixer/ui/icons'
 import type { KeyboardEvent, RefObject } from 'react'
 import { t } from '../../platform/i18n'
-import { CloseIcon } from '../../ui/icons'
 
 interface Props {
   readonly value: string

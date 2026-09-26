@@ -4,7 +4,6 @@ import { describe, expect, it } from 'vitest'
 import { STYLES as SELECTION_STYLES } from '../content/selection/selection-ui.styles'
 
 const SRC = join(import.meta.dirname, '..')
-const TOKENS = 'ui/tokens.css'
 const HEX_COLOR = /#[0-9a-f]{3,8}\b/gi
 
 function files(dir: string): string[] {
@@ -18,12 +17,11 @@ const sources = files(SRC).map((path) => ({ path: relative(SRC, path), text: rea
 
 /** Every file that carries styling: stylesheets and the shadow-root style strings. */
 const styleSources = sources.filter(
-  ({ path }) =>
-    path !== TOKENS && (path.endsWith('.css') || path.endsWith('.styles.ts') || path === 'content/toast.ts'),
+  ({ path }) => path.endsWith('.css') || path.endsWith('.styles.ts') || path === 'content/toast.ts',
 )
 
-describe('design tokens', () => {
-  it('defines colors only in tokens.css', () => {
+describe('design tokens in the extension', () => {
+  it('defines no colors of its own (they live in @layout-fixer/ui/tokens.css)', () => {
     const offenders = styleSources.flatMap(({ path, text }) =>
       (text.match(HEX_COLOR) ?? []).map((hex) => `${path}: ${hex}`),
     )
@@ -35,9 +33,10 @@ describe('design tokens', () => {
     expect(offenders.map(({ path }) => path)).toEqual([])
   })
 
-  it('is loaded by the shared page theme', () => {
-    const theme = sources.find(({ path }) => path === 'ui/theme.css')
-    expect(theme?.text).toMatch(/@import ['"]\.\/tokens\.css['"]/)
+  it('loads the shared theme on every page', () => {
+    for (const path of ['popup/main.tsx', 'options/main.tsx']) {
+      expect(sources.find((source) => source.path === path)?.text, path).toContain("'@layout-fixer/ui/theme.css'")
+    }
   })
 
   it('keeps on-page styles on the shared tokens', () => {

@@ -13,6 +13,7 @@ const TRAY_ID: &str = "main";
 const FIX_ID: &str = "fix";
 const PAUSE_ID: &str = "pause";
 const SETTINGS_ID: &str = "settings";
+const UPDATE_ID: &str = "update";
 const QUIT_ID: &str = "quit";
 
 /// Menu text in the user's language; the web side sends it once it knows the language.
@@ -41,6 +42,10 @@ impl Default for Labels {
 #[derive(Default)]
 pub struct TrayLabels(Mutex<Labels>);
 
+/// "Update to 1.1.0…" once the web side found a newer version; opens Settings, where it installs.
+#[derive(Default)]
+pub struct UpdateLabel(Mutex<Option<String>>);
+
 #[derive(Debug, PartialEq, Eq)]
 enum Action {
     Fix,
@@ -53,7 +58,7 @@ fn action_for(id: &str) -> Option<Action> {
     match id {
         FIX_ID => Some(Action::Fix),
         PAUSE_ID => Some(Action::TogglePause),
-        SETTINGS_ID => Some(Action::ShowSettings),
+        SETTINGS_ID | UPDATE_ID => Some(Action::ShowSettings),
         QUIT_ID => Some(Action::Quit),
         _ => None,
     }
@@ -85,7 +90,7 @@ fn build_menu(app: &AppHandle) -> tauri::Result<Menu<Wry>> {
         Some("CmdOrCtrl+,"),
     )?;
     let quit = MenuItem::with_id(app, QUIT_ID, &labels.quit, true, Some("CmdOrCtrl+Q"))?;
-    Menu::with_items(
+    let menu = Menu::with_items(
         app,
         &[
             &fix,
@@ -95,7 +100,21 @@ fn build_menu(app: &AppHandle) -> tauri::Result<Menu<Wry>> {
             &PredefinedMenuItem::separator(app)?,
             &quit,
         ],
-    )
+    )?;
+    let update_label = app
+        .state::<UpdateLabel>()
+        .0
+        .lock()
+        .unwrap_or_else(|poisoned| poisoned.into_inner())
+        .clone();
+    if let Some(label) = update_label {
+        menu.insert(
+            &MenuItem::with_id(app, UPDATE_ID, label, true, None::<&str>)?,
+            0,
+        )?;
+        menu.insert(&PredefinedMenuItem::separator(app)?, 1)?;
+    }
+    Ok(menu)
 }
 
 /// Rebuilds the menu after the language, the shortcut or the paused state changed.
@@ -114,6 +133,14 @@ pub fn set_labels(app: &AppHandle, labels: Labels) {
         .0
         .lock()
         .unwrap_or_else(|poisoned| poisoned.into_inner()) = labels;
+    refresh(app);
+}
+
+pub fn set_update_label(app: &AppHandle, label: Option<String>) {
+    *app.state::<UpdateLabel>()
+        .0
+        .lock()
+        .unwrap_or_else(|poisoned| poisoned.into_inner()) = label;
     refresh(app);
 }
 
@@ -155,6 +182,7 @@ mod tests {
         assert_eq!(action_for(FIX_ID), Some(Action::Fix));
         assert_eq!(action_for(PAUSE_ID), Some(Action::TogglePause));
         assert_eq!(action_for(SETTINGS_ID), Some(Action::ShowSettings));
+        assert_eq!(action_for(UPDATE_ID), Some(Action::ShowSettings));
         assert_eq!(action_for(QUIT_ID), Some(Action::Quit));
         assert_eq!(action_for("unknown"), None);
     }

@@ -1,8 +1,9 @@
 # Layout Fixer — Privacy Policy
 
-_Last updated: 23 September 2026_
+_Last updated: 26 September 2026_
 
-Layout Fixer converts text typed with the wrong keyboard layout (Arabic ⇄ English).
+Layout Fixer converts text typed with the wrong keyboard layout (Arabic ⇄ English). It comes as a browser
+extension and as a desktop app for macOS, Windows and Linux; this policy covers both.
 
 ## What the extension accesses
 
@@ -36,6 +37,25 @@ Layout Fixer converts text typed with the wrong keyboard layout (Arabic ⇄ Engl
 | `contextMenus` | Add "Fix keyboard layout" to the right-click menu. |
 | `storage` | Remember your settings. |
 | Access to websites (optional) | Only if you turn on the selection button: show the button next to text you select. |
+
+## The desktop app
+
+- **The text you choose to fix.** Only when you press the shortcut or choose Fix Selection in the menu bar /
+  tray. The app copies your selection, converts it on your device, pastes the result back and then restores
+  your clipboard. The text is held in memory for about a second and is never stored, logged or sent.
+- **Your clipboard.** Its contents are kept in memory during a fix so they can be put back afterwards. The
+  temporary text is marked so clipboard managers and clipboard history (Win+V, cloud clipboard) skip it.
+- **No keyboard monitoring.** The app registers one global shortcut with the system; it never records what you
+  type.
+- **Permissions.** macOS asks you to allow Layout Fixer under Accessibility, because the app presses ⌘C and ⌘V
+  for you. Windows and Linux need no extra permission.
+- **Your settings** (language, shortcut, Arabic layout, messages, open at login) are saved in a file in your
+  user's app-data folder and never leave your device.
+- **Update checks — the only network requests.** When automatic updates are on (the default; you can turn them
+  off in Settings), the app downloads a small file from GitHub
+  (`github.com/BugsBountyHunter/layout-fixer/releases`) to see whether a newer version exists, and downloads
+  the update from there when there is one. Every update is verified against the project's signing key before
+  it installs. Like any website, GitHub sees your IP address for these requests; the app sends nothing else.
 
 ## Contact
 

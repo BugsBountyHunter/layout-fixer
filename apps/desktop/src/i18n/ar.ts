@@ -59,6 +59,19 @@ export const AR: Messages = {
   waylandBody:
     'لا يسمح Wayland حاليًا للتطبيقات بالضغط على المفاتيح داخل تطبيقات أخرى، لذا لا يعمل التصحيح في هذه الجلسة. سجّل الدخول بجلسة X11 ‏(Xorg) لاستخدام التطبيق، ودعم Wayland مخطط له.',
 
+  updatesSection: 'التحديثات',
+  autoUpdate: 'التحقق من التحديثات تلقائيًا',
+  updateCheckNow: 'التحقق الآن',
+  updateChecking: 'جارٍ التحقق…',
+  updateCurrent: 'لديك أحدث إصدار.',
+  updateAvailable: (version: string) => `الإصدار ${version} متاح.`,
+  updateInstall: 'التثبيت وإعادة التشغيل',
+  updateInstalling: 'جارٍ التثبيت…',
+  updateFailed: 'تعذّر التحقق من التحديثات. حاول لاحقًا.',
+  updateHint: 'تأتي التحديثات من إصدارات المشروع على GitHub ويُتحقق منها قبل تثبيتها.',
+  appVersion: (version: string) => `الإصدار ${version}`,
+  trayUpdate: (version: string) => `التحديث إلى ${version}…`,
+
   privacyTitle: 'الخصوصية',
   privacyBody: 'لا يقرأ التطبيق النص إلا عندما تضغط الاختصار، ويحوّله على جهازك، ولا يخزّنه أو يرسله أبدًا.',
 

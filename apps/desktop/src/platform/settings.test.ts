@@ -28,13 +28,21 @@ describe('parseSettings', () => {
       showMessages: false,
       shortcut: 'Ctrl+Alt+K',
       welcomed: true,
+      checkUpdates: false,
     }
     expect(parseSettings(stored)).toEqual(stored)
   })
 
   it('replaces each invalid field on its own', () => {
     expect(
-      parseSettings({ arabicLayout: 'ar-pc', language: 'fr', showMessages: 'yes', shortcut: 'F', welcomed: 1 }),
+      parseSettings({
+        arabicLayout: 'ar-pc',
+        language: 'fr',
+        showMessages: 'yes',
+        shortcut: 'F',
+        welcomed: 1,
+        checkUpdates: 'no',
+      }),
     ).toEqual({
       ...DEFAULT_SETTINGS,
       arabicLayout: 'ar-pc',

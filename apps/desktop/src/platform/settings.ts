@@ -13,6 +13,8 @@ export interface DesktopSettings {
   readonly shortcut: string
   /** Set once the first-run welcome has been dismissed. */
   readonly welcomed: boolean
+  /** Check GitHub releases at launch and daily; installing always waits for the user. */
+  readonly checkUpdates: boolean
 }
 
 export const DEFAULT_SETTINGS: DesktopSettings = Object.freeze({
@@ -21,6 +23,7 @@ export const DEFAULT_SETTINGS: DesktopSettings = Object.freeze({
   showMessages: true,
   shortcut: DEFAULT_SHORTCUT,
   welcomed: false,
+  checkUpdates: true,
 })
 
 export const ARABIC_LAYOUT_CHOICES: readonly ArabicLayoutChoice[] = ['auto', 'ar-pc', 'ar-mac']
@@ -49,6 +52,7 @@ export function parseSettings(raw: unknown): DesktopSettings {
     showMessages: typeof data.showMessages === 'boolean' ? data.showMessages : DEFAULT_SETTINGS.showMessages,
     shortcut: isValidShortcut(data.shortcut) ? data.shortcut : DEFAULT_SETTINGS.shortcut,
     welcomed: typeof data.welcomed === 'boolean' ? data.welcomed : DEFAULT_SETTINGS.welcomed,
+    checkUpdates: typeof data.checkUpdates === 'boolean' ? data.checkUpdates : DEFAULT_SETTINGS.checkUpdates,
   }
 }
 

@@ -245,4 +245,4 @@ packages/ui/        # tokens.css, icons, ShortcutKeys: shared with the extension
 2. ~~Windows signing~~ — unsigned for now; "Run anyway" instructions (§2).
 3. **Bundle identifier:** `app.layoutfixer.desktop` matches the Firefox id domain. Do you own
    `layoutfixer.app`, or should it use another domain?
-4. **Price:** free and MIT like the extension?
+4. ~~Price~~ — free and open source under MIT, like the extension (decided 2026-09-26).

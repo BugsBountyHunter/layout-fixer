@@ -1,4 +1,4 @@
-import type { ArabicLayoutId } from '../../core/layouts'
+import type { ArabicLayoutId } from '@layout-fixer/core/layouts'
 import { t } from '../../platform/i18n'
 import { CheckIcon, CopyIcon } from '../../ui/icons'
 import { LAYOUT_NAME } from '../../ui/layoutLabels'

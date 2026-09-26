@@ -1,5 +1,5 @@
-import { DEFAULT_LANGUAGE_PAIR, type LanguagePair, parseLanguagePair } from '../core/languages'
-import { type ArabicLayoutId, defaultLayout } from '../core/layouts'
+import { DEFAULT_LANGUAGE_PAIR, type LanguagePair, parseLanguagePair } from '@layout-fixer/core/languages'
+import { type ArabicLayoutId, defaultLayout } from '@layout-fixer/core/layouts'
 
 export type ArabicLayoutChoice = 'auto' | ArabicLayoutId
 

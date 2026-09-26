@@ -26,7 +26,6 @@ export default defineConfig(({ mode }) => {
       coverage: {
         provider: 'v8',
         include: [
-          'src/core/**',
           'src/content/**',
           'src/background/handlers.ts',
           'src/background/selection-script.ts',
@@ -35,7 +34,6 @@ export default defineConfig(({ mode }) => {
           'src/platform/i18n.ts',
           'src/manifest.ts',
         ],
-        exclude: ['**/fixtures/**'],
         thresholds: { lines: 90, branches: 85, functions: 90, statements: 90 },
       },
     },

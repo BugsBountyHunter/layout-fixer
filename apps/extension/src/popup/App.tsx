@@ -1,5 +1,5 @@
+import { convert } from '@layout-fixer/core/converter'
 import { useRef, useState } from 'react'
-import { convert } from '../core/converter'
 import { resolveLayout } from '../platform/settings'
 import { isMacPlatform } from '../platform/shortcut'
 import { usePlatform } from '../ui/usePlatform'

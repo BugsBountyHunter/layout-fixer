@@ -1,6 +1,6 @@
-"""Generate a src/core/layouts/<id>.ts data file from a macOS layout fixture.
+"""Generate a src/layouts/<id>.ts data file from a macOS layout fixture.
 
-  python3 scripts/generate-layout.py ArabicPC ar-pc > src/core/layouts/ar-pc.ts
+  python3 scripts/generate-layout.py ArabicPC ar-pc > src/layouts/ar-pc.ts
 
 Keys that type the same as US QWERTY are omitted, as are digits on non-Latin layouts
 (users keep the digits they typed), mirrored bracket pairs, and --skip entries.
@@ -11,7 +11,7 @@ import json
 import unicodedata
 from pathlib import Path
 
-FIXTURES = Path(__file__).resolve().parent.parent / "src" / "core" / "layouts" / "fixtures"
+FIXTURES = Path(__file__).resolve().parent.parent / "src" / "layouts" / "fixtures"
 ROWS = [
     ["Backquote", "Digit1", "Digit2", "Digit3", "Digit4", "Digit5", "Digit6", "Digit7", "Digit8", "Digit9", "Digit0", "Minus", "Equal"],
     ["KeyQ", "KeyW", "KeyE", "KeyR", "KeyT", "KeyY", "KeyU", "KeyI", "KeyO", "KeyP", "BracketLeft", "BracketRight", "Backslash"],

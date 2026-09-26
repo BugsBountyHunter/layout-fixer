@@ -1,6 +1,6 @@
-import { convert, type Direction, detectDirection } from '../../core/converter'
-import { LANGUAGES, type LanguageCode } from '../../core/languages'
-import type { ArabicLayoutId } from '../../core/layouts'
+import { convert, type Direction, detectDirection } from '@layout-fixer/core/converter'
+import { LANGUAGES, type LanguageCode } from '@layout-fixer/core/languages'
+import type { ArabicLayoutId } from '@layout-fixer/core/layouts'
 
 export interface MenuOption {
   readonly direction: Direction

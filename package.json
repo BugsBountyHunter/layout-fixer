@@ -1,7 +1,6 @@
 {
   "name": "layout-fixer",
-  "version": "1.0.0",
-  "description": "Fix text typed with the wrong keyboard layout — Arabic ⇄ English. Browser extension for Chrome, Edge, Firefox and more.",
+  "description": "Fix text typed with the wrong keyboard layout — Arabic ⇄ English.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -12,46 +11,28 @@
   },
   "private": true,
   "type": "module",
+  "workspaces": [
+    "packages/core",
+    "apps/extension"
+  ],
   "scripts": {
-    "dev": "vite --mode chrome",
-    "dev:firefox": "vite --mode firefox",
-    "build": "npm run typecheck && npm run build:chrome && npm run build:firefox",
-    "build:chrome": "vite build --mode chrome",
-    "build:firefox": "vite build --mode firefox",
-    "build:e2e": "vite build --mode e2e",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "test:e2e": "npm run build:e2e && playwright test",
-    "lint:firefox": "web-ext lint --source-dir dist/firefox",
-    "package:chrome": "web-ext build --source-dir dist/chrome --artifacts-dir artifacts --filename layout-fixer-chrome-{version}.zip --overwrite-dest",
-    "package:firefox": "web-ext build --source-dir dist/firefox --artifacts-dir artifacts --filename layout-fixer-firefox-{version}.zip --overwrite-dest",
-    "icons": "python3 scripts/generate-icons.py",
-    "check": "npm run lint && npm run build && npm run test:coverage && npm run lint:firefox && npm run test:e2e",
-    "playground": "vite playground --port 4321 --open",
+    "dev": "npm run dev -w @layout-fixer/extension",
+    "dev:firefox": "npm run dev:firefox -w @layout-fixer/extension",
+    "build": "npm run build -w @layout-fixer/extension",
+    "typecheck": "npm run typecheck --workspaces",
+    "test": "npm run test --workspaces",
+    "test:coverage": "npm run test:coverage --workspaces",
+    "test:e2e": "npm run test:e2e -w @layout-fixer/extension",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
-    "store:screenshots": "npm run build:e2e && docker run --rm --ipc=host -v \"$PWD\":/work -w /work mcr.microsoft.com/playwright:v1.63.0-noble sh -c 'fc-list :lang=ar | grep -q . || (apt-get update -qq && apt-get install -y -qq fonts-noto-core >/dev/null); for l in en ar; do node scripts/store-screenshots.mjs --locale $l; done'"
-  },
-  "dependencies": {
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "check": "npm run lint && npm run typecheck -w @layout-fixer/core && npm run test:coverage -w @layout-fixer/core && npm run check -w @layout-fixer/extension",
+    "package:chrome": "npm run package:chrome -w @layout-fixer/extension",
+    "package:firefox": "npm run package:firefox -w @layout-fixer/extension",
+    "playground": "npm run playground -w @layout-fixer/extension",
+    "store:screenshots": "npm run store:screenshots -w @layout-fixer/extension",
+    "icons": "npm run icons -w @layout-fixer/extension"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.14",
-    "@crxjs/vite-plugin": "^2.7.1",
-    "@fontsource/ibm-plex-sans-arabic": "5.3.0",
-    "@playwright/test": "^1.63.0",
-    "@types/chrome": "^0.3.0",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "@vitejs/plugin-react": "^6.1.1",
-    "@vitest/coverage-v8": "^5.0.1",
-    "happy-dom": "^20.14.5",
-    "typescript": "^7.0.2",
-    "vite": "^8.3.0",
-    "vitest": "^5.0.1",
-    "web-ext": "^10.7.0"
+    "@biomejs/biome": "2.5.14"
   }
 }

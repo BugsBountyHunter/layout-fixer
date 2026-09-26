@@ -1,9 +1,9 @@
 // Dumps what a macOS keyboard layout types for each printable key (by KeyboardEvent.code),
 // with and without Shift.
-// Used to generate the fixtures that verify src/core/maps against the real OS layouts.
+// Used to generate the fixtures that verify src/layouts against the real OS layouts.
 //
 //   swiftc -O scripts/dump-macos-layout.swift -o /tmp/dump-layout
-//   /tmp/dump-layout com.apple.keylayout.Arabic > src/core/layouts/fixtures/com.apple.keylayout.Arabic.json
+//   /tmp/dump-layout com.apple.keylayout.Arabic > src/layouts/fixtures/com.apple.keylayout.Arabic.json
 import Carbon
 import Foundation
 

@@ -1,4 +1,4 @@
-import { LANGUAGE_CODES, LANGUAGES, type LanguageCode, type LanguagePair } from '../../core/languages'
+import { LANGUAGE_CODES, LANGUAGES, type LanguageCode, type LanguagePair } from '@layout-fixer/core/languages'
 import { type MessageKey, t } from '../../platform/i18n'
 
 const LABELS: readonly [MessageKey, MessageKey] = ['firstLanguage', 'secondLanguage']

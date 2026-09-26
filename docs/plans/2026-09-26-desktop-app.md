@@ -79,15 +79,31 @@ The Rust side stays small and has no conversion logic. Key presses use the `enig
 - **Menu-bar app:** no Dock icon (`ActivationPolicy::Accessory`) and a template tray icon.
 - **Secure Input:** when a password field has focus, macOS blocks synthetic keys. The app then
   shows "Can't fix text in password fields".
-- **Signing:** the permission is tied to the code signature, so every release must be signed with
-  the same Developer ID, or users lose the permission after an update.
+- **Signing — no Apple Developer account for now** (decided 2026-09-26). Downloads come from the
+  landing page and GitHub Releases, not the App Store. What that means:
+  - **First launch is blocked by Gatekeeper** ("Apple could not verify…"). Since macOS 15 the
+    right-click → Open shortcut is gone. The user goes to *System Settings → Privacy & Security* and
+    clicks **Open Anyway**, once. The landing page and the release notes show this with screenshots.
+  - **Sign with our own self-signed certificate, not ad-hoc.** macOS remembers the Accessibility
+    permission by code signature. An ad-hoc signature changes every build, so users would have to
+    grant the permission again after every update. A self-signed "Layout Fixer" code-signing
+    certificate stays the same, so the permission survives updates. The certificate and its
+    password are GitHub Actions secrets and are never committed.
+  - **Updates** are verified with Tauri's own updater key (minisign), independent of Apple.
+  - **Later:** buy the Developer ID ($99/year) when downloads justify it. Moving to it changes the
+    signature, so users grant Accessibility once more at that update.
 
 ### Windows
 - **No permission is needed.**
 - **Elevated apps:** Windows doesn't allow a normal app to send keys to one running as
   administrator (UIPI). The app detects this when the copy step times out and shows "Can't fix
   text in apps running as administrator".
-- **Unsigned builds** show SmartScreen's "Windows protected your PC" warning until signed.
+- **Unsigned for now** (decided 2026-09-26). SmartScreen shows "Windows protected your PC" on
+  first run. The user clicks **More info → Run anyway**, and the landing page shows this with
+  screenshots. An unsigned file's reputation is tied to that exact file, so the warning comes back
+  with every new version. Tauri's updater installs updates in the background without SmartScreen,
+  so users mostly see it only on the first install. **Later:** Azure Trusted Signing (about
+  $10 a month) when downloads justify it.
 
 ### Linux
 - **X11:** works like Windows.
@@ -208,7 +224,7 @@ packages/ui/        # tokens.css, icons, ShortcutKeys: shared with the extension
 | 3 | Windows: SendInput, UIPI message, clipboard history exclusion | Windows beta |
 | 4 | Linux X11 + Wayland explanation screen | Linux beta |
 | 5 | Settings polish: shortcut recorder, autostart, Arabic UI, onboarding try-it field | Feature-complete v1 |
-| 6 | Signing, notarization, updater, release workflow, PRIVACY.md, landing-page download section | **v1.0 public** |
+| 6 | Self-signed macOS signing, unsigned Windows build, updater, release workflow, PRIVACY.md, landing-page download section with "Open Anyway" / SmartScreen instructions | **v1.0 public** |
 
 ---
 
@@ -225,10 +241,8 @@ packages/ui/        # tokens.css, icons, ShortcutKeys: shared with the extension
 
 ## Open questions
 
-1. **Apple Developer Program ($99/year):** needed for signing and notarization before any public
-   macOS build. Do you already have it?
-2. **Windows signing:** start unsigned (SmartScreen warning), or use Azure Trusted Signing
-   (about $10 a month)?
+1. ~~Apple Developer Program~~ — not for now; self-signed certificate + "Open Anyway" instructions (§2).
+2. ~~Windows signing~~ — unsigned for now; "Run anyway" instructions (§2).
 3. **Bundle identifier:** `app.layoutfixer.desktop` matches the Firefox id domain. Do you own
    `layoutfixer.app`, or should it use another domain?
 4. **Price:** free and MIT like the extension?

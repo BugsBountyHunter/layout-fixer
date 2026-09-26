@@ -5,8 +5,10 @@ use serde::Serialize;
 #[serde(tag = "code", content = "detail", rename_all = "kebab-case")]
 pub enum FixError {
     /// macOS: the app is not allowed to send ⌘C / ⌘V yet.
+    #[cfg_attr(not(target_os = "macos"), allow(dead_code))]
     AccessibilityDenied,
     /// macOS: a password field has Secure Input on, which blocks synthetic keys.
+    #[cfg_attr(not(target_os = "macos"), allow(dead_code))]
     SecureInput,
     /// This OS is not supported yet (Windows and Linux arrive in later phases).
     #[cfg_attr(target_os = "macos", allow(dead_code))]

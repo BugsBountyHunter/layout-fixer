@@ -2,7 +2,7 @@
 
 All notable changes to the desktop app. The browser extension has its own [CHANGELOG](../../CHANGELOG.md).
 
-## [Unreleased]
+## [1.1.0] - 2026-09-27
 
 ### Added
 

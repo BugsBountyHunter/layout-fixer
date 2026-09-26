@@ -50,7 +50,10 @@ Legend: ✅ checked on macOS 27 (Apple silicon, built-in 2× display + external 
 - [ ] Chrome and Safari text fields, with and without the extension installed
 - [ ] A clipboard manager (e.g. Maccy, Raycast) does not record the fixed text
 - [ ] Message pill: light and dark mode, readable on busy backgrounds
-- [ ] VoiceOver announces the message (not yet: the pill's web content isn't exposed to accessibility)
+- [x] ✅ VoiceOver: every message is posted as a high-priority announcement (verified with an AXObserver listening for
+      `AXAnnouncementRequested`, the notification VoiceOver speaks)
+- [ ] With VoiceOver on: the message is spoken while TextEdit keeps focus
+- [ ] Narrator (Windows) and Orca (Linux) read the message pill's live region
 
 ## Windows
 

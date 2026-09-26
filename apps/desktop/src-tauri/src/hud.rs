@@ -67,6 +67,10 @@ pub fn show(app: &AppHandle, message: &str) {
         eprintln!("[layout-fixer] could not place the message: {error}");
     }
     let _ = app.emit_to(LABEL, MESSAGE_EVENT, message);
+    let spoken = message.to_owned();
+    if let Err(error) = app.run_on_main_thread(move || crate::platform::announce(&spoken)) {
+        eprintln!("[layout-fixer] could not announce the message: {error}");
+    }
     if let Err(error) = window.show() {
         eprintln!("[layout-fixer] could not show the message: {error}");
         return;

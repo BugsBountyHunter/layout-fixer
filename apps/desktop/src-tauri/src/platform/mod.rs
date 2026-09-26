@@ -1,7 +1,7 @@
 #[cfg(target_os = "macos")]
 mod macos;
 #[cfg(target_os = "macos")]
-pub use macos::{permissions, SystemClipboard, SystemKeyboard};
+pub use macos::{announce, permissions, SystemClipboard, SystemKeyboard};
 
 #[cfg(windows)]
 mod windows;
@@ -25,3 +25,8 @@ pub fn is_wayland() -> bool {
     #[cfg(not(target_os = "linux"))]
     false
 }
+
+/// Screen-reader announcement of an on-screen message. Only macOS needs it: on Windows and Linux the
+/// message pill is an ARIA live region that Narrator and Orca read from the page itself.
+#[cfg(not(target_os = "macos"))]
+pub fn announce(_message: &str) {}

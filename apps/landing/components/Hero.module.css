@@ -1,0 +1,33 @@
+.hero {
+  display: grid;
+  gap: var(--lf-space-12);
+  align-items: center;
+  padding-block: clamp(48px, 9vw, 104px);
+}
+
+@media (min-width: 900px) {
+  .hero {
+    grid-template-columns: 1.1fr 1fr;
+  }
+}
+
+.title {
+  font-size: var(--site-display);
+}
+
+.accent {
+  display: block;
+  color: var(--lf-label-secondary);
+}
+
+.lead {
+  margin-block-start: var(--lf-space-5);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--lf-space-3);
+  margin-block-start: var(--lf-space-8);
+}

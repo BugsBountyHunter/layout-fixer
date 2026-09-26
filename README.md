@@ -131,7 +131,8 @@ An npm workspaces monorepo:
 ```text
 packages/core/        # @layout-fixer/core: converter and keyboard layouts (pure TypeScript, no DOM)
 packages/ui/          # @layout-fixer/ui: design tokens, theme, icons shared by the apps
-apps/desktop/         # desktop app for macOS, Windows and Linux (Tauri 2, in development)
+apps/desktop/         # desktop app for macOS, Windows and Linux (Tauri 2)
+apps/landing/         # the website, layoutfixer.dev (Next.js static export)
 apps/extension/       # the browser extension
 ├── src/
 │   ├── platform/     # shortcuts, OS detection, i18n, validated settings

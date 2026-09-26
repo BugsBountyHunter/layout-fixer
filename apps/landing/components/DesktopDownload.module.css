@@ -1,0 +1,52 @@
+.desktop {
+  display: grid;
+  justify-items: start;
+  gap: var(--lf-space-4);
+}
+
+.title {
+  margin-block-end: 0;
+}
+
+.chip {
+  display: inline-flex;
+  padding: var(--lf-space-1) 10px;
+  border-radius: var(--lf-radius-full);
+  background: var(--lf-fill);
+  color: var(--lf-label-secondary);
+  font-size: 13px;
+  font-weight: var(--lf-weight-semibold);
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--lf-space-3);
+}
+
+.note {
+  margin: 0;
+  color: var(--lf-label-secondary);
+  font-size: 14px;
+}
+
+.firstLaunch {
+  inline-size: 100%;
+  color: var(--lf-label-secondary);
+  font-size: 15px;
+}
+
+.firstLaunch summary {
+  display: flex;
+  align-items: center;
+  min-block-size: 44px;
+  color: var(--lf-link);
+  cursor: pointer;
+}
+
+.firstLaunch ul {
+  display: grid;
+  gap: var(--lf-space-2);
+  margin-block: var(--lf-space-3) 0;
+  padding-inline-start: var(--lf-space-5);
+}

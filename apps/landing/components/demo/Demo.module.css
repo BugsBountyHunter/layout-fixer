@@ -1,0 +1,125 @@
+.demo {
+  display: grid;
+  gap: var(--lf-space-4);
+  min-inline-size: 0;
+}
+
+.showcase {
+  margin: 0;
+  padding: var(--lf-space-6);
+  border-radius: var(--lf-radius-lg);
+  background: var(--lf-bg-grouped);
+}
+
+/* Shown only when the demo can't animate (no JavaScript, reduced motion), so it still reads before → after. */
+.before {
+  display: flex;
+  align-items: baseline;
+  gap: var(--lf-space-2);
+  margin-block-end: var(--lf-space-3);
+  color: var(--lf-label-secondary);
+  font-size: var(--site-small);
+}
+
+.before[data-animating='true'] {
+  visibility: hidden;
+}
+
+.beforeLabel {
+  font-weight: var(--lf-weight-semibold);
+}
+
+.beforeText {
+  font-family: var(--lf-font-mono);
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  min-block-size: 64px;
+  padding-inline: var(--lf-space-4);
+  border-radius: var(--lf-radius-md);
+  background: var(--lf-fill);
+  font-size: clamp(20px, 3vw, 26px);
+  overflow: hidden;
+}
+
+.caret {
+  inline-size: 2px;
+  block-size: 1.2em;
+  margin-inline-start: 2px;
+  background: var(--lf-accent);
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--lf-space-3);
+  margin-block-start: var(--lf-space-4);
+}
+
+.tryIt {
+  display: grid;
+  gap: var(--lf-space-3);
+  padding: var(--lf-space-5);
+  border-radius: var(--lf-radius-lg);
+  background: var(--lf-bg-grouped);
+}
+
+.label {
+  font-size: var(--site-small);
+  font-weight: var(--lf-weight-semibold);
+}
+
+.row {
+  display: flex;
+  gap: var(--lf-space-2);
+}
+
+.input {
+  flex: 1;
+  min-inline-size: 0;
+  min-block-size: 44px;
+  padding-inline: var(--lf-space-3);
+  border: 1px solid var(--lf-control-border);
+  border-radius: var(--lf-radius-md);
+  background: var(--lf-bg);
+  color: var(--lf-label);
+  font: inherit;
+}
+
+/* Design system text field: focus turns the border blue with a soft halo. */
+.input:focus-visible {
+  outline: none;
+  border-color: var(--lf-focus);
+  box-shadow: 0 0 0 3px var(--lf-accent-soft);
+}
+
+/* Touch visitors rarely have a keyboard, and the extension is desktop-only. */
+@media (pointer: coarse) {
+  .hint {
+    display: none;
+  }
+}
+
+/* The box needs JavaScript; without it, don't show a control that can never work. */
+@media (scripting: none) {
+  .tryIt {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret {
+    animation: none;
+  }
+}

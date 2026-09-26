@@ -145,6 +145,8 @@ layout-fixer/
 ├── apps/desktop/                 # @layout-fixer/desktop — Tauri 2 app (plan: docs/plans/2026-09-26-desktop-app.md)
 │   ├── src/                      # React Settings window + platform/ (validated settings, OS detection)
 │   └── src-tauri/                # Rust: tray menu, single instance, window lifecycle, capabilities/
+├── apps/landing/                 # @layout-fixer/landing — layoutfixer.dev: Next.js static export, en + ar, own ESLint + TS 6
+│   └── deploy/                   # Docker/nginx files + deploy.sh; CI deploys main via deploy-landing.yml
 └── apps/extension/               # @layout-fixer/extension
     ├── src/
     │   ├── manifest.ts           # buildManifest('chrome' | 'firefox')
@@ -190,6 +192,8 @@ npm run <script> -w @layout-fixer/core    # run a script in one workspace (typec
 npm run desktop:dev     # desktop app with hot reload (needs Rust: rustup.rs)
 npm run desktop:build   # desktop installers in apps/desktop/src-tauri/target/release/bundle
 npm run check:desktop   # desktop typecheck, tests + coverage, web build (Rust: cargo fmt/clippy/test in src-tauri)
+npm run landing:dev     # website at http://localhost:3000
+npm run check:landing   # website lint (ESLint), typecheck, tests, build, Playwright
 ```
 
 **Desktop app:** the fix flow lives in `apps/desktop/src/fix/` (TypeScript: capture → `convert()` → paste, unit-tested
@@ -260,6 +264,11 @@ Release process (every change reaches `main` through a pull request; the ruleset
    publishes a GitHub Release with the Chrome zip and the changelog section as notes.
 4. Upload that zip in the Chrome Web Store dashboard. Texts, permission justifications and the
    asset table are in `docs/store/listing.md`; images come from `npm run store:screenshots`.
+
+**Website:** merging to `main` anything under `apps/landing/`, `packages/core/` or `packages/ui/` runs
+`.github/workflows/deploy-landing.yml`: `npm run check:landing`, then `apps/landing/deploy/deploy.sh` over SSH to the
+Contabo server (secrets in the `landing-production` environment, main only). Manual run: Actions → Deploy website.
+The promo video in `apps/landing/public/video/` is rendered from `apps/promo-video` (`npm run render` there).
 
 Checklist:
 - [x] License MIT; repository github.com/BugsBountyHunter/layout-fixer; privacy policy = `PRIVACY.md`

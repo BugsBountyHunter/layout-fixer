@@ -1,0 +1,59 @@
+.header {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 10;
+  background: var(--lf-material);
+  -webkit-backdrop-filter: var(--lf-material-filter);
+  backdrop-filter: var(--lf-material-filter);
+  border-block-end: 0.5px solid var(--lf-separator);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--lf-space-4);
+  min-block-size: 52px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--lf-space-2);
+  color: var(--lf-label);
+  font-weight: var(--lf-weight-semibold);
+}
+
+.brand:hover {
+  text-decoration: none;
+}
+
+.brandName {
+  white-space: nowrap;
+}
+
+/* The Arabic name doesn't fit beside the actions on phones; the logo still links home and the name stays for screen readers. */
+@media (max-width: 420px) {
+  .brandName:lang(ar) {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--lf-space-4);
+  font-size: var(--site-small);
+}
+
+@media (pointer: coarse) {
+  .languageLink {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 44px;
+  }
+}

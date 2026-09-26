@@ -1,6 +1,6 @@
 [package]
 name = "layout-fixer-desktop"
-version = "1.0.2"
+version = "1.0.3"
 description = "Fix text typed with the wrong keyboard layout, in any app"
 authors = ["Layout Fixer contributors"]
 license = "MIT"

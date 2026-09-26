@@ -1,6 +1,6 @@
 {
   "name": "@layout-fixer/desktop",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Layout Fixer for macOS, Windows and Linux: fix text typed with the wrong keyboard layout in any app.",
   "license": "MIT",
   "private": true,

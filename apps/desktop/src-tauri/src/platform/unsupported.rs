@@ -1,4 +1,4 @@
-//! Windows and Linux implementations arrive in phases 3 and 4; until then the hotkey explains that.
+//! The Linux implementation arrives in phase 4; until then the hotkey explains that.
 
 use crate::fix::{Clipboard, FixError, Keyboard, Snapshot};
 

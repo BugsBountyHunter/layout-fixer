@@ -4,6 +4,7 @@ import type { FixOutcome } from './fix-flow'
 const ERROR_MESSAGES = Object.freeze({
   'accessibility-denied': 'Allow Layout Fixer in Accessibility settings',
   'secure-input': 'Can’t fix text in password fields',
+  'elevated-app': 'Can’t fix text in apps running as administrator',
   unsupported: 'Fixing text isn’t available on this system yet',
   system: 'Couldn’t fix the text',
 })

@@ -17,8 +17,13 @@ pub fn run() {
         }))
         .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(shortcut::plugin())
+        .plugin(tauri_plugin_autostart::init(
+            tauri_plugin_autostart::MacosLauncher::LaunchAgent,
+            None,
+        ))
         .manage(commands::PendingClipboard::default())
-        .manage(shortcut::Status::default())
+        .manage(shortcut::Hotkey::default())
+        .manage(tray::TrayLabels::default())
         .manage(hud::Generation::default())
         .invoke_handler(tauri::generate_handler![
             commands::capture_selection,
@@ -27,6 +32,9 @@ pub fn run() {
             commands::accessibility_status,
             commands::request_accessibility,
             commands::shortcut_info,
+            commands::set_shortcut,
+            commands::set_tray_labels,
+            commands::show_settings,
             commands::session_info,
             commands::show_hud,
         ])
@@ -34,9 +42,9 @@ pub fn run() {
             // A menu-bar utility: no Dock icon and no app switcher entry.
             #[cfg(target_os = "macos")]
             app.set_activation_policy(tauri::ActivationPolicy::Accessory);
+            shortcut::register_saved(app.handle());
             tray::create(app.handle())?;
             hud::create(app.handle())?;
-            shortcut::register(app.handle());
             Ok(())
         })
         .on_window_event(|window, event| {

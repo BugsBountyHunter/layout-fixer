@@ -1,3 +1,4 @@
+import { SwitchRow } from '@layout-fixer/ui/SwitchRow'
 import { t } from '../platform/i18n'
 import type { Settings } from '../platform/settings'
 import { usePlatform } from '../ui/usePlatform'
@@ -9,7 +10,6 @@ import { PrivacyNote } from './components/PrivacyNote'
 import { Section } from './components/Section'
 import { SelectionButtonSetting } from './components/SelectionButtonSetting'
 import { ShortcutSetting } from './components/ShortcutSetting'
-import { SwitchRow } from './components/SwitchRow'
 import { useSavedFlash } from './useSavedFlash'
 
 export function Options() {

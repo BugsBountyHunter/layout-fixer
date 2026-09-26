@@ -43,3 +43,37 @@
 .notice-text {
   color: var(--lf-label);
 }
+
+.shortcut-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--lf-space-3);
+}
+
+.recording {
+  color: var(--lf-link);
+  font-size: var(--lf-text-callout);
+}
+
+.try-field {
+  width: 100%;
+  min-height: 64px;
+  padding: var(--lf-space-3) var(--lf-space-4);
+  border: 0;
+  background: transparent;
+  color: var(--lf-label);
+  font: inherit;
+  font-size: var(--lf-text-body);
+  resize: vertical;
+}
+
+.try-field:focus-visible {
+  outline: 2px solid var(--lf-focus);
+  outline-offset: -2px;
+}
+
+.welcome-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-inline: var(--lf-space-4);
+}

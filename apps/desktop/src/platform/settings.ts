@@ -1,12 +1,27 @@
 import { type ArabicLayoutId, defaultLayout } from '@layout-fixer/core/layouts'
+import { LANGUAGE_CHOICES, type LanguageChoice } from '../i18n'
+import { DEFAULT_SHORTCUT, isValidShortcut } from './shortcut'
 
 export type ArabicLayoutChoice = 'auto' | ArabicLayoutId
 
 export interface DesktopSettings {
   readonly arabicLayout: ArabicLayoutChoice
+  readonly language: LanguageChoice
+  /** Short messages when nothing is selected or the text can't be fixed. */
+  readonly showMessages: boolean
+  /** Tauri accelerator, e.g. "Alt+Shift+F". The native side registers it at launch. */
+  readonly shortcut: string
+  /** Set once the first-run welcome has been dismissed. */
+  readonly welcomed: boolean
 }
 
-export const DEFAULT_SETTINGS: DesktopSettings = Object.freeze({ arabicLayout: 'auto' })
+export const DEFAULT_SETTINGS: DesktopSettings = Object.freeze({
+  arabicLayout: 'auto',
+  language: 'auto',
+  showMessages: true,
+  shortcut: DEFAULT_SHORTCUT,
+  welcomed: false,
+})
 
 export const ARABIC_LAYOUT_CHOICES: readonly ArabicLayoutChoice[] = ['auto', 'ar-pc', 'ar-mac']
 
@@ -27,8 +42,13 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 export function parseSettings(raw: unknown): DesktopSettings {
   const data = isRecord(raw) ? raw : {}
   const layout = data.arabicLayout as ArabicLayoutChoice
+  const language = data.language as LanguageChoice
   return {
     arabicLayout: ARABIC_LAYOUT_CHOICES.includes(layout) ? layout : DEFAULT_SETTINGS.arabicLayout,
+    language: LANGUAGE_CHOICES.includes(language) ? language : DEFAULT_SETTINGS.language,
+    showMessages: typeof data.showMessages === 'boolean' ? data.showMessages : DEFAULT_SETTINGS.showMessages,
+    shortcut: isValidShortcut(data.shortcut) ? data.shortcut : DEFAULT_SETTINGS.shortcut,
+    welcomed: typeof data.welcomed === 'boolean' ? data.welcomed : DEFAULT_SETTINGS.welcomed,
   }
 }
 

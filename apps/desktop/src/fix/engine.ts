@@ -1,12 +1,19 @@
 import type { ArabicLayoutId } from '@layout-fixer/core/layouts'
+import type { Messages } from '../i18n'
 import type { FixBridge } from './bridge'
 import { type FixOutcome, fixSelection } from './fix-flow'
 import { messageFor } from './messages'
 
+/** Read on every fix so changed settings apply immediately. */
+export interface FixContext {
+  readonly layout: ArabicLayoutId
+  readonly messages: Messages
+  readonly showMessages: boolean
+}
+
 export interface EngineDeps {
   readonly bridge: FixBridge
-  /** Read on every fix so a changed setting applies immediately. */
-  readonly resolveLayout: () => Promise<ArabicLayoutId>
+  readonly context: () => Promise<FixContext>
   readonly showMessage: (message: string) => void
   readonly onAccessibilityDenied: () => void
 }
@@ -18,10 +25,13 @@ export function createFixHandler(deps: EngineDeps): () => Promise<FixOutcome | n
     if (running) return null
     running = true
     try {
-      const outcome = await fixSelection(deps.bridge, await deps.resolveLayout())
-      const message = messageFor(outcome)
-      if (message) deps.showMessage(message)
-      if (outcome.kind === 'error' && outcome.code === 'accessibility-denied') deps.onAccessibilityDenied()
+      const { layout, messages, showMessages } = await deps.context()
+      const outcome = await fixSelection(deps.bridge, layout)
+      const accessibilityDenied = outcome.kind === 'error' && outcome.code === 'accessibility-denied'
+      const message = messageFor(outcome, messages)
+      // Without the permission nothing works, so that message shows even when messages are off.
+      if (message && (showMessages || accessibilityDenied)) deps.showMessage(message)
+      if (accessibilityDenied) deps.onAccessibilityDenied()
       return outcome
     } finally {
       running = false

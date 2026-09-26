@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { t, uiDirection, uiLanguage } from '../platform/i18n'
 import { Options } from './Options'
-import '../ui/theme.css'
+import '@layout-fixer/ui/theme.css'
 import './options.css'
 
 document.documentElement.lang = uiLanguage()

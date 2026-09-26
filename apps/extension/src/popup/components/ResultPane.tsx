@@ -1,6 +1,6 @@
 import type { ArabicLayoutId } from '@layout-fixer/core/layouts'
+import { CheckIcon, CopyIcon } from '@layout-fixer/ui/icons'
 import { t } from '../../platform/i18n'
-import { CheckIcon, CopyIcon } from '../../ui/icons'
 import { LAYOUT_NAME } from '../../ui/layoutLabels'
 import { openSettings } from '../navigation'
 

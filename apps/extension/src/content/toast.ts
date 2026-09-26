@@ -1,4 +1,4 @@
-import TOKENS from '../ui/tokens.css?inline'
+import TOKENS from '@layout-fixer/ui/tokens.css?inline'
 
 export const TOAST_HOST_ID = 'layout-fixer-toast'
 

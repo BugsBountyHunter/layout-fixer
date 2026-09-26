@@ -1,0 +1,31 @@
+{
+  "name": "@layout-fixer/ui",
+  "version": "1.0.0",
+  "description": "Design tokens, page theme and React primitives shared by the Layout Fixer apps.",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./tokens.css": "./src/tokens.css",
+    "./theme.css": "./src/theme.css",
+    "./icons": "./src/icons.tsx",
+    "./ShortcutKeys": "./src/ShortcutKeys.tsx"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "peerDependencies": {
+    "react": "^19.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "@types/react": "^19.3.0",
+    "@vitest/coverage-v8": "^5.0.1",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.1"
+  }
+}

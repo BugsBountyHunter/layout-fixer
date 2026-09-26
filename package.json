@@ -13,6 +13,7 @@
   "type": "module",
   "workspaces": [
     "packages/core",
+    "packages/ui",
     "apps/extension"
   ],
   "scripts": {
@@ -25,7 +26,7 @@
     "test:e2e": "npm run test:e2e -w @layout-fixer/extension",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
-    "check": "npm run lint && npm run typecheck -w @layout-fixer/core && npm run test:coverage -w @layout-fixer/core && npm run check -w @layout-fixer/extension",
+    "check": "npm run lint && npm run typecheck -w @layout-fixer/core -w @layout-fixer/ui && npm run test:coverage -w @layout-fixer/core -w @layout-fixer/ui && npm run check -w @layout-fixer/extension",
     "package:chrome": "npm run package:chrome -w @layout-fixer/extension",
     "package:firefox": "npm run package:firefox -w @layout-fixer/extension",
     "playground": "npm run playground -w @layout-fixer/extension",

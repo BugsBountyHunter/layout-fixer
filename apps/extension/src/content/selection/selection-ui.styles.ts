@@ -1,4 +1,4 @@
-import TOKENS from '../../ui/tokens.css?inline'
+import TOKENS from '@layout-fixer/ui/tokens.css?inline'
 
 export const BUTTON_SIZE = 26
 

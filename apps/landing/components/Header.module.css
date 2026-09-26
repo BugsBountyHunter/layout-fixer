@@ -18,10 +18,15 @@
 
 .brand {
   display: inline-flex;
+  min-inline-size: 0;
   align-items: center;
   gap: var(--lf-space-2);
   color: var(--lf-label);
   font-weight: var(--lf-weight-semibold);
+}
+
+.brand > :not(.brandName) {
+  flex-shrink: 0;
 }
 
 .brand:hover {
@@ -29,6 +34,8 @@
 }
 
 .brandName {
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -45,6 +52,7 @@
 
 .actions {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   gap: var(--lf-space-4);
   font-size: var(--site-small);

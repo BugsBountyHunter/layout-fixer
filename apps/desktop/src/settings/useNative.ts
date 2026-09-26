@@ -71,3 +71,14 @@ export function useLaunchAtLogin(): readonly [boolean | null, (on: boolean) => v
   }, [])
   return [enabled, change]
 }
+
+export type InstallLocation = 'installed' | 'disk-image' | 'translocated'
+
+/** macOS: whether the app runs from Applications, the disk image, or a temporary (translocated) copy. */
+export function useInstallLocation(): InstallLocation {
+  const [location, setLocation] = useState<InstallLocation>('installed')
+  useEffect(() => {
+    invoke<InstallLocation>('install_location').then(setLocation).catch(logError('Could not read the install location'))
+  }, [])
+  return location
+}

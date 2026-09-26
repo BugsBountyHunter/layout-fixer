@@ -77,3 +77,14 @@
   justify-content: flex-end;
   padding-inline: var(--lf-space-4);
 }
+
+.notice-row {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: var(--lf-space-3);
+  padding-block: var(--lf-space-3);
+}
+
+.notice-row p {
+  margin: 0;
+}

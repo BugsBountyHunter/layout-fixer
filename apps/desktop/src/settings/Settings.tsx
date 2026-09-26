@@ -4,10 +4,11 @@ import { isMacPlatform } from '../platform/os'
 import type { Updater } from '../update/useUpdater'
 import { AccessibilitySection } from './AccessibilitySection'
 import { GeneralSection } from './GeneralSection'
+import { InstallNotice } from './InstallNotice'
 import { LayoutChoices } from './LayoutChoices'
 import { ShortcutSection } from './ShortcutSection'
 import { UpdatesSection } from './UpdatesSection'
-import { useAccessibility, useShortcutInfo, useWaylandSession } from './useNative'
+import { useAccessibility, useInstallLocation, useShortcutInfo, useWaylandSession } from './useNative'
 import type { SettingsState } from './useSettings'
 import { WaylandNotice } from './WaylandNotice'
 
@@ -19,6 +20,7 @@ export function Settings({ state, updater }: { readonly state: SettingsState; re
   const [shortcut, setShortcut] = useShortcutInfo()
   const accessibility = useAccessibility(IS_MAC)
   const wayland = useWaylandSession()
+  const location = useInstallLocation()
 
   return (
     <main className="settings">
@@ -32,6 +34,7 @@ export function Settings({ state, updater }: { readonly state: SettingsState; re
           {m.loadError}
         </p>
       )}
+      <InstallNotice location={location} />
       {wayland && <WaylandNotice />}
       {IS_MAC && <AccessibilitySection trusted={accessibility.trusted} onRequest={accessibility.request} />}
 
@@ -61,6 +64,7 @@ export function Settings({ state, updater }: { readonly state: SettingsState; re
         automatic={settings.checkUpdates}
         onAutomaticChange={(checkUpdates) => update({ checkUpdates })}
         updater={updater}
+        installed={location === 'installed'}
       />
 
       <section className="section" aria-labelledby="privacy-title">

@@ -6,9 +6,11 @@ interface Props {
   readonly automatic: boolean
   readonly onAutomaticChange: (on: boolean) => void
   readonly updater: Updater
+  /** False while the app runs from the disk image or a translocated copy, where updates can't install. */
+  readonly installed: boolean
 }
 
-export function UpdatesSection({ automatic, onAutomaticChange, updater }: Props) {
+export function UpdatesSection({ automatic, onAutomaticChange, updater, installed }: Props) {
   const m = useMessages()
   const { status } = updater
   const busy = status.kind === 'checking' || status.kind === 'installing'
@@ -16,7 +18,10 @@ export function UpdatesSection({ automatic, onAutomaticChange, updater }: Props)
     idle: null,
     checking: m.updateChecking,
     current: m.updateCurrent,
-    available: status.kind === 'available' ? m.updateAvailable(status.version) : null,
+    available:
+      status.kind === 'available'
+        ? `${m.updateAvailable(status.version)}${installed ? '' : ` ${m.updateNeedsMove}`}`
+        : null,
     installing: m.updateInstalling,
     failed: m.updateFailed,
   }[status.kind]
@@ -30,7 +35,7 @@ export function UpdatesSection({ automatic, onAutomaticChange, updater }: Props)
           <span className="row-label" aria-live="polite">
             {statusText ?? (updater.version ? m.appVersion(updater.version) : '')}
           </span>
-          {status.kind === 'available' ? (
+          {status.kind === 'available' && installed ? (
             <button type="button" className="primary" onClick={updater.install}>
               {m.updateInstall}
             </button>

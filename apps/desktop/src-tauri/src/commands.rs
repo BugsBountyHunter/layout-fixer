@@ -117,6 +117,16 @@ pub fn set_update_label(app: AppHandle, label: Option<String>) {
 }
 
 #[tauri::command]
+pub fn install_location() -> crate::install::InstallLocation {
+    crate::install::current()
+}
+
+#[tauri::command]
+pub fn reveal_applications_folder() {
+    crate::install::reveal_applications_folder();
+}
+
+#[tauri::command]
 pub fn show_settings(app: AppHandle) {
     windows::show_settings(&app);
 }

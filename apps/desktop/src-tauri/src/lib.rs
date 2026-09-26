@@ -1,6 +1,7 @@
 mod commands;
 mod fix;
 mod hud;
+mod install;
 mod platform;
 mod shortcut;
 mod tray;
@@ -39,6 +40,8 @@ pub fn run() {
             commands::set_tray_labels,
             commands::set_update_label,
             commands::show_settings,
+            commands::install_location,
+            commands::reveal_applications_folder,
             commands::session_info,
             commands::show_hud,
         ])

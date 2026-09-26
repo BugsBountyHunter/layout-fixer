@@ -2,6 +2,13 @@
 
 All notable changes to the desktop app. The browser extension has its own [CHANGELOG](../../CHANGELOG.md).
 
+## [1.0.3] - 2026-09-26
+
+### Fixed
+
+- Linux: the app no longer crashes at startup (a `tao` panic in `event_loop.rs`). The message window is now made
+  click-through after it is first shown, instead of while it is still hidden.
+
 ## [1.0.2] - 2026-09-26
 
 ### Added

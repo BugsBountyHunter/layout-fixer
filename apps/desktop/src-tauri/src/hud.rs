@@ -34,7 +34,12 @@ pub fn create(app: &AppHandle) -> tauri::Result<()> {
         .focusable(false)
         .visible(false)
         .build()?;
-    window.set_ignore_cursor_events(true)
+    // On Linux a hidden window has no GDK window yet and tao panics; `show` handles it there.
+    #[cfg(not(target_os = "linux"))]
+    window.set_ignore_cursor_events(true)?;
+    #[cfg(target_os = "linux")]
+    let _ = window;
+    Ok(())
 }
 
 /// Top-left of the pill window: centered, `BOTTOM_OFFSET` above the bottom of the given screen.
@@ -74,6 +79,11 @@ pub fn show(app: &AppHandle, message: &str) {
     if let Err(error) = window.show() {
         eprintln!("[layout-fixer] could not show the message: {error}");
         return;
+    }
+    // Queued after `show`, so the GDK window exists by the time tao applies it.
+    #[cfg(target_os = "linux")]
+    if let Err(error) = window.set_ignore_cursor_events(true) {
+        eprintln!("[layout-fixer] could not make the message click-through: {error}");
     }
 
     let generation = app.state::<Generation>().0.fetch_add(1, Ordering::SeqCst) + 1;

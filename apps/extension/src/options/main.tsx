@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { t, uiDirection, uiLanguage } from '../platform/i18n'
 import { Options } from './Options'
 import '@layout-fixer/ui/theme.css'
+import '@layout-fixer/ui/grouped.css'
 import './options.css'
 
 document.documentElement.lang = uiLanguage()

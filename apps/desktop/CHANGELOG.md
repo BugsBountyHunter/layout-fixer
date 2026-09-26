@@ -2,6 +2,14 @@
 
 All notable changes to the desktop app. The browser extension has its own [CHANGELOG](../../CHANGELOG.md).
 
+## [1.0.2] - 2026-09-26
+
+### Added
+
+- macOS: VoiceOver speaks the on-screen messages ("Select the text first", "Nothing to fix", …) as they appear,
+  without moving focus away from the app you're typing in. On Windows and Linux the message is a live region
+  for Narrator and Orca, as before.
+
 ## [1.0.1] - 2026-09-26
 
 ### Fixed

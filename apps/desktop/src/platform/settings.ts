@@ -9,6 +9,8 @@ export interface DesktopSettings {
   readonly language: LanguageChoice
   /** Short messages when nothing is selected or the text can't be fixed. */
   readonly showMessages: boolean
+  /** After a fix, switch the OS keyboard layout to the language the text was converted to. */
+  readonly switchLayout: boolean
   /** Tauri accelerator, e.g. "Alt+Shift+F". The native side registers it at launch. */
   readonly shortcut: string
   /** Set once the first-run welcome has been dismissed. */
@@ -21,6 +23,7 @@ export const DEFAULT_SETTINGS: DesktopSettings = Object.freeze({
   arabicLayout: 'auto',
   language: 'auto',
   showMessages: true,
+  switchLayout: true,
   shortcut: DEFAULT_SHORTCUT,
   welcomed: false,
   checkUpdates: true,
@@ -50,6 +53,7 @@ export function parseSettings(raw: unknown): DesktopSettings {
     arabicLayout: ARABIC_LAYOUT_CHOICES.includes(layout) ? layout : DEFAULT_SETTINGS.arabicLayout,
     language: LANGUAGE_CHOICES.includes(language) ? language : DEFAULT_SETTINGS.language,
     showMessages: typeof data.showMessages === 'boolean' ? data.showMessages : DEFAULT_SETTINGS.showMessages,
+    switchLayout: typeof data.switchLayout === 'boolean' ? data.switchLayout : DEFAULT_SETTINGS.switchLayout,
     shortcut: isValidShortcut(data.shortcut) ? data.shortcut : DEFAULT_SETTINGS.shortcut,
     welcomed: typeof data.welcomed === 'boolean' ? data.welcomed : DEFAULT_SETTINGS.welcomed,
     checkUpdates: typeof data.checkUpdates === 'boolean' ? data.checkUpdates : DEFAULT_SETTINGS.checkUpdates,

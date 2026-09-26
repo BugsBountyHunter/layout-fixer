@@ -7,6 +7,7 @@ function bridge(selection: string | null, overrides: Partial<FixBridge> = {}) {
     captureSelection: vi.fn(async () => selection),
     pasteText: vi.fn(async (_text: string) => {}),
     restoreClipboard: vi.fn(async () => {}),
+    switchLayout: vi.fn(async (_language: string, _layout: string) => 'switched' as const),
     ...overrides,
   }
 }
@@ -64,6 +65,64 @@ describe('fixSelection', () => {
     expect(await fixSelection(native, 'ar-pc')).toEqual({ kind: 'error', code: 'system' })
     expect(log).toHaveBeenCalledOnce()
     log.mockRestore()
+  })
+})
+
+describe('fixSelection with layout switching', () => {
+  const SWITCH = { switchLayout: true }
+
+  it('switches to Arabic after fixing Arabic typed on the English layout', async () => {
+    const native = bridge('hgsghl')
+    expect(await fixSelection(native, 'ar-mac', SWITCH)).toEqual({ kind: 'fixed' })
+    expect(native.switchLayout).toHaveBeenCalledWith('ar', 'ar-mac')
+  })
+
+  it('switches to English after fixing English typed on the Arabic layout', async () => {
+    const native = bridge('اثممخ')
+    await fixSelection(native, 'ar-pc', SWITCH)
+    expect(native.switchLayout).toHaveBeenCalledWith('en', 'ar-pc')
+  })
+
+  it('switches only after the paste', async () => {
+    const order: string[] = []
+    const native = bridge('hgsghl', {
+      pasteText: vi.fn(async () => void order.push('paste')),
+      switchLayout: vi.fn(async () => {
+        order.push('switch')
+        return 'switched' as const
+      }),
+    })
+    await fixSelection(native, 'ar-pc', SWITCH)
+    expect(order).toEqual(['paste', 'switch'])
+  })
+
+  it('does not switch when the setting is off', async () => {
+    const native = bridge('hgsghl')
+    await fixSelection(native, 'ar-pc', { switchLayout: false })
+    expect(native.switchLayout).not.toHaveBeenCalled()
+  })
+
+  it.each([
+    ['nothing selected', null],
+    ['nothing to fix', '123'],
+  ])('does not switch when there was %s', async (_case, selection) => {
+    const native = bridge(selection)
+    await fixSelection(native, 'ar-pc', SWITCH)
+    expect(native.switchLayout).not.toHaveBeenCalled()
+  })
+
+  it('does not switch when the paste failed', async () => {
+    const native = bridge('hgsghl', { pasteText: vi.fn(async () => Promise.reject({ code: 'secure-input' })) })
+    await fixSelection(native, 'ar-pc', SWITCH)
+    expect(native.switchLayout).not.toHaveBeenCalled()
+  })
+
+  it('still reports the fix when switching fails', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const native = bridge('hgsghl', { switchLayout: vi.fn(async () => Promise.reject({ code: 'unsupported' })) })
+    expect(await fixSelection(native, 'ar-pc', SWITCH)).toEqual({ kind: 'fixed' })
+    expect(warn).toHaveBeenCalledOnce()
+    warn.mockRestore()
   })
 })
 

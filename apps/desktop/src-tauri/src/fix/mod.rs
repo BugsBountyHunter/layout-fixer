@@ -1,6 +1,7 @@
 mod clipboard;
 mod error;
 mod flow;
+mod input_sources;
 
 pub use clipboard::{Clipboard, Keyboard, Snapshot};
 // Built by the platform clipboards.
@@ -8,3 +9,4 @@ pub use clipboard::{Clipboard, Keyboard, Snapshot};
 pub use clipboard::Representation;
 pub use error::FixError;
 pub use flow::{capture, replace, Timing};
+pub use input_sources::{switch_to, InputLayout, InputSources, LayoutSwitch};

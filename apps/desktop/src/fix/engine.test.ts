@@ -11,9 +11,16 @@ function deps(bridge: Partial<FixBridge> = {}, context: Partial<FixContext> = {}
       captureSelection: async () => 'hgsghl',
       pasteText: async () => {},
       restoreClipboard: async () => {},
+      switchLayout: vi.fn(async () => 'switched' as const),
       ...bridge,
     },
-    context: async () => ({ layout: 'ar-pc' as const, messages: EN, showMessages: true, ...context }),
+    context: async () => ({
+      layout: 'ar-pc' as const,
+      messages: EN,
+      showMessages: true,
+      switchLayout: true,
+      ...context,
+    }),
     showMessage: vi.fn<(message: string) => void>(),
     onAccessibilityDenied: vi.fn<() => void>(),
   } satisfies EngineDeps
@@ -24,6 +31,18 @@ describe('createFixHandler', () => {
     const d = deps()
     expect(await createFixHandler(d)()).toEqual({ kind: 'fixed' })
     expect(d.showMessage).not.toHaveBeenCalled()
+  })
+
+  it('switches the keyboard layout when the setting is on', async () => {
+    const d = deps()
+    await createFixHandler(d)()
+    expect(d.bridge.switchLayout).toHaveBeenCalledWith('ar', 'ar-pc')
+  })
+
+  it('leaves the keyboard layout alone when the setting is off', async () => {
+    const d = deps({}, { switchLayout: false })
+    await createFixHandler(d)()
+    expect(d.bridge.switchLayout).not.toHaveBeenCalled()
   })
 
   it('explains an empty selection in the user’s language', async () => {

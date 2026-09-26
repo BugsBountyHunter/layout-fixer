@@ -55,6 +55,9 @@ export const EN = {
   launchAtLogin: 'Open at login',
   showMessages: 'Show on-screen messages',
   showMessagesHint: 'A short message appears when nothing is selected or the text can’t be fixed.',
+  switchLayout: 'Switch keyboard layout after fixing',
+  switchLayoutHint:
+    'After fixing, your keyboard switches to the language of the fixed text, so you can keep typing. It uses the layouts you already have.',
   language: 'Language',
   languageAuto: 'Same as system',
 

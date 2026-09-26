@@ -55,6 +55,17 @@ Legend: ✅ checked on macOS 27 (Apple silicon, built-in 2× display + external 
 - [ ] With VoiceOver on: the message is spoken while TextEdit keeps focus
 - [ ] Narrator (Windows) and Orca (Linux) read the message pill's live region
 
+## Keyboard layout switching (macOS; Windows and Linux are in their sections)
+
+- [x] ✅ The real TIS switch: ABC → Arabic → back (`cargo test -- --ignored --test-threads=1 switches_the_real_layout`)
+- [ ] TextEdit on ABC: fix `hgsghl` → Arabic text, and the menu-bar input source is now Arabic
+- [ ] Fix `اثممخ` on Arabic → `hello`, and the input source is back on ABC / U.S.
+- [ ] Target layout already active (fix English text while on ABC): nothing changes
+- [ ] Only ABC enabled (no Arabic layout): the fix works, the layout stays, no message
+- [ ] Settings → General → switch off: the fix works and the layout stays
+- [ ] With "Automatically switch to a document's input source" on: the new layout sticks in that window
+- [ ] Chrome, Slack, VS Code: the next keystrokes come out in the new layout
+
 ## Windows
 
 Automated on the Windows CI runner: the real clipboard round trip (write, read, restore a standard and a registered
@@ -69,6 +80,10 @@ format) and the Ctrl chord order. Check by hand on Windows 10 and 11:
 - [ ] Notepad or Terminal *run as administrator*: message "Can't fix text in apps running as administrator"
 - [ ] Word, Outlook, Teams/Slack, Chrome/Edge text fields
 - [ ] SmartScreen "More info → Run anyway" on the unsigned installer (NSIS and MSI)
+- [ ] Layout switching (English (US) + Arabic (101) installed): fixing `hgsghl` in Notepad switches the taskbar
+      indicator to AR, fixing `اثممخ` switches back to EN; the next keystrokes use the new layout
+- [ ] Layout switching in Chrome/Edge, Word and Windows Terminal (consoles handle the request differently)
+- [ ] Layout switching with only English installed: the fix works, nothing else happens
 
 ## Linux
 
@@ -84,6 +99,9 @@ Xorg", Fedora "GNOME on Xorg", KDE Plasma X11, Linux Mint Cinnamon):
 - [ ] KDE Klipper / GNOME clipboard extensions don't record the fixed text
 - [ ] Firefox and Chrome text fields, LibreOffice Writer, Telegram
 - [ ] AppImage and .deb both install and start
+- [ ] Layout switching with `setxkbmap us,ara` (or KDE/Xfce/Cinnamon with both layouts): fixing switches the group
+      and the panel indicator follows
+- [ ] GNOME on Xorg: only the active layout is in the keymap, so nothing switches (expected, documented)
 - [ ] **Wayland session:** Settings shows the Wayland notice; Fix Selection in the tray shows
       "Fixing text needs an X11 session on Linux for now"
 

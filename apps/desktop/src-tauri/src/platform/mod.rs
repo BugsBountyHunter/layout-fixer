@@ -1,22 +1,38 @@
 #[cfg(target_os = "macos")]
 mod macos;
 #[cfg(target_os = "macos")]
-pub use macos::{announce, permissions, SystemClipboard, SystemKeyboard};
+pub use macos::{
+    announce, permissions, preferred_ids, SystemClipboard, SystemInputSources, SystemKeyboard,
+};
 
 #[cfg(windows)]
 mod windows;
 #[cfg(windows)]
-pub use windows::{permissions, SystemClipboard, SystemKeyboard};
+pub use windows::{
+    permissions, preferred_ids, SystemClipboard, SystemInputSources, SystemKeyboard,
+};
 
 #[cfg(target_os = "linux")]
 mod linux;
 #[cfg(target_os = "linux")]
-pub use linux::{permissions, session, SystemClipboard, SystemKeyboard};
+pub use linux::{
+    permissions, preferred_ids, session, SystemClipboard, SystemInputSources, SystemKeyboard,
+};
 
 #[cfg(not(any(target_os = "macos", windows, target_os = "linux")))]
 mod unsupported;
 #[cfg(not(any(target_os = "macos", windows, target_os = "linux")))]
-pub use unsupported::{permissions, SystemClipboard, SystemKeyboard};
+pub use unsupported::{
+    permissions, preferred_ids, SystemClipboard, SystemInputSources, SystemKeyboard,
+};
+
+/// The Arabic layout chosen in Settings (`ar-pc` / `ar-mac`), used to pick among enabled layouts.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum ArabicLayout {
+    ArPc,
+    ArMac,
+}
 
 /// Whether this session blocks the fix (Linux on Wayland).
 pub fn is_wayland() -> bool {

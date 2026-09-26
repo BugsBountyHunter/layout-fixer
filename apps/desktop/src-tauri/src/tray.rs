@@ -4,19 +4,22 @@ use tauri::{
     AppHandle, Wry,
 };
 
-use crate::windows;
+use crate::{shortcut, windows};
 
+const FIX_ID: &str = "fix";
 const SETTINGS_ID: &str = "settings";
 const QUIT_ID: &str = "quit";
 
 #[derive(Debug, PartialEq, Eq)]
 enum Action {
+    Fix,
     ShowSettings,
     Quit,
 }
 
 fn action_for(id: &str) -> Option<Action> {
     match id {
+        FIX_ID => Some(Action::Fix),
         SETTINGS_ID => Some(Action::ShowSettings),
         QUIT_ID => Some(Action::Quit),
         _ => None,
@@ -24,14 +27,25 @@ fn action_for(id: &str) -> Option<Action> {
 }
 
 fn build_menu(app: &AppHandle) -> tauri::Result<Menu<Wry>> {
+    // Menu bar extras don't activate the app, so the fix still reaches the app the user was in.
+    let fix = MenuItem::with_id(app, FIX_ID, "Fix Selection", true, Some(shortcut::DEFAULT))?;
     let settings = MenuItem::with_id(app, SETTINGS_ID, "Settings…", true, Some("CmdOrCtrl+,"))?;
-    let separator = PredefinedMenuItem::separator(app)?;
     let quit = MenuItem::with_id(app, QUIT_ID, "Quit Layout Fixer", true, Some("CmdOrCtrl+Q"))?;
-    Menu::with_items(app, &[&settings, &separator, &quit])
+    Menu::with_items(
+        app,
+        &[
+            &fix,
+            &PredefinedMenuItem::separator(app)?,
+            &settings,
+            &PredefinedMenuItem::separator(app)?,
+            &quit,
+        ],
+    )
 }
 
 fn on_menu_event(app: &AppHandle, event: MenuEvent) {
     match action_for(event.id().as_ref()) {
+        Some(Action::Fix) => shortcut::request_fix(app),
         Some(Action::ShowSettings) => windows::show_settings(app),
         Some(Action::Quit) => app.exit(0),
         None => {}
@@ -59,6 +73,7 @@ mod tests {
 
     #[test]
     fn maps_menu_ids_to_actions() {
+        assert_eq!(action_for(FIX_ID), Some(Action::Fix));
         assert_eq!(action_for(SETTINGS_ID), Some(Action::ShowSettings));
         assert_eq!(action_for(QUIT_ID), Some(Action::Quit));
         assert_eq!(action_for("unknown"), None);

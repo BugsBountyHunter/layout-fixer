@@ -1,3 +1,8 @@
+mod commands;
+mod fix;
+mod hud;
+mod platform;
+mod shortcut;
 mod tray;
 mod windows;
 
@@ -11,11 +16,26 @@ pub fn run() {
             windows::show_settings(app);
         }))
         .plugin(tauri_plugin_store::Builder::default().build())
+        .plugin(shortcut::plugin())
+        .manage(commands::PendingClipboard::default())
+        .manage(shortcut::Status::default())
+        .manage(hud::Generation::default())
+        .invoke_handler(tauri::generate_handler![
+            commands::capture_selection,
+            commands::paste_text,
+            commands::restore_clipboard,
+            commands::accessibility_status,
+            commands::request_accessibility,
+            commands::shortcut_info,
+            commands::show_hud,
+        ])
         .setup(|app| {
             // A menu-bar utility: no Dock icon and no app switcher entry.
             #[cfg(target_os = "macos")]
             app.set_activation_policy(tauri::ActivationPolicy::Accessory);
             tray::create(app.handle())?;
+            hud::create(app.handle())?;
+            shortcut::register(app.handle());
             Ok(())
         })
         .on_window_event(|window, event| {

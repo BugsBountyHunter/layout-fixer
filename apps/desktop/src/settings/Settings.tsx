@@ -1,13 +1,18 @@
 import { defaultLayout } from '@layout-fixer/core/layouts'
 import { isMacPlatform } from '../platform/os'
+import { AccessibilitySection } from './AccessibilitySection'
 import { LayoutChoices } from './LayoutChoices'
+import { ShortcutSection } from './ShortcutSection'
 import { STRINGS } from './strings'
+import { useAccessibility, useShortcutInfo } from './useNative'
 import { useSettings } from './useSettings'
 
 const IS_MAC = isMacPlatform(navigator.userAgent)
 
 export function Settings() {
   const { settings, failed, update } = useSettings()
+  const shortcut = useShortcutInfo()
+  const accessibility = useAccessibility(IS_MAC)
 
   return (
     <main className="settings">
@@ -21,6 +26,10 @@ export function Settings() {
           {STRINGS.loadError}
         </p>
       )}
+
+      {IS_MAC && <AccessibilitySection trusted={accessibility.trusted} onRequest={accessibility.request} />}
+
+      <ShortcutSection info={shortcut} isMac={IS_MAC} />
 
       <section className="section" aria-labelledby="layout-title">
         <h2 id="layout-title">{STRINGS.layoutSection}</h2>

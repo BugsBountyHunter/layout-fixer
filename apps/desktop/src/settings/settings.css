@@ -27,3 +27,15 @@
   color: var(--lf-danger);
   font-size: var(--lf-text-callout);
 }
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--lf-text-callout);
+  font-weight: var(--lf-weight-semibold);
+}
+
+.status.allowed {
+  color: var(--lf-success);
+}

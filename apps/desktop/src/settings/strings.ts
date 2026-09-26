@@ -11,6 +11,17 @@ export const STRINGS = Object.freeze({
   layoutMac: 'Mac',
   layoutMacHint: 'The default “Arabic” layout on macOS.',
   layoutExample: (keys: string, word: string) => `Typing ${keys} gives ${word}`,
+  shortcutSection: 'Shortcut',
+  shortcutLabel: 'Fix the selected text',
+  shortcutHint: 'Select text in any app and press the shortcut. You can also use Fix Selection in the menu bar.',
+  shortcutTaken: 'Another app already uses this shortcut. Use Fix Selection in the menu bar for now.',
+  accessSection: 'Permission',
+  accessLabel: 'Accessibility',
+  accessAllowed: 'Allowed',
+  accessButton: 'Allow…',
+  accessHint:
+    'Layout Fixer presses ⌘C and ⌘V for you, which macOS only allows after you turn it on in System Settings → Privacy & Security → Accessibility.',
+  accessAllowedHint: 'Layout Fixer can copy and paste the text you select.',
   privacyTitle: 'Privacy',
   privacyBody:
     'Layout Fixer reads text only when you press the shortcut, converts it on this device, and never stores or sends it.',

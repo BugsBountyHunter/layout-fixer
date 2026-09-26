@@ -1,0 +1,36 @@
+/* The window is transparent; only the pill is drawn, like the macOS volume HUD. */
+html,
+body.hud-page {
+  margin: 0;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+}
+
+body.hud-page {
+  display: grid;
+  place-items: center;
+  font-family: var(--lf-font);
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+.hud {
+  margin: 0;
+  max-width: calc(100% - 16px);
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: var(--lf-material);
+  -webkit-backdrop-filter: var(--lf-material-filter);
+  backdrop-filter: var(--lf-material-filter);
+  color: var(--lf-label);
+  font-size: var(--lf-text-body);
+  font-weight: var(--lf-weight-semibold);
+  text-align: center;
+  box-shadow: var(--lf-shadow-float);
+}
+
+.hud:empty {
+  display: none;
+}

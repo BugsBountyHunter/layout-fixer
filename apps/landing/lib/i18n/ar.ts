@@ -64,7 +64,7 @@ export const ar: Dictionary = {
   desktop: {
     eyebrow: 'جديد',
     title: 'مصحح لغة الكيبورد لسطح المكتب',
-    body: 'صحّح النص في كل التطبيقات، لا في المتصفح فقط — Word وSlack وWhatsApp والملاحظات وTerminal. حدد النص واضغط ⌥⇧F على Mac أو Alt+Shift+F على Windows وLinux.',
+    body: 'صحّح النص في كل التطبيقات، لا في المتصفح فقط — Word وSlack وWhatsApp والملاحظات وTerminal. حدد النص واضغط ⌥⇧F على Mac أو Alt+Shift+F على Windows وLinux. وبعدها يبدّل لغة الكيبورد إلى اللغة الصحيحة لتكمل الكتابة مباشرة.',
     mac: 'تنزيل لنظام macOS',
     windows: 'تنزيل لنظام Windows',
     linux: 'تنزيل لنظام Linux',

@@ -1,6 +1,6 @@
 # Plan — Layout Fixer for desktop (macOS, Windows, Linux)
 
-**Status:** ✅ approved — phase 1 in progress · **Date:** 2026-09-26
+**Status:** ✅ approved — phases 0–5 done (#7, #9–#13), phase 6 in progress · **Date:** 2026-09-26
 
 ## Decisions
 
@@ -219,11 +219,11 @@ packages/ui/        # tokens.css, icons, ShortcutKeys: shared with the extension
 | # | Phase | Result |
 |---|---|---|
 | 0 | Monorepo (#7) | ✅ done |
-| 1 | Scaffold `apps/desktop` (Tauri 2 + React + Vite), extract `packages/ui`, tray menu, single instance, settings store, CI build matrix | Empty app builds on 3 OSes |
-| 2 | Fix flow + Rust bridge + macOS Accessibility onboarding + HUD | **macOS MVP** to dogfood |
-| 3 | Windows: SendInput, UIPI message, clipboard history exclusion | Windows beta |
-| 4 | Linux X11 + Wayland explanation screen | Linux beta |
-| 5 | Settings polish: shortcut recorder, autostart, Arabic UI, onboarding try-it field | Feature-complete v1 |
+| 1 | Scaffold `apps/desktop` (Tauri 2 + React + Vite), extract `packages/ui`, tray menu, single instance, settings store, CI build matrix | ✅ #9 — tray app builds on 3 OSes |
+| 2 | Fix flow + Rust bridge + macOS Accessibility onboarding + HUD | ✅ #10 — macOS fix works, verified live |
+| 3 | Windows: SendInput, UIPI message, clipboard history exclusion | ✅ #11 — CI-tested; needs a manual Windows run |
+| 4 | Linux X11 + Wayland explanation screen | ✅ #12 — CI-tested under Xvfb; needs a manual X11 run |
+| 5 | Settings polish: shortcut recorder, autostart, Arabic UI, onboarding try-it field | ✅ #13 — feature-complete, verified live on macOS |
 | 6 | Self-signed macOS signing, unsigned Windows build, updater, release workflow, PRIVACY.md, landing-page download section with "Open Anyway" / SmartScreen instructions | **v1.0 public** |
 
 ---

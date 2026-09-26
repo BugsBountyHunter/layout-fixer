@@ -1,6 +1,6 @@
 # Plan — Layout Fixer for desktop (macOS, Windows, Linux)
 
-**Status:** 📝 draft, awaiting review · **Date:** 2026-09-26
+**Status:** ✅ approved — phase 1 in progress · **Date:** 2026-09-26
 
 ## Decisions
 
@@ -239,10 +239,9 @@ packages/ui/        # tokens.css, icons, ShortcutKeys: shared with the extension
   typing, needs Input Monitoring on macOS, is flagged by Windows antivirus, is impossible on
   Wayland, and cuts wrong-layout words at `;` `,` `[` `'` (Arabic letters on the English layout).
 
-## Open questions
+## Decisions log
 
 1. ~~Apple Developer Program~~ — not for now; self-signed certificate + "Open Anyway" instructions (§2).
 2. ~~Windows signing~~ — unsigned for now; "Run anyway" instructions (§2).
-3. **Bundle identifier:** `app.layoutfixer.desktop` matches the Firefox id domain. Do you own
-   `layoutfixer.app`, or should it use another domain?
+3. ~~Bundle identifier~~ — `io.github.bugsbountyhunter.layoutfixer` (decided 2026-09-26; tied to the GitHub account, can't clash). Fixed before the first public release, because macOS stores the Accessibility permission under it.
 4. ~~Price~~ — free and open source under MIT, like the extension (decided 2026-09-26).

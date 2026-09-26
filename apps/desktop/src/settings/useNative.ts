@@ -2,6 +2,8 @@ import { invoke } from '@tauri-apps/api/core'
 import { getCurrentWindow } from '@tauri-apps/api/window'
 import { disable, enable, isEnabled } from '@tauri-apps/plugin-autostart'
 import { useCallback, useEffect, useState } from 'react'
+import { errorCode } from '../fix/bridge'
+import { type LayoutInfo, parseLayoutList } from '../platform/layoutHints'
 
 export interface ShortcutInfo {
   readonly accelerator: string
@@ -47,6 +49,24 @@ export function useAccessibility(enabled: boolean): { readonly trusted: boolean 
     invoke('request_accessibility').catch(logError('Could not open Accessibility settings'))
   }, [])
   return { trusted, request }
+}
+
+/**
+ * The OS keyboard layouts, re-read on focus so a layout added in the system settings shows up.
+ * `null` while unknown, and on systems without layout switching.
+ */
+export function useInputLayouts(): readonly LayoutInfo[] | null {
+  const [layouts, setLayouts] = useState<readonly LayoutInfo[] | null>(null)
+  const check = useCallback(() => {
+    invoke<unknown>('list_layouts')
+      .then((raw) => setLayouts(parseLayoutList(raw)))
+      .catch((error: unknown) => {
+        setLayouts(null)
+        if (errorCode(error) !== 'unsupported') logError('Could not list the keyboard layouts')(error)
+      })
+  }, [])
+  useOnFocus(check)
+  return layouts
 }
 
 /** Linux on Wayland can't send keys to other apps yet; Settings explains that. */

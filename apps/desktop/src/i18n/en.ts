@@ -58,6 +58,11 @@ export const EN = {
   switchLayout: 'Switch keyboard layout after fixing',
   switchLayoutHint:
     'After fixing, your keyboard switches to the language of the fixed text, so you can keep typing. It uses the layouts you already have.',
+  switchLayoutMissingAr: (where: string) => `To switch to Arabic, add an Arabic keyboard in ${where}.`,
+  switchLayoutMissingEn: (where: string) => `To switch to English, add an English keyboard in ${where}.`,
+  keyboardSettingsMac: 'System Settings → Keyboard → Text Input',
+  keyboardSettingsWindows: 'Settings → Time & language → Language & region',
+  keyboardSettingsLinux: 'your desktop’s keyboard settings',
   language: 'Language',
   languageAuto: 'Same as system',
 
@@ -71,6 +76,9 @@ export const EN = {
   layoutMac: 'Mac',
   layoutMacHint: 'The default “Arabic” layout on macOS.',
   layoutExample: (keys: string, word: string) => `Typing ${keys} gives ${word}`,
+  layoutMismatch: (have: string) =>
+    `Your computer has the ${have} Arabic layout, not this one, so fixed text may come out wrong.`,
+  layoutMismatchUse: (name: string) => `Use ${name}`,
 
   // Wayland (Linux)
   waylandTitle: 'Wayland session',

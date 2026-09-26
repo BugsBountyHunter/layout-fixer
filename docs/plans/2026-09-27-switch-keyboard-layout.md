@@ -1,6 +1,7 @@
 # Switch the keyboard layout after a fix
 
-**Status:** phases 1 (macOS) and 2 (Windows, Linux X11) implemented on `feat/switch-keyboard-layout`, 2026-09-27.
+**Status:** phases 1 and 2 released in desktop 1.1.0 (2026-09-27); phase 3 (Settings hints) implemented on
+`feat/layout-switch-hints`.
 
 **Decided 2026-09-27:** on by default in the desktop app. The extension gets it later, through native
 messaging to the desktop app (phase 4), after the desktop release.
@@ -98,7 +99,9 @@ Ship desktop first; the extension follows once the desktop release with the host
    Desktop 1.1.0.
 2. ✅ **Windows + Linux X11** — impls; CI builds; manual runs (Notepad, a browser, an elevated app,
    GNOME and KDE on X11).
-3. **Settings hints** — missing layout, Arabic-layout mismatch.
+3. ✅ **Settings hints** — missing layout, Arabic-layout mismatch. `list_layouts` returns each enabled layout's
+   language and, when known, which of our Arabic layouts it is; `platform/layoutHints.ts` turns that into the hints
+   (re-read when the window gains focus).
 4. **Extension via native messaging** — host mode + manifest install in the desktop app, optional
    permission and toggle in the extension. Extension 1.1.0. Update PRIVACY.md (the host receives only
    a language code) and the store listing permissions note.

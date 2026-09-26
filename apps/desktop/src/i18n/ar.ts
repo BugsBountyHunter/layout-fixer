@@ -54,6 +54,11 @@ export const AR: Messages = {
   switchLayout: 'تبديل لغة الكيبورد بعد التصحيح',
   switchLayoutHint:
     'بعد التصحيح تتبدّل لغة الكيبورد إلى لغة النص المصحَّح لتكمل الكتابة مباشرة. يُستخدم ما لديك من لغات مضافة فقط.',
+  switchLayoutMissingAr: (where: string) => `للتبديل إلى العربية، أضف لوحة مفاتيح عربية من ${where}.`,
+  switchLayoutMissingEn: (where: string) => `للتبديل إلى الإنجليزية، أضف لوحة مفاتيح إنجليزية من ${where}.`,
+  keyboardSettingsMac: 'إعدادات النظام ← لوحة المفاتيح ← إدخال النص',
+  keyboardSettingsWindows: 'الإعدادات ← الوقت واللغة ← اللغة والمنطقة',
+  keyboardSettingsLinux: 'إعدادات لوحة المفاتيح في سطح المكتب',
   language: 'اللغة',
   languageAuto: 'مثل النظام',
 
@@ -65,6 +70,9 @@ export const AR: Messages = {
   layoutMac: 'Mac',
   layoutMacHint: 'تخطيط «العربية» الافتراضي على macOS.',
   layoutExample: (keys: string, word: string) => `كتابة ${keys} تعطي ${word}`,
+  layoutMismatch: (have: string) =>
+    `جهازك يستخدم تخطيط ${have} العربي وليس هذا التخطيط، لذلك قد يخرج النص المصحَّح خاطئًا.`,
+  layoutMismatchUse: (name: string) => `استخدم ${name}`,
 
   waylandTitle: 'جلسة Wayland',
   waylandBody:

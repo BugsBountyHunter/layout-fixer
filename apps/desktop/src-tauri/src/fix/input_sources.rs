@@ -29,13 +29,18 @@ pub enum LayoutSwitch {
     NotInstalled,
 }
 
-fn primary_language(layout: &InputLayout) -> Option<&str> {
-    let code = layout.languages.first()?;
-    code.split(['-', '_']).next()
+impl InputLayout {
+    /// The primary language without its region: `en` for `en-GB`.
+    pub fn language(&self) -> Option<&str> {
+        let code = self.languages.first()?;
+        code.split(['-', '_']).next()
+    }
 }
 
 fn types_language(layout: &InputLayout, language: &str) -> bool {
-    primary_language(layout).is_some_and(|code| code.eq_ignore_ascii_case(language))
+    layout
+        .language()
+        .is_some_and(|code| code.eq_ignore_ascii_case(language))
 }
 
 /// A preferred layout wins (the Arabic layout the user picked in Settings), then the first enabled

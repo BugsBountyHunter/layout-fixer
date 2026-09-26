@@ -3,7 +3,7 @@ use std::sync::Mutex;
 use serde::Serialize;
 use tauri::{AppHandle, Manager, State};
 
-use crate::fix::{self, FixError, LayoutSwitch, Snapshot, Timing};
+use crate::fix::{self, FixError, InputLayout, InputSources, LayoutSwitch, Snapshot, Timing};
 use crate::platform::{
     permissions, preferred_ids, ArabicLayout, SystemClipboard, SystemInputSources, SystemKeyboard,
 };
@@ -84,8 +84,25 @@ fn is_language_code(code: &str) -> bool {
     (2..=3).contains(&code.len()) && code.bytes().all(|byte| byte.is_ascii_lowercase())
 }
 
+/// Input-source calls run on the main thread, which macOS requires.
+async fn on_main_thread<T: Send + 'static>(
+    app: &AppHandle,
+    work: impl FnOnce() -> Result<T, FixError> + Send + 'static,
+) -> Result<T, FixError> {
+    let (sender, receiver) = std::sync::mpsc::channel();
+    app.run_on_main_thread(move || {
+        let _ = sender.send(work());
+    })
+    .map_err(|error| FixError::System(error.to_string()))?;
+    blocking(move || {
+        receiver
+            .recv()
+            .map_err(|error| FixError::System(error.to_string()))?
+    })
+    .await
+}
+
 /// After a fix: switches the OS keyboard layout to one that types `language`, if one is enabled.
-/// Runs on the main thread, which macOS requires for input-source changes.
 #[tauri::command]
 pub async fn switch_layout(
     app: AppHandle,
@@ -95,21 +112,37 @@ pub async fn switch_layout(
     if !is_language_code(&language) {
         return Err(FixError::System(format!("invalid language {language:?}")));
     }
-    let (sender, receiver) = std::sync::mpsc::channel();
-    app.run_on_main_thread(move || {
-        let _ = sender.send(fix::switch_to(
-            &SystemInputSources,
-            &language,
-            preferred_ids(layout),
-        ));
-    })
-    .map_err(|error| FixError::System(error.to_string()))?;
-    blocking(move || {
-        receiver
-            .recv()
-            .map_err(|error| FixError::System(error.to_string()))?
+    on_main_thread(&app, move || {
+        fix::switch_to(&SystemInputSources, &language, preferred_ids(layout))
     })
     .await
+}
+
+/// An enabled keyboard layout as Settings sees it.
+#[derive(Debug, Serialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct LayoutInfo {
+    id: String,
+    language: Option<String>,
+    /// Set when the layout is one of our Arabic layouts (PC or Mac).
+    arabic_layout: Option<ArabicLayout>,
+}
+
+fn describe(layouts: &[InputLayout]) -> Vec<LayoutInfo> {
+    layouts
+        .iter()
+        .map(|layout| LayoutInfo {
+            id: layout.id.clone(),
+            language: layout.language().map(str::to_ascii_lowercase),
+            arabic_layout: ArabicLayout::of_id(&layout.id),
+        })
+        .collect()
+}
+
+/// The enabled keyboard layouts, for the Settings hints (missing language, Arabic layout mismatch).
+#[tauri::command]
+pub async fn list_layouts(app: AppHandle) -> Result<Vec<LayoutInfo>, FixError> {
+    on_main_thread(&app, || Ok(describe(&SystemInputSources.enabled()?))).await
 }
 
 #[tauri::command]
@@ -185,7 +218,7 @@ pub fn show_hud(app: AppHandle, message: String) {
 
 #[cfg(test)]
 mod tests {
-    use super::is_language_code;
+    use super::*;
 
     #[test]
     fn accepts_only_plain_language_codes() {
@@ -195,5 +228,50 @@ mod tests {
         for code in ["", "a", "EN", "en-GB", "arab", "../"] {
             assert!(!is_language_code(code), "{code}");
         }
+    }
+
+    #[test]
+    fn describes_layouts_for_settings() {
+        let arabic_id = preferred_ids(ArabicLayout::ArMac).first().copied();
+        let mut layouts = vec![InputLayout {
+            id: "english".into(),
+            languages: vec!["en-GB".into(), "fr".into()],
+        }];
+        layouts.extend(arabic_id.map(|id| InputLayout {
+            id: id.into(),
+            languages: vec!["ar".into()],
+        }));
+
+        let described = describe(&layouts);
+        assert_eq!(
+            described[0],
+            LayoutInfo {
+                id: "english".into(),
+                language: Some("en".into()),
+                arabic_layout: None,
+            }
+        );
+        // Windows has no Mac Arabic layout, so only the platforms that do list it here.
+        if let Some(id) = arabic_id {
+            assert_eq!(described[1].id, id);
+            assert_eq!(described[1].arabic_layout, Some(ArabicLayout::ArMac));
+        }
+    }
+
+    #[test]
+    fn serializes_for_the_web_side() {
+        let info = LayoutInfo {
+            id: "com.apple.keylayout.ArabicPC".into(),
+            language: Some("ar".into()),
+            arabic_layout: Some(ArabicLayout::ArPc),
+        };
+        assert_eq!(
+            serde_json::to_value(info).unwrap(),
+            serde_json::json!({
+                "id": "com.apple.keylayout.ArabicPC",
+                "language": "ar",
+                "arabicLayout": "ar-pc"
+            })
+        );
     }
 }

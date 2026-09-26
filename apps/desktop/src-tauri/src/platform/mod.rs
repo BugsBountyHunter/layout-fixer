@@ -27,11 +27,22 @@ pub use unsupported::{
 };
 
 /// The Arabic layout chosen in Settings (`ar-pc` / `ar-mac`), used to pick among enabled layouts.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Deserialize, serde::Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub enum ArabicLayout {
     ArPc,
     ArMac,
+}
+
+impl ArabicLayout {
+    pub const ALL: [Self; 2] = [Self::ArPc, Self::ArMac];
+
+    /// Which of our Arabic layouts an OS layout id is, if it is one we know.
+    pub fn of_id(id: &str) -> Option<Self> {
+        Self::ALL
+            .into_iter()
+            .find(|layout| preferred_ids(*layout).contains(&id))
+    }
 }
 
 /// Whether this session blocks the fix (Linux on Wayland).

@@ -1,5 +1,5 @@
-import { convert, type Direction } from '../core/converter'
-import type { LayoutId } from '../core/layouts'
+import { convert, type Direction } from '@layout-fixer/core/converter'
+import type { LayoutId } from '@layout-fixer/core/layouts'
 import { copyText } from './clipboard'
 import { isTextField, type TextField } from './text-fields'
 

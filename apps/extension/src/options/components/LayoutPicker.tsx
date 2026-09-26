@@ -1,5 +1,5 @@
-import { convertBetween } from '../../core/converter'
-import type { ArabicLayoutId } from '../../core/layouts'
+import { convertBetween } from '@layout-fixer/core/converter'
+import type { ArabicLayoutId } from '@layout-fixer/core/layouts'
 import { type MessageKey, t } from '../../platform/i18n'
 import { ARABIC_LAYOUT_CHOICES, type ArabicLayoutChoice } from '../../platform/settings'
 import { CheckIcon } from '../../ui/icons'

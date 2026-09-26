@@ -1,0 +1,25 @@
+{
+  "name": "@layout-fixer/core",
+  "version": "1.0.0",
+  "description": "Keyboard-layout conversion core shared by the Layout Fixer apps. Pure TypeScript, no DOM or browser APIs.",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./converter": "./src/converter.ts",
+    "./languages": "./src/languages.ts",
+    "./layouts": "./src/layouts/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "@vitest/coverage-v8": "^5.0.1",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.1"
+  }
+}

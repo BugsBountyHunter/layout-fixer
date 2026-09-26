@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SIZES = (16, 32, 48, 128)
 CANVAS = 1024
 OUT_DIR = ROOT / "public" / "icons"
-STORE_ICON = ROOT / "docs" / "store" / "store-icon-128.png"
+STORE_ICON = ROOT.parent.parent / "docs" / "store" / "store-icon-128.png"
 # Chrome Web Store: 128×128 file with 96×96 artwork and 16px transparent padding on each side.
 STORE_ARTWORK = 96
 # The logo glyph uses Plex (OFL allows it in artwork); SF Arabic's license does not.

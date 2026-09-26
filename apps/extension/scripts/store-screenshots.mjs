@@ -7,12 +7,13 @@
 // published images are rendered on Linux, which also shows Windows-style shortcut labels:
 //   npm run store:screenshots   (Docker; renders en and ar)
 import { mkdirSync, readFileSync } from 'node:fs'
-import { fileURLToPath } from 'node:url'
+import { createRequire } from 'node:module'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 import { chromium } from '@playwright/test'
 
 const locale = process.argv.includes('--locale') ? process.argv[process.argv.indexOf('--locale') + 1] : 'en'
 const EXTENSION = fileURLToPath(new URL('../dist/e2e', import.meta.url))
-const OUT = fileURLToPath(new URL(`../docs/store/screenshots/${locale}/`, import.meta.url))
+const OUT = fileURLToPath(new URL(`../../../docs/store/screenshots/${locale}/`, import.meta.url))
 const ORIGIN = 'http://127.0.0.1:4173'
 const RTL = locale === 'ar'
 
@@ -46,7 +47,10 @@ const COPY = {
 const FONT = `system-ui, -apple-system, 'SF Pro Text', 'SF Arabic', 'Segoe UI', 'Noto Sans Arabic', sans-serif`
 
 /** Headlines use embedded Plex Arabic so every OS renders the same weights in both scripts. */
-const PLEX = new URL('../node_modules/@fontsource/ibm-plex-sans-arabic/files/', import.meta.url)
+const PLEX = new URL(
+  './files/',
+  pathToFileURL(createRequire(import.meta.url).resolve('@fontsource/ibm-plex-sans-arabic/package.json')),
+)
 const HEADLINE_FONT_FACES = ['latin', 'arabic']
   .flatMap((subset) =>
     [400, 700].map((weight) => {

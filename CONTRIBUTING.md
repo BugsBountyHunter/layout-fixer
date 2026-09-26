@@ -7,7 +7,7 @@ Thanks for helping improve Layout Fixer!
 ```bash
 npm install
 npx playwright install chromium   # once, for end-to-end tests
-npm run dev                       # load dist/chrome as an unpacked extension
+npm run dev                       # load apps/extension/dist/chrome as an unpacked extension
 ```
 
 Manual testing: `npm run playground` and follow [docs/testing/manual-checklist.md](docs/testing/manual-checklist.md).

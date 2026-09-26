@@ -1,4 +1,4 @@
-import type { ArabicLayoutId } from '../core/layouts'
+import type { ArabicLayoutId } from '@layout-fixer/core/layouts'
 import { t, uiDirection } from '../platform/i18n'
 import { loadSettings, resolveLayout, type Settings, watchSettings } from '../platform/settings'
 import { isMacPlatform } from '../platform/shortcut'

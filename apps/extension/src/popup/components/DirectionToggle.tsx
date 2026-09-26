@@ -1,4 +1,4 @@
-import type { Direction } from '../../core/converter'
+import type { Direction } from '@layout-fixer/core/converter'
 import { type MessageKey, t } from '../../platform/i18n'
 
 export type DirectionChoice = 'auto' | Direction

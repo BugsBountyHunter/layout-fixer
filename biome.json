@@ -9,7 +9,7 @@
       "!**/artifacts",
       "!**/test-results",
       "!**/playwright-report",
-      "!src/core/layouts/fixtures"
+      "!packages/core/src/layouts/fixtures"
     ]
   },
   "formatter": {
@@ -45,7 +45,7 @@
   },
   "overrides": [
     {
-      "includes": ["**/*.test.ts", "e2e/**"],
+      "includes": ["**/*.test.ts", "**/e2e/**"],
       "linter": {
         "rules": {
           "style": {

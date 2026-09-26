@@ -1,0 +1,55 @@
+{
+  "name": "@layout-fixer/extension",
+  "version": "1.0.0",
+  "description": "Fix text typed with the wrong keyboard layout — Arabic ⇄ English. Browser extension for Chrome, Edge, Firefox and more.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BugsBountyHunter/layout-fixer.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --mode chrome",
+    "dev:firefox": "vite --mode firefox",
+    "build": "npm run typecheck && npm run build:chrome && npm run build:firefox",
+    "build:chrome": "vite build --mode chrome",
+    "build:firefox": "vite build --mode firefox",
+    "build:e2e": "vite build --mode e2e",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "npm run build:e2e && playwright test",
+    "lint:firefox": "web-ext lint --source-dir dist/firefox",
+    "package:chrome": "web-ext build --source-dir dist/chrome --artifacts-dir artifacts --filename layout-fixer-chrome-{version}.zip --overwrite-dest",
+    "package:firefox": "web-ext build --source-dir dist/firefox --artifacts-dir artifacts --filename layout-fixer-firefox-{version}.zip --overwrite-dest",
+    "icons": "python3 scripts/generate-icons.py",
+    "check": "npm run build && npm run test:coverage && npm run lint:firefox && npm run test:e2e",
+    "playground": "vite playground --port 4321 --open",
+    "store:screenshots": "npm run build:e2e && docker run --rm --ipc=host -v \"$PWD/../..\":/work -w /work/apps/extension mcr.microsoft.com/playwright:v1.63.0-noble sh -c 'fc-list :lang=ar | grep -q . || (apt-get update -qq && apt-get install -y -qq fonts-noto-core >/dev/null); for l in en ar; do node scripts/store-screenshots.mjs --locale $l; done'"
+  },
+  "dependencies": {
+    "@layout-fixer/core": "*",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@crxjs/vite-plugin": "^2.7.1",
+    "@fontsource/ibm-plex-sans-arabic": "5.3.0",
+    "@playwright/test": "^1.63.0",
+    "@types/chrome": "^0.3.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "@vitest/coverage-v8": "^5.0.1",
+    "happy-dom": "^20.14.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.1",
+    "web-ext": "^10.7.0"
+  }
+}

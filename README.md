@@ -114,8 +114,8 @@ Requires Node.js 20+ (see [`.nvmrc`](.nvmrc)).
 
 ```bash
 npm install
-npm run dev            # Chromium dev build → load dist/chrome as an unpacked extension
-npm run dev:firefox    # Firefox → about:debugging → Load Temporary Add-on → dist/firefox/manifest.json
+npm run dev            # Chromium dev build → load apps/extension/dist/chrome as an unpacked extension
+npm run dev:firefox    # Firefox → about:debugging → Load Temporary Add-on → apps/extension/dist/firefox/manifest.json
 npm run lint           # Biome lint + format check (lint:fix applies fixes)
 npm run check          # lint, typecheck, builds, unit tests + coverage, Firefox lint, end-to-end tests
 ```
@@ -126,17 +126,22 @@ npm run check          # lint, typecheck, builds, unit tests + coverage, Firefox
 
 ### Project structure
 
+An npm workspaces monorepo:
+
 ```text
-src/
-├── core/         # converter and keyboard layouts (pure, no DOM)
-├── platform/     # shortcuts, OS detection, i18n, validated settings
-├── background/   # context menu and shortcut handlers
-├── content/      # in-page replacement, toast, selection button
-├── popup/        # toolbar popup (React)
-├── options/      # settings page (React)
-└── ui/           # design tokens, theme, icons, shared components
-e2e/              # Playwright tests against the built extension
+packages/core/        # @layout-fixer/core: converter and keyboard layouts (pure TypeScript, no DOM)
+apps/extension/       # the browser extension
+├── src/
+│   ├── platform/     # shortcuts, OS detection, i18n, validated settings
+│   ├── background/   # context menu and shortcut handlers
+│   ├── content/      # in-page replacement, toast, selection button
+│   ├── popup/        # toolbar popup (React)
+│   ├── options/      # settings page (React)
+│   └── ui/           # design tokens, theme, icons, shared components
+└── e2e/              # Playwright tests against the built extension
 ```
+
+Run scripts from the repository root; they forward to the right workspace.
 
 ## Release
 

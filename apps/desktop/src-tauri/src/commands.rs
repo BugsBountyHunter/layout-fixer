@@ -110,6 +110,12 @@ pub fn set_tray_labels(app: AppHandle, labels: tray::Labels) {
     tray::set_labels(&app, labels);
 }
 
+/// Shows (or hides, with `None`) the "Update to …" item in the tray menu.
+#[tauri::command]
+pub fn set_update_label(app: AppHandle, label: Option<String>) {
+    tray::set_update_label(&app, label);
+}
+
 #[tauri::command]
 pub fn show_settings(app: AppHandle) {
     windows::show_settings(&app);

@@ -65,6 +65,20 @@ export const EN = {
   waylandBody:
     'Wayland doesn’t let apps press keys in other apps yet, so fixing text doesn’t work in this session. Log in with an X11 (Xorg) session to use Layout Fixer; Wayland support is planned.',
 
+  // Updates
+  updatesSection: 'Updates',
+  autoUpdate: 'Check for updates automatically',
+  updateCheckNow: 'Check now',
+  updateChecking: 'Checking…',
+  updateCurrent: 'Layout Fixer is up to date.',
+  updateAvailable: (version: string) => `Version ${version} is available.`,
+  updateInstall: 'Install and restart',
+  updateInstalling: 'Installing…',
+  updateFailed: 'Couldn’t check for updates. Try again later.',
+  updateHint: 'Updates come from the project’s GitHub releases and are verified before they install.',
+  appVersion: (version: string) => `Version ${version}`,
+  trayUpdate: (version: string) => `Update to ${version}…`,
+
   privacyTitle: 'Privacy',
   privacyBody:
     'Layout Fixer reads text only when you press the shortcut, converts it on this device, and never stores or sends it.',

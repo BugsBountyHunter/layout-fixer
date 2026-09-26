@@ -1,0 +1,162 @@
+name: Desktop release
+
+# Tag `desktop-vX.Y.Z` on main after bumping the version (see docs/desktop-release.md).
+# Extension releases use `vX.Y.Z` tags and their own workflow.
+on:
+  push:
+    tags: ['desktop-v*.*.*']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: desktop-release
+  cancel-in-progress: false
+
+env:
+  RELEASE_TAG: ${{ github.ref_name }}
+  # Rolling release that always carries the newest installers under stable names and the updater's
+  # latest.json. The repo-wide "latest release" can't be used: the extension publishes releases too.
+  LATEST_TAG: desktop-latest
+
+jobs:
+  prepare:
+    name: Check version and create the draft release
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Tag must match every version field
+        run: |
+          version="${RELEASE_TAG#desktop-v}"
+          test "$(node -p "require('./apps/desktop/package.json').version")" = "$version"
+          test "$(node -p "require('./apps/desktop/src-tauri/tauri.conf.json').version")" = "$version"
+          grep -q "^version = \"$version\"$" apps/desktop/src-tauri/Cargo.toml
+      - name: Release notes from apps/desktop/CHANGELOG.md
+        run: |
+          version="${RELEASE_TAG#desktop-v}"
+          awk -v v="$version" '/^## \[/ { if (found) exit; if (index($0, "[" v "]")) { found = 1; next } } found' \
+            apps/desktop/CHANGELOG.md > notes.md
+          test -s notes.md
+          cat docs/desktop-first-launch.md >> notes.md
+      - name: Create the draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$RELEASE_TAG" --draft --verify-tag --latest=false --title "Layout Fixer for desktop ${RELEASE_TAG#desktop-v}" --notes-file notes.md
+
+  build:
+    name: Build (${{ matrix.name }})
+    needs: prepare
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - name: macOS
+            os: macos-latest
+            args: --target universal-apple-darwin
+            rust-targets: aarch64-apple-darwin,x86_64-apple-darwin
+          - name: Windows
+            os: windows-latest
+            args: ''
+            rust-targets: ''
+          # The oldest supported Ubuntu keeps the AppImage and .deb working on older glibc versions.
+          - name: Linux
+            os: ubuntu-22.04
+            args: ''
+            rust-targets: ''
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Linux system libraries (WebKitGTK, tray)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev patchelf
+      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
+        with:
+          targets: ${{ matrix.rust-targets }}
+      - run: npm ci
+      # Release builds only: local and CI builds have no updater key, so they skip updater artifacts.
+      - name: Enable updater artifacts
+        shell: bash
+        run: |
+          node -e '
+            const fs = require("fs")
+            const path = "apps/desktop/src-tauri/tauri.conf.json"
+            const config = JSON.parse(fs.readFileSync(path, "utf8"))
+            config.bundle.createUpdaterArtifacts = true
+            fs.writeFileSync(path, JSON.stringify(config, null, 2))
+          '
+      # Self-signed "Layout Fixer" certificate: the same signature on every release keeps the
+      # macOS Accessibility permission across updates. Created by apps/desktop/scripts/create-release-keys.sh.
+      - name: Import the macOS signing certificate
+        if: runner.os == 'macOS'
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+        run: |
+          keychain="$RUNNER_TEMP/signing.keychain-db"
+          keychain_password="$(openssl rand -hex 24)"
+          security create-keychain -p "$keychain_password" "$keychain"
+          security set-keychain-settings -lut 21600 "$keychain"
+          security unlock-keychain -p "$keychain_password" "$keychain"
+          printf '%s' "$MACOS_CERTIFICATE" | base64 --decode > "$RUNNER_TEMP/certificate.p12"
+          security import "$RUNNER_TEMP/certificate.p12" -k "$keychain" -P "$MACOS_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          rm "$RUNNER_TEMP/certificate.p12"
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$keychain_password" "$keychain" > /dev/null
+          security list-keychains -d user -s "$keychain" $(security list-keychains -d user | tr -d '"')
+          echo "APPLE_SIGNING_IDENTITY=Layout Fixer" >> "$GITHUB_ENV"
+      - uses: tauri-apps/tauri-action@1deb371b0cd8bd54025b384f1cd735e725c4060f # action-v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          projectPath: apps/desktop
+          tauriScript: npx tauri
+          args: ${{ matrix.args }}
+          tagName: ${{ env.RELEASE_TAG }}
+          releaseDraft: true
+          updaterJsonPreferNsis: true
+
+  publish:
+    name: Publish and update desktop-latest
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Publish the versioned release
+        run: gh release edit "$RELEASE_TAG" --draft=false --latest=false
+      - name: Stable download names
+        run: |
+          mkdir assets stable
+          gh release download "$RELEASE_TAG" --dir assets
+          ls -l assets
+          cp assets/latest.json stable/latest.json
+          cp assets/*_universal.dmg stable/Layout-Fixer-macOS.dmg
+          cp assets/*_x64-setup.exe stable/Layout-Fixer-Windows-setup.exe
+          cp assets/*_x64_en-US.msi stable/Layout-Fixer-Windows.msi
+          cp assets/*_amd64.AppImage stable/Layout-Fixer-Linux.AppImage
+          cp assets/*_amd64.deb stable/Layout-Fixer-Linux.deb
+      - name: Point desktop-latest at this release
+        run: |
+          if gh release view "$LATEST_TAG" > /dev/null 2>&1; then
+            gh api -X PATCH "repos/$GH_REPO/git/refs/tags/$LATEST_TAG" -f sha="$GITHUB_SHA" -F force=true > /dev/null
+          else
+            gh release create "$LATEST_TAG" --target "$GITHUB_SHA" --latest=false \
+              --title "Layout Fixer for desktop — latest" \
+              --notes "Always the newest desktop release, under stable file names. Versioned releases are tagged desktop-vX.Y.Z."
+          fi
+          gh release upload "$LATEST_TAG" stable/* --clobber

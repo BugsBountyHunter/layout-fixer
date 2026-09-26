@@ -204,8 +204,8 @@ type-checked: put the platform's dependencies in a scratch crate that includes `
 **Local macOS signing:** macOS ties the Accessibility permission to the code signature, and ad-hoc builds change it
 on every build. Sign local builds with a self-signed "Layout Fixer Dev" certificate in the login keychain so the
 permission survives rebuilds: `APPLE_SIGNING_IDENTITY="Layout Fixer Dev" CI=true npm run desktop:build`
-(`CI=true` skips the Finder step of the `.dmg`, which needs GUI automation rights). CI builds stay ad-hoc until the
-release certificate lands in phase 6.
+(`CI=true` skips the Finder step of the `.dmg`, which needs GUI automation rights). CI builds stay ad-hoc; release builds are signed with the self-signed "Layout Fixer"
+certificate from GitHub secrets. Releasing: [docs/desktop-release.md](docs/desktop-release.md) (tag `desktop-vX.Y.Z`).
 
 ---
 

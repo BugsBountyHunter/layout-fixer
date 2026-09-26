@@ -16,6 +16,8 @@ pub fn run() {
             windows::show_settings(app);
         }))
         .plugin(tauri_plugin_store::Builder::default().build())
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_process::init())
         .plugin(shortcut::plugin())
         .plugin(tauri_plugin_autostart::init(
             tauri_plugin_autostart::MacosLauncher::LaunchAgent,
@@ -24,6 +26,7 @@ pub fn run() {
         .manage(commands::PendingClipboard::default())
         .manage(shortcut::Hotkey::default())
         .manage(tray::TrayLabels::default())
+        .manage(tray::UpdateLabel::default())
         .manage(hud::Generation::default())
         .invoke_handler(tauri::generate_handler![
             commands::capture_selection,
@@ -34,6 +37,7 @@ pub fn run() {
             commands::shortcut_info,
             commands::set_shortcut,
             commands::set_tray_labels,
+            commands::set_update_label,
             commands::show_settings,
             commands::session_info,
             commands::show_hud,

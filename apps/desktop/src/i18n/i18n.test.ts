@@ -16,6 +16,16 @@ describe('messages', () => {
     expect(untranslated).toEqual([])
   })
 
+  it.each([
+    ['en', EN],
+    ['ar', AR],
+  ])('includes the value in every message that takes one (%s)', (_language, messages) => {
+    const functions = Object.values(messages).filter((value) => typeof value === 'function')
+    for (const message of functions) {
+      expect((message as (...values: string[]) => string)('VALUE-1', 'VALUE-2')).toContain('VALUE-1')
+    }
+  })
+
   it('fills in placeholders in both languages', () => {
     expect(messagesFor('en').layoutExample('lvpfh', 'مرحبا')).toBe('Typing lvpfh gives مرحبا')
     expect(messagesFor('ar').layoutExample('lvpfh', 'مرحبا')).toBe('كتابة lvpfh تعطي مرحبا')

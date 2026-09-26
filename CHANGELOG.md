@@ -3,6 +3,14 @@
 All notable changes to Layout Fixer. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and the project uses [Semantic Versioning](https://semver.org/).
 
+## [1.0.1] - 2026-09-27
+
+### Added
+- The extension links to its website, [layoutfixer.dev](https://layoutfixer.dev), from its details page in the browser.
+
+### Changed
+- Firefox add-on ID is now `layout-fixer@layoutfixer.dev`, on the project's own domain, before the first Firefox release.
+
 ## [1.0.0] - 2026-09-23
 
 First public release, for Chrome and other Chromium browsers.
@@ -25,4 +33,5 @@ First public release, for Chrome and other Chromium browsers.
 - No site access at install; the selection button asks for it only when you turn it on.
 - No extension files are exposed to websites, so pages can't detect the extension.
 
+[1.0.1]: https://github.com/BugsBountyHunter/layout-fixer/releases/tag/v1.0.1
 [1.0.0]: https://github.com/BugsBountyHunter/layout-fixer/releases/tag/v1.0.0

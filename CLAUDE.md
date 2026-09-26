@@ -267,5 +267,5 @@ Checklist:
 - [x] Store images (en + ar), promo tile and marquee — `docs/store/screenshots/`
 - [x] Chrome Web Store developer account and first submission — v1.0.0 live at
   https://chromewebstore.google.com/detail/cikmlhdhgneblnmkkmiolciffcgbgljj
-- [ ] Later: Edge Add-ons (same zip); addons.mozilla.org — first replace the placeholder gecko id
-  `layout-fixer@layoutfixer.app` (permanent after the first upload)
+- [ ] Later: Edge Add-ons (same zip); addons.mozilla.org — gecko id `layout-fixer@layoutfixer.dev`
+  (permanent after the first upload)

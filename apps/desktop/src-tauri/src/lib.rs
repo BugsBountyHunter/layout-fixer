@@ -27,6 +27,7 @@ pub fn run() {
             commands::accessibility_status,
             commands::request_accessibility,
             commands::shortcut_info,
+            commands::session_info,
             commands::show_hud,
         ])
         .setup(|app| {

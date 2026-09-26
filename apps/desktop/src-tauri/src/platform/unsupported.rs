@@ -1,4 +1,4 @@
-//! The Linux implementation arrives in phase 4; until then the hotkey explains that.
+//! Systems other than macOS, Windows and Linux (e.g. the BSDs) have no implementation yet.
 
 use crate::fix::{Clipboard, FixError, Keyboard, Snapshot};
 

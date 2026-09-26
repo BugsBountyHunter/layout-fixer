@@ -103,6 +103,18 @@ pub fn shortcut_info(status: State<'_, shortcut::Status>) -> ShortcutInfo {
     }
 }
 
+#[derive(Serialize)]
+pub struct SessionInfo {
+    wayland: bool,
+}
+
+#[tauri::command]
+pub fn session_info() -> SessionInfo {
+    SessionInfo {
+        wayland: crate::platform::is_wayland(),
+    }
+}
+
 #[tauri::command]
 pub fn show_hud(app: AppHandle, message: String) {
     hud::show(&app, &message);

@@ -39,3 +39,7 @@
 .status.allowed {
   color: var(--lf-success);
 }
+
+.notice-text {
+  color: var(--lf-label);
+}

@@ -22,6 +22,9 @@ export const STRINGS = Object.freeze({
   accessHint:
     'Layout Fixer presses ⌘C and ⌘V for you, which macOS only allows after you turn it on in System Settings → Privacy & Security → Accessibility.',
   accessAllowedHint: 'Layout Fixer can copy and paste the text you select.',
+  waylandTitle: 'Wayland session',
+  waylandBody:
+    'Wayland doesn’t let apps press keys in other apps yet, so fixing text doesn’t work in this session. Log in with an X11 (Xorg) session to use Layout Fixer; Wayland support is planned.',
   privacyTitle: 'Privacy',
   privacyBody:
     'Layout Fixer reads text only when you press the shortcut, converts it on this device, and never stores or sends it.',

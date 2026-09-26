@@ -1,0 +1,31 @@
+.footer {
+  padding-block: var(--lf-space-8);
+  border-block-start: 0.5px solid var(--lf-separator);
+  color: var(--lf-label-secondary);
+  font-size: 14px;
+}
+
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--lf-space-3) var(--lf-space-6);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--lf-space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (pointer: coarse) {
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 44px;
+  }
+}

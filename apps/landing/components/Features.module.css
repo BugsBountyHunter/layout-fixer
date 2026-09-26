@@ -1,0 +1,36 @@
+.group {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--lf-radius-lg);
+  background: var(--lf-bg-grouped);
+  list-style: none;
+}
+
+.row {
+  display: grid;
+  gap: var(--lf-space-1);
+  padding: var(--lf-space-4) var(--lf-space-5);
+}
+
+/* Hairline inset from the leading edge, like grouped lists in System Settings; flips in RTL. */
+.row + .row {
+  position: relative;
+}
+
+.row + .row::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: var(--lf-space-5) 0;
+  border-block-start: 0.5px solid var(--lf-separator);
+}
+
+.row h3 {
+  font-size: 17px;
+  font-weight: var(--lf-weight-semibold);
+}
+
+.row p {
+  font-size: var(--site-small);
+}

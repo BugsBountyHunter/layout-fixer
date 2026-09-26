@@ -1,0 +1,68 @@
+name: Deploy website
+
+# Ships apps/landing to https://layoutfixer.dev (Contabo, Docker behind Caddy) whenever main changes it or the
+# shared packages it builds from. The SSH key and host live in the `landing-production` environment, which only
+# main can deploy to.
+on:
+  push:
+    branches: [main]
+    paths:
+      - apps/landing/**
+      - packages/core/**
+      - packages/ui/**
+      - package-lock.json
+      - .github/workflows/deploy-landing.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-landing
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build, test and deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: landing-production
+      url: https://layoutfixer.dev
+    env:
+      SITE_URL: https://layoutfixer.dev
+      NEXT_PUBLIC_SITE_URL: https://layoutfixer.dev
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      # Lint, typecheck, unit tests, the production build and the e2e tests against it; nothing ships if one fails.
+      - run: npm run check:landing
+      - name: Configure SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+          DEPLOY_HOSTNAME: ${{ secrets.DEPLOY_HOSTNAME }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          printf 'Host deploy-target\n  HostName %s\n  User %s\n  IdentityFile ~/.ssh/deploy_key\n  IdentitiesOnly yes\n  StrictHostKeyChecking yes\n' \
+            "$DEPLOY_HOSTNAME" "$DEPLOY_USER" > ~/.ssh/config
+      - name: Deploy
+        run: npm run deploy -w @layout-fixer/landing
+        env:
+          DEPLOY_HOST: deploy-target
+          SKIP_BUILD: '1'
+      - name: Check the live site
+        run: curl --fail --silent --show-error --retry 5 --retry-delay 3 --retry-all-errors -o /dev/null https://layoutfixer.dev/
+      - if: always()
+        run: rm -f ~/.ssh/deploy_key

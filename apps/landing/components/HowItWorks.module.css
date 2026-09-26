@@ -1,0 +1,36 @@
+.steps {
+  display: grid;
+  gap: var(--lf-space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+@media (min-width: 760px) {
+  .steps {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.step {
+  display: grid;
+  align-content: start;
+  gap: var(--lf-space-2);
+  counter-increment: step;
+}
+
+.step::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border-radius: var(--lf-radius-full);
+  background: var(--lf-group);
+  font-weight: var(--lf-weight-semibold);
+}
+
+.step h3 {
+  font-size: 20px;
+}

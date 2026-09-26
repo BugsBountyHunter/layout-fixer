@@ -1,0 +1,22 @@
+services:
+  landing:
+    build: .
+    image: layout-fixer-landing:latest
+    container_name: layout-fixer-landing
+    restart: unless-stopped
+    networks: [web]
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--spider", "http://127.0.0.1/healthz"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 64M
+
+networks:
+  web:
+    external: true

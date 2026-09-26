@@ -15,7 +15,8 @@
     "packages/core",
     "packages/ui",
     "apps/extension",
-    "apps/desktop"
+    "apps/desktop",
+    "apps/landing"
   ],
   "scripts": {
     "dev": "npm run dev -w @layout-fixer/extension",
@@ -23,7 +24,7 @@
     "build": "npm run build -w @layout-fixer/extension",
     "typecheck": "npm run typecheck --workspaces",
     "test": "npm run test --workspaces",
-    "test:coverage": "npm run test:coverage --workspaces",
+    "test:coverage": "npm run test:coverage --workspaces --if-present",
     "test:e2e": "npm run test:e2e -w @layout-fixer/extension",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
@@ -35,7 +36,9 @@
     "icons": "npm run icons -w @layout-fixer/extension",
     "desktop:dev": "npm run dev -w @layout-fixer/desktop",
     "desktop:build": "npm run build -w @layout-fixer/desktop",
-    "check:desktop": "npm run typecheck -w @layout-fixer/desktop && npm run test:coverage -w @layout-fixer/desktop && npm run build:web -w @layout-fixer/desktop"
+    "check:desktop": "npm run typecheck -w @layout-fixer/desktop && npm run test:coverage -w @layout-fixer/desktop && npm run build:web -w @layout-fixer/desktop",
+    "landing:dev": "npm run dev -w @layout-fixer/landing",
+    "check:landing": "npm run check -w @layout-fixer/landing"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.14"

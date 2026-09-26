@@ -1,14 +1,17 @@
 import { defaultLayout } from '@layout-fixer/core/layouts'
 import { useMessages } from '../i18n/react'
+import { layoutHints } from '../platform/layoutHints'
 import { isMacPlatform } from '../platform/os'
+import { resolveLayout } from '../platform/settings'
 import type { Updater } from '../update/useUpdater'
 import { AccessibilitySection } from './AccessibilitySection'
 import { GeneralSection } from './GeneralSection'
 import { InstallNotice } from './InstallNotice'
 import { LayoutChoices } from './LayoutChoices'
+import { LayoutMismatch } from './LayoutMismatch'
 import { ShortcutSection } from './ShortcutSection'
 import { UpdatesSection } from './UpdatesSection'
-import { useAccessibility, useInstallLocation, useShortcutInfo, useWaylandSession } from './useNative'
+import { useAccessibility, useInputLayouts, useInstallLocation, useShortcutInfo, useWaylandSession } from './useNative'
 import type { SettingsState } from './useSettings'
 import { WaylandNotice } from './WaylandNotice'
 
@@ -21,6 +24,7 @@ export function Settings({ state, updater }: { readonly state: SettingsState; re
   const accessibility = useAccessibility(IS_MAC)
   const wayland = useWaylandSession()
   const location = useInstallLocation()
+  const hints = layoutHints(useInputLayouts(), resolveLayout(settings, IS_MAC))
 
   return (
     <main className="settings">
@@ -47,7 +51,7 @@ export function Settings({ state, updater }: { readonly state: SettingsState; re
         }}
       />
 
-      <GeneralSection settings={settings} update={update} />
+      <GeneralSection settings={settings} update={update} missingLayouts={hints.missing} />
 
       <section className="section" aria-labelledby="layout-title">
         <h2 id="layout-title">{m.layoutSection}</h2>
@@ -57,6 +61,7 @@ export function Settings({ state, updater }: { readonly state: SettingsState; re
             autoLayout={defaultLayout(IS_MAC)}
             onChange={(arabicLayout) => update({ arabicLayout })}
           />
+          <LayoutMismatch suggested={hints.suggestedArabicLayout} onUse={(arabicLayout) => update({ arabicLayout })} />
         </div>
       </section>
 

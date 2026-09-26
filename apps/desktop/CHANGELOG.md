@@ -2,6 +2,15 @@
 
 All notable changes to the desktop app. The browser extension has its own [CHANGELOG](../../CHANGELOG.md).
 
+## [Unreleased]
+
+### Added
+
+- Settings explains when the keyboard can't switch to a language because no keyboard for it is added, and where
+  to add one (macOS, Windows or Linux).
+- Settings notices when the Arabic layout chosen for fixing isn't the one your computer has (for example PC chosen,
+  Mac installed) and offers to use the right one in one click.
+
 ## [1.1.0] - 2026-09-27
 
 ### Added

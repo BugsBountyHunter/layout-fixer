@@ -65,6 +65,11 @@ Legend: ✅ checked on macOS 27 (Apple silicon, built-in 2× display + external 
 - [ ] Settings → General → switch off: the fix works and the layout stays
 - [ ] With "Automatically switch to a document's input source" on: the new layout sticks in that window
 - [ ] Chrome, Slack, VS Code: the next keystrokes come out in the new layout
+- [x] ✅ Settings, Arabic layout set to PC with only the Mac Arabic layout enabled: "Your computer has the Mac Arabic
+      layout…" with a "Use Mac" button; clicking it saves `ar-mac` and the hint goes away (read through the AX tree)
+- [ ] Settings with no Arabic keyboard added: "To switch to Arabic, add an Arabic keyboard in System Settings →
+      Keyboard → Text Input"; adding one and returning to Settings clears it
+- [ ] The same two hints in Arabic, on Windows and on Linux X11
 
 ## Windows
 

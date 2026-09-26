@@ -1,15 +1,19 @@
 import { SwitchRow } from '@layout-fixer/ui/SwitchRow'
 import { LANGUAGE_CHOICES, LANGUAGE_NAMES, type LanguageChoice } from '../i18n'
 import { useMessages } from '../i18n/react'
+import type { SwitchLanguage } from '../platform/layoutHints'
 import type { DesktopSettings } from '../platform/settings'
+import { MissingLayoutsNote } from './LayoutHintText'
 import { useLaunchAtLogin } from './useNative'
 
 interface Props {
   readonly settings: DesktopSettings
   readonly update: (patch: Partial<DesktopSettings>) => void
+  /** Languages without an enabled keyboard layout. */
+  readonly missingLayouts: readonly SwitchLanguage[]
 }
 
-export function GeneralSection({ settings, update }: Props) {
+export function GeneralSection({ settings, update, missingLayouts }: Props) {
   const m = useMessages()
   const [launchAtLogin, setLaunchAtLogin] = useLaunchAtLogin()
 
@@ -46,6 +50,7 @@ export function GeneralSection({ settings, update }: Props) {
       </div>
       <p className="footnote">{m.showMessagesHint}</p>
       <p className="footnote">{m.switchLayoutHint}</p>
+      {settings.switchLayout && <MissingLayoutsNote missing={missingLayouts} />}
     </section>
   )
 }

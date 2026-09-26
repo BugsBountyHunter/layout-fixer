@@ -34,6 +34,7 @@ pub fn run() {
             commands::paste_text,
             commands::restore_clipboard,
             commands::switch_layout,
+            commands::list_layouts,
             commands::accessibility_status,
             commands::request_accessibility,
             commands::shortcut_info,

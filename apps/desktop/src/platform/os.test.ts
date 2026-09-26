@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isMacPlatform } from './os'
+import { desktopOs, isMacPlatform } from './os'
 
 describe('isMacPlatform', () => {
   it('detects the macOS webview', () => {
@@ -11,5 +11,15 @@ describe('isMacPlatform', () => {
     'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/605.1.15',
   ])('is false for %s', (ua) => {
     expect(isMacPlatform(ua)).toBe(false)
+  })
+})
+
+describe('desktopOs', () => {
+  it.each([
+    ['Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15', 'mac'],
+    ['Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Edg/140.0', 'windows'],
+    ['Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/605.1.15', 'linux'],
+  ])('%s → %s', (ua, os) => {
+    expect(desktopOs(ua)).toBe(os)
   })
 })

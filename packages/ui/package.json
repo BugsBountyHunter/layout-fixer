@@ -10,7 +10,8 @@
     "./theme.css": "./src/theme.css",
     "./grouped.css": "./src/grouped.css",
     "./icons": "./src/icons.tsx",
-    "./ShortcutKeys": "./src/ShortcutKeys.tsx"
+    "./ShortcutKeys": "./src/ShortcutKeys.tsx",
+    "./SwitchRow": "./src/SwitchRow.tsx"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

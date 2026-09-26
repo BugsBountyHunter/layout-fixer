@@ -18,9 +18,9 @@ export default defineConfig({
     include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
     coverage: {
       provider: 'v8',
-      include: ['src/platform/**', 'src/fix/**'],
+      include: ['src/platform/**', 'src/fix/**', 'src/i18n/**'],
       // Startup glue that only runs inside Tauri; covered by the manual checklist.
-      exclude: ['src/platform/store.ts', 'src/fix/start.ts', 'src/**/*.test.ts'],
+      exclude: ['src/platform/store.ts', 'src/fix/start.ts', 'src/i18n/react.tsx', 'src/**/*.test.ts'],
       thresholds: { lines: 90, branches: 85, functions: 90, statements: 90 },
     },
   },

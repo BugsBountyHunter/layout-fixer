@@ -1,9 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
+import { AR } from '../i18n/ar'
+import { EN } from '../i18n/en'
 import type { FixBridge } from './bridge'
-import { createFixHandler, type EngineDeps } from './engine'
+import { createFixHandler, type EngineDeps, type FixContext } from './engine'
 import { messageFor } from './messages'
 
-function deps(bridge: Partial<FixBridge> = {}) {
+function deps(bridge: Partial<FixBridge> = {}, context: Partial<FixContext> = {}) {
   return {
     bridge: {
       captureSelection: async () => 'hgsghl',
@@ -11,7 +13,7 @@ function deps(bridge: Partial<FixBridge> = {}) {
       restoreClipboard: async () => {},
       ...bridge,
     },
-    resolveLayout: async () => 'ar-pc',
+    context: async () => ({ layout: 'ar-pc' as const, messages: EN, showMessages: true, ...context }),
     showMessage: vi.fn<(message: string) => void>(),
     onAccessibilityDenied: vi.fn<() => void>(),
   } satisfies EngineDeps
@@ -24,17 +26,26 @@ describe('createFixHandler', () => {
     expect(d.showMessage).not.toHaveBeenCalled()
   })
 
-  it('explains an empty selection', async () => {
-    const d = deps({ captureSelection: async () => null })
+  it('explains an empty selection in the user’s language', async () => {
+    const d = deps({ captureSelection: async () => null }, { messages: AR })
     await createFixHandler(d)()
-    expect(d.showMessage).toHaveBeenCalledWith('Select the text first')
+    expect(d.showMessage).toHaveBeenCalledWith('حدد النص أولًا')
   })
 
-  it('asks for Accessibility when macOS blocks key presses', async () => {
-    const d = deps({ captureSelection: () => Promise.reject({ code: 'accessibility-denied' }) })
+  it('stays quiet when on-screen messages are off', async () => {
+    const d = deps({ captureSelection: async () => null }, { showMessages: false })
+    await createFixHandler(d)()
+    expect(d.showMessage).not.toHaveBeenCalled()
+  })
+
+  it('always asks for Accessibility when macOS blocks key presses', async () => {
+    const d = deps(
+      { captureSelection: () => Promise.reject({ code: 'accessibility-denied' }) },
+      { showMessages: false },
+    )
     await createFixHandler(d)()
     expect(d.onAccessibilityDenied).toHaveBeenCalledOnce()
-    expect(d.showMessage).toHaveBeenCalledWith('Allow Layout Fixer in Accessibility settings')
+    expect(d.showMessage).toHaveBeenCalledWith(EN.hudAccessibility)
   })
 
   it('ignores a second press while a fix is running', async () => {
@@ -42,8 +53,7 @@ describe('createFixHandler', () => {
     const selection = new Promise<string>((resolve) => {
       finish = resolve
     })
-    const d = deps({ captureSelection: () => selection })
-    const handle = createFixHandler(d)
+    const handle = createFixHandler(deps({ captureSelection: () => selection }))
 
     const first = handle()
     expect(await handle()).toBeNull()
@@ -60,13 +70,17 @@ describe('createFixHandler', () => {
 
 describe('messageFor', () => {
   it.each([
-    [{ kind: 'nothing-to-fix' } as const, 'Nothing to fix'],
-    [{ kind: 'error', code: 'secure-input' } as const, 'Can’t fix text in password fields'],
-    [{ kind: 'error', code: 'elevated-app' } as const, 'Can’t fix text in apps running as administrator'],
-    [{ kind: 'error', code: 'wayland' } as const, 'Fixing text needs an X11 session on Linux for now'],
-    [{ kind: 'error', code: 'unsupported' } as const, 'Fixing text isn’t available on this system yet'],
-    [{ kind: 'error', code: 'system' } as const, 'Couldn’t fix the text'],
+    [{ kind: 'nothing-to-fix' } as const, EN.hudNothingToFix],
+    [{ kind: 'error', code: 'secure-input' } as const, EN.hudSecureInput],
+    [{ kind: 'error', code: 'elevated-app' } as const, EN.hudElevated],
+    [{ kind: 'error', code: 'wayland' } as const, EN.hudWayland],
+    [{ kind: 'error', code: 'unsupported' } as const, EN.hudUnsupported],
+    [{ kind: 'error', code: 'system' } as const, EN.hudFailed],
   ])('%j → %s', (outcome, message) => {
-    expect(messageFor(outcome)).toBe(message)
+    expect(messageFor(outcome, EN)).toBe(message)
+  })
+
+  it('translates', () => {
+    expect(messageFor({ kind: 'error', code: 'elevated-app' }, AR)).toBe(AR.hudElevated)
   })
 })

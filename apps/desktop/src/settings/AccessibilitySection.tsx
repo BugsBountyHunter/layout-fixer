@@ -1,5 +1,5 @@
 import { CheckIcon } from '@layout-fixer/ui/icons'
-import { STRINGS } from './strings'
+import { useMessages } from '../i18n/react'
 
 interface Props {
   readonly trusted: boolean | null
@@ -8,24 +8,25 @@ interface Props {
 
 /** macOS only: without Accessibility the app can't press ⌘C / ⌘V for the user. */
 export function AccessibilitySection({ trusted, onRequest }: Props) {
+  const m = useMessages()
   return (
     <section className="section" aria-labelledby="access-title">
-      <h2 id="access-title">{STRINGS.accessSection}</h2>
+      <h2 id="access-title">{m.accessSection}</h2>
       <div className="group">
         <div className="row">
-          <span className="row-label">{STRINGS.accessLabel}</span>
+          <span className="row-label">{m.accessLabel}</span>
           {trusted ? (
             <span className="status allowed">
-              <CheckIcon /> {STRINGS.accessAllowed}
+              <CheckIcon /> {m.accessAllowed}
             </span>
           ) : (
             <button type="button" className="primary" onClick={onRequest} disabled={trusted === null}>
-              {STRINGS.accessButton}
+              {m.accessButton}
             </button>
           )}
         </div>
       </div>
-      <p className="footnote">{trusted ? STRINGS.accessAllowedHint : STRINGS.accessHint}</p>
+      <p className="footnote">{trusted ? m.accessAllowedHint : m.accessHint}</p>
     </section>
   )
 }

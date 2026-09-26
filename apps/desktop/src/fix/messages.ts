@@ -1,25 +1,26 @@
+import type { Messages } from '../i18n'
+import type { FixErrorCode } from './bridge'
 import type { FixOutcome } from './fix-flow'
 
-// English only until phase 5 moves the desktop app onto the extension's en/ar message files.
-const ERROR_MESSAGES = Object.freeze({
-  'accessibility-denied': 'Allow Layout Fixer in Accessibility settings',
-  'secure-input': 'Can’t fix text in password fields',
-  'elevated-app': 'Can’t fix text in apps running as administrator',
-  wayland: 'Fixing text needs an X11 session on Linux for now',
-  unsupported: 'Fixing text isn’t available on this system yet',
-  system: 'Couldn’t fix the text',
-})
+const ERROR_KEYS: Readonly<Record<FixErrorCode, keyof Messages>> = {
+  'accessibility-denied': 'hudAccessibility',
+  'secure-input': 'hudSecureInput',
+  'elevated-app': 'hudElevated',
+  wayland: 'hudWayland',
+  unsupported: 'hudUnsupported',
+  system: 'hudFailed',
+}
 
 /** What the on-screen message says. A successful fix speaks for itself. */
-export function messageFor(outcome: FixOutcome): string | null {
+export function messageFor(outcome: FixOutcome, messages: Messages): string | null {
   switch (outcome.kind) {
     case 'fixed':
       return null
     case 'nothing-selected':
-      return 'Select the text first'
+      return messages.hudNothingSelected
     case 'nothing-to-fix':
-      return 'Nothing to fix'
+      return messages.hudNothingToFix
     case 'error':
-      return ERROR_MESSAGES[outcome.code]
+      return messages[ERROR_KEYS[outcome.code]] as string
   }
 }

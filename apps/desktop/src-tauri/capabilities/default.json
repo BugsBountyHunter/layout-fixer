@@ -3,5 +3,11 @@
   "identifier": "default",
   "description": "What the Settings window may call. Nothing else is exposed to web content.",
   "windows": ["settings"],
-  "permissions": ["core:default", "store:default"]
+  "permissions": [
+    "core:default",
+    "store:default",
+    "autostart:allow-enable",
+    "autostart:allow-disable",
+    "autostart:allow-is-enabled"
+  ]
 }

@@ -1,7 +1,7 @@
+import { SwitchRow } from '@layout-fixer/ui/SwitchRow'
 import { useState } from 'react'
 import { t } from '../../platform/i18n'
 import { releaseSiteAccess, requestSiteAccess, useSiteAccess } from '../../ui/siteAccess'
-import { SwitchRow } from './SwitchRow'
 
 interface Props {
   readonly enabled: boolean

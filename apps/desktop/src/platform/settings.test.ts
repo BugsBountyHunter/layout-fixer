@@ -21,8 +21,24 @@ function memoryStore(initial: Record<string, unknown> = {}): SettingsStore & { d
 }
 
 describe('parseSettings', () => {
-  it('keeps valid layout choices', () => {
-    expect(parseSettings({ arabicLayout: 'ar-mac' })).toEqual({ arabicLayout: 'ar-mac' })
+  it('keeps valid values', () => {
+    const stored = {
+      arabicLayout: 'ar-mac',
+      language: 'ar',
+      showMessages: false,
+      shortcut: 'Ctrl+Alt+K',
+      welcomed: true,
+    }
+    expect(parseSettings(stored)).toEqual(stored)
+  })
+
+  it('replaces each invalid field on its own', () => {
+    expect(
+      parseSettings({ arabicLayout: 'ar-pc', language: 'fr', showMessages: 'yes', shortcut: 'F', welcomed: 1 }),
+    ).toEqual({
+      ...DEFAULT_SETTINGS,
+      arabicLayout: 'ar-pc',
+    })
   })
 
   it.each([undefined, null, 'ar-mac', [], { arabicLayout: 'en-us' }, { arabicLayout: 42 }])(
@@ -40,7 +56,7 @@ describe('resolveLayout', () => {
   })
 
   it('respects an explicit choice on every OS', () => {
-    expect(resolveLayout({ arabicLayout: 'ar-pc' }, true)).toBe('ar-pc')
+    expect(resolveLayout({ ...DEFAULT_SETTINGS, arabicLayout: 'ar-pc' }, true)).toBe('ar-pc')
   })
 })
 
@@ -59,14 +75,15 @@ describe('loadSettings / saveSettings', () => {
 
   it('validates, stores and flushes a change', async () => {
     const store = memoryStore()
-    expect(await saveSettings(store, { arabicLayout: 'ar-pc' })).toEqual({ arabicLayout: 'ar-pc' })
-    expect(store.data.settings).toEqual({ arabicLayout: 'ar-pc' })
+    const expected = { ...DEFAULT_SETTINGS, arabicLayout: 'ar-pc' }
+    expect(await saveSettings(store, { arabicLayout: 'ar-pc' })).toEqual(expected)
+    expect(store.data.settings).toEqual(expected)
     expect(store.save).toHaveBeenCalledOnce()
   })
 
   it('rejects invalid values instead of storing them', async () => {
     const store = memoryStore({ settings: { arabicLayout: 'ar-mac' } })
-    const next = await saveSettings(store, { arabicLayout: 'xx' as never })
+    const next = await saveSettings(store, { arabicLayout: 'xx' as never, shortcut: 'Cmd' })
     expect(next).toEqual(DEFAULT_SETTINGS)
   })
 })

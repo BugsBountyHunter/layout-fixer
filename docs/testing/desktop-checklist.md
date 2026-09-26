@@ -14,6 +14,18 @@ Legend: ✅ checked on macOS 27 (Apple silicon, built-in 2× display + external 
 - [x] ✅ Launching a second copy opens Settings instead of starting another process
 - [x] ✅ Arabic layout choice survives a restart
 
+## First run, language and settings (phase 5)
+
+- [x] ✅ First launch opens the welcome (permission status, practice field, Done); later launches start quietly
+- [x] ✅ Practice field: select `hgsghl ugd;l`, press the shortcut → `السلام عليكم`
+- [x] ✅ Language العربية: the whole window and the tray menu switch at once, no restart; "Same as system" follows macOS
+- [ ] Arabic window reads right to left (headings, rows, checkmarks on the leading side)
+- [x] ✅ Pause in the tray releases the shortcut (⌥⇧F reaches the app); Resume restores it; the item's label follows
+- [x] ✅ Shortcut recorder: ⌃⌥K saved and working, the old shortcut released, kept after a restart; Reset restores ⌥⇧F
+- [ ] Recorder refuses ⌘C (reserved), a bare letter (needs a modifier) and a shortcut another app owns (e.g. ⌘Space)
+- [x] ✅ Open at login creates the LaunchAgent; switching it off removes it
+- [x] ✅ On-screen messages off: an empty selection shows nothing; on: the message shows
+
 ## Permission (macOS)
 
 - [x] ✅ Without Accessibility: the shortcut shows a message, the system prompt, and Settings with an **Allow…** button;

@@ -5,7 +5,7 @@ use tauri::{AppHandle, Manager, State};
 
 use crate::fix::{self, FixError, Snapshot, Timing};
 use crate::platform::{permissions, SystemClipboard, SystemKeyboard};
-use crate::{hud, shortcut, windows};
+use crate::{hud, shortcut, tray, windows};
 
 /// The user's clipboard between capturing the selection and pasting the fix.
 #[derive(Default)]
@@ -89,18 +89,30 @@ pub fn request_accessibility(app: AppHandle) {
     windows::show_settings(&app);
 }
 
-#[derive(Serialize)]
-pub struct ShortcutInfo {
-    accelerator: &'static str,
-    registered: bool,
+#[tauri::command]
+pub fn shortcut_info(hotkey: State<'_, shortcut::Hotkey>) -> shortcut::ShortcutInfo {
+    hotkey.info()
+}
+
+/// Registers a new shortcut chosen in Settings; the web side saves it once this succeeds.
+#[tauri::command]
+pub fn set_shortcut(
+    app: AppHandle,
+    accelerator: String,
+) -> Result<shortcut::ShortcutInfo, shortcut::ShortcutError> {
+    let info = shortcut::change(&app, &accelerator)?;
+    tray::refresh(&app);
+    Ok(info)
 }
 
 #[tauri::command]
-pub fn shortcut_info(status: State<'_, shortcut::Status>) -> ShortcutInfo {
-    ShortcutInfo {
-        accelerator: shortcut::DEFAULT,
-        registered: status.registered(),
-    }
+pub fn set_tray_labels(app: AppHandle, labels: tray::Labels) {
+    tray::set_labels(&app, labels);
+}
+
+#[tauri::command]
+pub fn show_settings(app: AppHandle) {
+    windows::show_settings(&app);
 }
 
 #[derive(Serialize)]

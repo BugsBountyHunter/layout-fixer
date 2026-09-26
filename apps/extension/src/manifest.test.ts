@@ -38,6 +38,10 @@ describe.each(TARGETS)('buildManifest(%s)', (target) => {
     expect(manifest.options_ui).toEqual({ page: 'src/options/index.html', open_in_tab: true })
   })
 
+  it('links to the website', () => {
+    expect(manifest.homepage_url).toBe('https://layoutfixer.dev')
+  })
+
   it('declares every icon size the stores and toolbars need', () => {
     expect(Object.keys(manifest.icons ?? {})).toEqual(['16', '32', '48', '128'])
   })
@@ -63,7 +67,7 @@ describe('browser-specific manifest fields', () => {
     expect(manifest.background).toEqual({ scripts: ['src/background/service-worker.ts'], type: 'module' })
     expect(manifest).toMatchObject({
       browser_specific_settings: {
-        gecko: { id: expect.stringMatching(/^[\w.-]+@[\w.-]+$/), data_collection_permissions: { required: ['none'] } },
+        gecko: { id: 'layout-fixer@layoutfixer.dev', data_collection_permissions: { required: ['none'] } },
         gecko_android: {},
       },
     })

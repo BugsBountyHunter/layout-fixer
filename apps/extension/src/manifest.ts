@@ -4,7 +4,8 @@ import { FIX_COMMAND } from './shared/constants.ts'
 
 export type BrowserTarget = 'chrome' | 'firefox'
 
-const GECKO_ID = 'layout-fixer@layoutfixer.app'
+const GECKO_ID = 'layout-fixer@layoutfixer.dev'
+const HOMEPAGE_URL = 'https://layoutfixer.dev'
 /** First releases that support `data_collection_permissions` (desktop 140 is also the current ESR). */
 const FIREFOX_MIN_VERSION = '140.0'
 const FIREFOX_ANDROID_MIN_VERSION = '142.0'
@@ -25,6 +26,7 @@ const SHARED: Manifest = {
   description: '__MSG_extDescription__',
   default_locale: 'en',
   version: packageJson.version,
+  homepage_url: HOMEPAGE_URL,
   icons: ICONS,
   action: {
     default_popup: 'src/popup/index.html',

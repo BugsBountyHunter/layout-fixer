@@ -84,6 +84,7 @@ the `ar` set to the Arabic localized listing.
 | Screenshots (5) | 1280×800 | `docs/store/screenshots/{en,ar}/01…05-*.png` |
 | Small promo tile | 440×280 | `docs/store/screenshots/{en,ar}/promo-tile-440x280.png` |
 | Marquee promo tile | 1400×560 | `docs/store/screenshots/{en,ar}/marquee-1400x560.png` |
+| Homepage URL | — | https://layoutfixer.dev |
 | Privacy policy URL | — | https://github.com/BugsBountyHunter/layout-fixer/blob/main/PRIVACY.md |
 | Package | — | `layout-fixer-chrome-<version>.zip` from the GitHub Release |
 

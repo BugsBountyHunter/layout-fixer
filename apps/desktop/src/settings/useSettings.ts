@@ -1,8 +1,7 @@
-import { Store } from '@tauri-apps/plugin-store'
+import type { Store } from '@tauri-apps/plugin-store'
 import { useCallback, useEffect, useState } from 'react'
 import { DEFAULT_SETTINGS, type DesktopSettings, loadSettings, saveSettings } from '../platform/settings'
-
-const SETTINGS_FILE = 'settings.json'
+import { settingsStore } from '../platform/store'
 
 interface SettingsState {
   readonly settings: DesktopSettings
@@ -17,7 +16,7 @@ export function useSettings(): SettingsState {
 
   useEffect(() => {
     let active = true
-    Store.load(SETTINGS_FILE, { autoSave: false, defaults: {} })
+    settingsStore()
       .then(async (loaded) => {
         const initial = await loadSettings(loaded)
         if (!active) return

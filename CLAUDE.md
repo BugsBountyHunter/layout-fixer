@@ -192,6 +192,17 @@ npm run desktop:build   # desktop installers in apps/desktop/src-tauri/target/re
 npm run check:desktop   # desktop typecheck, tests + coverage, web build (Rust: cargo fmt/clippy/test in src-tauri)
 ```
 
+**Desktop app:** the fix flow lives in `apps/desktop/src/fix/` (TypeScript: capture → `convert()` → paste, unit-tested
+with a fake bridge) and `src-tauri/src/fix/` (Rust: clipboard snapshot/restore and key timing, unit-tested with fake
+`Clipboard`/`Keyboard` traits). macOS natives are in `src-tauri/src/platform/macos/`; Windows and Linux return
+`Unsupported` until phases 3–4. Manual checks: [docs/testing/desktop-checklist.md](docs/testing/desktop-checklist.md).
+
+**Local macOS signing:** macOS ties the Accessibility permission to the code signature, and ad-hoc builds change it
+on every build. Sign local builds with a self-signed "Layout Fixer Dev" certificate in the login keychain so the
+permission survives rebuilds: `APPLE_SIGNING_IDENTITY="Layout Fixer Dev" CI=true npm run desktop:build`
+(`CI=true` skips the Finder step of the `.dmg`, which needs GUI automation rights). CI builds stay ad-hoc until the
+release certificate lands in phase 6.
+
 ---
 
 ## 7. Engineering rules

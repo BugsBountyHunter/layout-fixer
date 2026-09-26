@@ -1,7 +1,7 @@
 import { invoke } from '@tauri-apps/api/core'
 
 /** Error codes from the Rust side (`FixError`). */
-export type FixErrorCode = 'accessibility-denied' | 'secure-input' | 'unsupported' | 'system'
+export type FixErrorCode = 'accessibility-denied' | 'secure-input' | 'elevated-app' | 'unsupported' | 'system'
 
 /** Native operations the fix needs; the Rust side handles clipboard timing and key presses. */
 export interface FixBridge {
@@ -13,7 +13,7 @@ export interface FixBridge {
   restoreClipboard(): Promise<void>
 }
 
-const CODES: readonly FixErrorCode[] = ['accessibility-denied', 'secure-input', 'unsupported', 'system']
+const CODES: readonly FixErrorCode[] = ['accessibility-denied', 'secure-input', 'elevated-app', 'unsupported', 'system']
 
 /** Tauri rejects with the serialized `FixError`; anything else is an unexpected failure. */
 export function errorCode(error: unknown): FixErrorCode {

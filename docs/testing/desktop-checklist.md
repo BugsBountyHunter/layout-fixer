@@ -40,6 +40,21 @@ Legend: ✅ checked on macOS 27 (Apple silicon, built-in 2× display + external 
 - [ ] Message pill: light and dark mode, readable on busy backgrounds
 - [ ] VoiceOver announces the message (not yet: the pill's web content isn't exposed to accessibility)
 
-## Windows / Linux
+## Windows
 
-Phases 3 and 4. Until then the shortcut shows "Fixing text isn't available on this system yet".
+Automated on the Windows CI runner: the real clipboard round trip (write, read, restore a standard and a registered
+format) and the Ctrl chord order. Check by hand on Windows 10 and 11:
+
+- [ ] Tray icon and menu, Settings opens and hides, single instance
+- [ ] Notepad: `hgsghl ugd;l` → `السلام عليكم` with Alt+Shift+F, with the Arabic (101) layout active and with English active
+- [ ] Ctrl+Z restores the original in one step
+- [ ] Holding Alt+Shift a moment longer doesn't open a menu (Alt) or Start (Win) and the paste still lands
+- [ ] Clipboard restored after a fix: text, an image (Paint), files (Explorer)
+- [ ] Win+V history does not show the fixed text
+- [ ] Notepad or Terminal *run as administrator*: message "Can't fix text in apps running as administrator"
+- [ ] Word, Outlook, Teams/Slack, Chrome/Edge text fields
+- [ ] SmartScreen "More info → Run anyway" on the unsigned installer (NSIS and MSI)
+
+## Linux
+
+Phase 4. Until then the shortcut shows "Fixing text isn't available on this system yet".

@@ -72,7 +72,7 @@ export const en = {
   desktop: {
     eyebrow: 'New',
     title: 'Layout Fixer for desktop',
-    body: 'Fix text in every app, not just the browser — Word, Slack, WhatsApp, Notes, Terminal. Select it and press ⌥⇧F on a Mac or Alt+Shift+F on Windows and Linux.',
+    body: 'Fix text in every app, not just the browser — Word, Slack, WhatsApp, Notes, Terminal. Select it and press ⌥⇧F on a Mac or Alt+Shift+F on Windows and Linux. Afterwards it switches your keyboard to the right language, so you can keep typing.',
     mac: 'Download for macOS',
     windows: 'Download for Windows',
     linux: 'Download for Linux',

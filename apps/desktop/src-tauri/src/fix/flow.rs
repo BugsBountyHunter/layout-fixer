@@ -39,12 +39,21 @@ pub fn capture(
     timing: Timing,
 ) -> Result<Option<Captured>, FixError> {
     let previous = clipboard.snapshot();
+    let marked = clipboard.mark_before_copy()?;
     let before = clipboard.change_count();
-    keyboard.copy()?;
+    if let Err(error) = keyboard.copy() {
+        if marked {
+            clipboard.restore(&previous)?;
+        }
+        return Err(error);
+    }
 
     let mut waited = Duration::ZERO;
     while clipboard.change_count() == before {
         if waited >= timing.copy_timeout {
+            if marked {
+                clipboard.restore(&previous)?;
+            }
             return Ok(None);
         }
         thread::sleep(timing.poll_interval);
@@ -102,6 +111,8 @@ mod tests {
     struct FakeClipboard {
         state: Mutex<(i64, Snapshot)>,
         log: Mutex<Vec<String>>,
+        /// Behave like X11: write a marker before copying.
+        marks: bool,
     }
 
     fn text_snapshot(kind: &str, text: &str) -> Snapshot {
@@ -154,6 +165,12 @@ mod tests {
             self.log.lock().unwrap().push(format!("write {text}"));
             self.app_copies(text_snapshot("text", text));
             Ok(())
+        }
+        fn mark_before_copy(&self) -> Result<bool, FixError> {
+            if self.marks {
+                self.write_transient_text("marker")?;
+            }
+            Ok(self.marks)
         }
     }
 
@@ -260,6 +277,56 @@ mod tests {
             capture(&clipboard, &keys, FAST).unwrap().unwrap().text,
             "hgsghl"
         );
+    }
+
+    fn marking(snapshot: Snapshot) -> FakeClipboard {
+        FakeClipboard {
+            marks: true,
+            ..FakeClipboard::holding(snapshot)
+        }
+    }
+
+    #[test]
+    fn a_marker_is_replaced_by_the_selection() {
+        let original = text_snapshot("text", "hgsghl");
+        let clipboard = marking(original.clone());
+        // The selection is the same text that was already on the clipboard.
+        let keys = keyboard(&clipboard, Some(original.clone()));
+
+        let captured = capture(&clipboard, &keys, FAST).unwrap().unwrap();
+        assert_eq!(captured.text, "hgsghl");
+        assert_eq!(captured.previous, original);
+    }
+
+    #[test]
+    fn a_marker_is_cleaned_up_when_nothing_is_selected() {
+        let original = text_snapshot("text", "keep me");
+        let clipboard = marking(original.clone());
+        let keys = keyboard(&clipboard, None);
+
+        assert!(capture(&clipboard, &keys, FAST).unwrap().is_none());
+        assert_eq!(clipboard.current(), original);
+    }
+
+    #[test]
+    fn a_marker_is_cleaned_up_when_copy_fails() {
+        let original = text_snapshot("text", "keep me");
+        let clipboard = marking(original.clone());
+        struct Failing;
+        impl Keyboard for Failing {
+            fn copy(&self) -> Result<(), FixError> {
+                Err(FixError::Unsupported)
+            }
+            fn paste(&self) -> Result<(), FixError> {
+                Ok(())
+            }
+        }
+
+        assert_eq!(
+            capture(&clipboard, &Failing, FAST).err(),
+            Some(FixError::Unsupported)
+        );
+        assert_eq!(clipboard.current(), original);
     }
 
     #[test]

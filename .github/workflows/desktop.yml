@@ -47,7 +47,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev patchelf
+          sudo apt-get install -y -qq libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev patchelf xvfb
       - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
         with:
           components: rustfmt, clippy
@@ -58,10 +58,12 @@ jobs:
       - run: npm run check:desktop
       - name: Rust format, lint and tests
         working-directory: apps/desktop/src-tauri
+        shell: bash
         run: |
           cargo fmt --check
           cargo clippy --all-targets -- -D warnings
-          cargo test
+          # Linux runs the real X11 clipboard test on a virtual display.
+          if [ "$RUNNER_OS" = "Linux" ]; then xvfb-run -a cargo test; else cargo test; fi
       # CI=true (set by Actions) skips the Finder styling step of the macOS .dmg, which needs a GUI session.
       - run: npm run desktop:build
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

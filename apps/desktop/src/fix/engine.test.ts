@@ -63,6 +63,7 @@ describe('messageFor', () => {
     [{ kind: 'nothing-to-fix' } as const, 'Nothing to fix'],
     [{ kind: 'error', code: 'secure-input' } as const, 'Can’t fix text in password fields'],
     [{ kind: 'error', code: 'elevated-app' } as const, 'Can’t fix text in apps running as administrator'],
+    [{ kind: 'error', code: 'wayland' } as const, 'Fixing text needs an X11 session on Linux for now'],
     [{ kind: 'error', code: 'unsupported' } as const, 'Fixing text isn’t available on this system yet'],
     [{ kind: 'error', code: 'system' } as const, 'Couldn’t fix the text'],
   ])('%j → %s', (outcome, message) => {

@@ -14,8 +14,13 @@ pub struct Representation {
 }
 
 pub trait Clipboard: Send + Sync {
-    /// Increases whenever any app writes to the clipboard.
+    /// Changes whenever any app writes to the clipboard.
     fn change_count(&self) -> i64;
+    /// Called before ⌘C / Ctrl+C. Clipboards without a change counter (X11) write a marker here so a
+    /// copy of identical text still registers; returns whether the clipboard was modified.
+    fn mark_before_copy(&self) -> Result<bool, FixError> {
+        Ok(false)
+    }
     fn read_text(&self) -> Option<String>;
     fn snapshot(&self) -> Snapshot;
     fn restore(&self, snapshot: &Snapshot) -> Result<(), FixError>;

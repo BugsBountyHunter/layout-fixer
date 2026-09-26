@@ -4,8 +4,9 @@ import { AccessibilitySection } from './AccessibilitySection'
 import { LayoutChoices } from './LayoutChoices'
 import { ShortcutSection } from './ShortcutSection'
 import { STRINGS } from './strings'
-import { useAccessibility, useShortcutInfo } from './useNative'
+import { useAccessibility, useShortcutInfo, useWaylandSession } from './useNative'
 import { useSettings } from './useSettings'
+import { WaylandNotice } from './WaylandNotice'
 
 const IS_MAC = isMacPlatform(navigator.userAgent)
 
@@ -13,6 +14,7 @@ export function Settings() {
   const { settings, failed, update } = useSettings()
   const shortcut = useShortcutInfo()
   const accessibility = useAccessibility(IS_MAC)
+  const wayland = useWaylandSession()
 
   return (
     <main className="settings">
@@ -26,6 +28,8 @@ export function Settings() {
           {STRINGS.loadError}
         </p>
       )}
+
+      {wayland && <WaylandNotice />}
 
       {IS_MAC && <AccessibilitySection trusted={accessibility.trusted} onRequest={accessibility.request} />}
 

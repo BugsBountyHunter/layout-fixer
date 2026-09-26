@@ -5,6 +5,7 @@ const ERROR_MESSAGES = Object.freeze({
   'accessibility-denied': 'Allow Layout Fixer in Accessibility settings',
   'secure-input': 'Can’t fix text in password fields',
   'elevated-app': 'Can’t fix text in apps running as administrator',
+  wayland: 'Fixing text needs an X11 session on Linux for now',
   unsupported: 'Fixing text isn’t available on this system yet',
   system: 'Couldn’t fix the text',
 })

@@ -7,6 +7,17 @@ export interface ShortcutInfo {
   readonly registered: boolean
 }
 
+/** Linux on Wayland can't send keys to other apps yet; Settings explains that. */
+export function useWaylandSession(): boolean {
+  const [wayland, setWayland] = useState(false)
+  useEffect(() => {
+    invoke<{ wayland: boolean }>('session_info')
+      .then((info) => setWayland(info.wayland))
+      .catch((error: unknown) => console.error('[layout-fixer] Could not read the session type:', error))
+  }, [])
+  return wayland
+}
+
 export function useShortcutInfo(): ShortcutInfo | null {
   const [info, setInfo] = useState<ShortcutInfo | null>(null)
   useEffect(() => {

@@ -195,10 +195,11 @@ npm run check:desktop   # desktop typecheck, tests + coverage, web build (Rust: 
 **Desktop app:** the fix flow lives in `apps/desktop/src/fix/` (TypeScript: capture → `convert()` → paste, unit-tested
 with a fake bridge) and `src-tauri/src/fix/` (Rust: clipboard snapshot/restore and key timing, unit-tested with fake
 `Clipboard`/`Keyboard` traits). Natives are in `src-tauri/src/platform/macos/` and `platform/windows/` (Win32 clipboard with every memory format,
-`SendInput`, elevated-app detection); Linux returns `Unsupported` until phase 4. Windows code can't be built on a Mac
-(Tauri's build script needs the Windows resource compiler), but it can be type-checked: add the `windows`
-dependency to a scratch crate that includes `src/fix` and `src/platform/windows` via `#[path]`, then
-`cargo clippy --target x86_64-pc-windows-msvc`. Manual checks: [docs/testing/desktop-checklist.md](docs/testing/desktop-checklist.md).
+`SendInput`, elevated-app detection) and `platform/linux/` (X11 via `arboard` + XTest through `x11rb`; X11 has no
+clipboard counter, so a unique marker is written before Ctrl+C; Wayland is detected and explained). Windows and Linux
+code can't be built on a Mac (Tauri's build scripts need the Windows resource compiler / GTK), but they can be
+type-checked: put the platform's dependencies in a scratch crate that includes `src/fix` and `src/platform/<os>` via
+`#[path]`, then `cargo clippy --target x86_64-pc-windows-msvc` or `--target x86_64-unknown-linux-gnu`. Manual checks: [docs/testing/desktop-checklist.md](docs/testing/desktop-checklist.md).
 
 **Local macOS signing:** macOS ties the Accessibility permission to the code signature, and ad-hoc builds change it
 on every build. Sign local builds with a self-signed "Layout Fixer Dev" certificate in the login keychain so the

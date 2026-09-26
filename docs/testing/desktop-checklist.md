@@ -57,4 +57,20 @@ format) and the Ctrl chord order. Check by hand on Windows 10 and 11:
 
 ## Linux
 
-Phase 4. Until then the shortcut shows "Fixing text isn't available on this system yet".
+Automated on the Ubuntu CI runner under Xvfb: the real X11 clipboard round trip (marker, transient write, restore of
+text + HTML), the XTest chord order and the Wayland detection. Check by hand on an X11 session (Ubuntu "Ubuntu on
+Xorg", Fedora "GNOME on Xorg", KDE Plasma X11, Linux Mint Cinnamon):
+
+- [ ] Tray icon and menu (needs an AppIndicator/StatusNotifier host, e.g. the GNOME AppIndicator extension)
+- [ ] gedit / Kate / Mousepad: `hgsghl ugd;l` → `السلام عليكم` with Alt+Shift+F, with Arabic and with English active
+- [ ] Ctrl+Z restores the original
+- [ ] Holding Alt+Shift longer doesn't trigger a menu, and the paste still lands
+- [ ] Clipboard restored after a fix: plain text, rich text from LibreOffice (HTML), an image
+- [ ] KDE Klipper / GNOME clipboard extensions don't record the fixed text
+- [ ] Firefox and Chrome text fields, LibreOffice Writer, Telegram
+- [ ] AppImage and .deb both install and start
+- [ ] **Wayland session:** Settings shows the Wayland notice; Fix Selection in the tray shows
+      "Fixing text needs an X11 session on Linux for now"
+
+Known limits: copied files (`text/uri-list`) and app-private formats are not restored on Linux; Wayland is v1.1
+(portal / `ydotool`).

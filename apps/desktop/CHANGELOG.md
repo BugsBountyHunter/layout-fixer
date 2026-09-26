@@ -2,6 +2,16 @@
 
 All notable changes to the desktop app. The browser extension has its own [CHANGELOG](../../CHANGELOG.md).
 
+## [1.0.1] - 2026-09-26
+
+### Fixed
+
+- macOS: when Layout Fixer runs from the disk image, or from a temporary copy because it wasn't moved into
+  Applications in Finder, Settings and the welcome now explain how to move it (with a button that opens the
+  Applications folder). Updates wait until it's moved instead of failing.
+- Apps that were just opened get more time to answer the copy, so the first fix after opening an app doesn't
+  report "Select the text first" by mistake.
+
 ## [1.0.0] - 2026-09-26
 
 First public release for macOS, Windows and Linux.

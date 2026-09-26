@@ -4,7 +4,7 @@ use super::{Clipboard, FixError, Keyboard, Snapshot};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Timing {
-    /// How long to wait for the focused app to answer ⌘C.
+    /// How long to wait for the focused app to answer ⌘C. Apps that were just opened can be slow.
     pub copy_timeout: Duration,
     pub poll_interval: Duration,
     /// How long the target app gets to read the pasted text before the clipboard is restored.
@@ -14,7 +14,7 @@ pub struct Timing {
 impl Default for Timing {
     fn default() -> Self {
         Self {
-            copy_timeout: Duration::from_millis(400),
+            copy_timeout: Duration::from_millis(700),
             poll_interval: Duration::from_millis(20),
             paste_settle: Duration::from_millis(250),
         }

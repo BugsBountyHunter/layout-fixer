@@ -20,6 +20,15 @@ export const EN = {
   hudUnsupported: 'Fixing text isn’t available on this system yet',
   hudFailed: 'Couldn’t fix the text',
 
+  // Install location (macOS)
+  moveTitle: 'Move Layout Fixer to Applications',
+  moveDiskImage:
+    'You opened Layout Fixer from the disk image. Quit it, drag Layout Fixer into the Applications folder, and open it from there — otherwise it can’t update itself or open at login.',
+  moveTranslocated:
+    'macOS is running Layout Fixer from a temporary copy. Quit it, drag Layout Fixer into the Applications folder in Finder, and open it from there — otherwise it can’t update itself or open at login.',
+  moveButton: 'Open Applications Folder',
+  updateNeedsMove: 'Move Layout Fixer to Applications to install updates.',
+
   // Permission (macOS)
   accessSection: 'Permission',
   accessLabel: 'Accessibility',

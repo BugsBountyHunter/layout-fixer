@@ -3,7 +3,8 @@ import { useMessages } from '../i18n/react'
 import { formatAccelerator } from '../platform/accelerator'
 import { isMacPlatform } from '../platform/os'
 import { AccessibilitySection } from '../settings/AccessibilitySection'
-import { useAccessibility, useShortcutInfo } from '../settings/useNative'
+import { InstallNotice } from '../settings/InstallNotice'
+import { useAccessibility, useInstallLocation, useShortcutInfo } from '../settings/useNative'
 
 const IS_MAC = isMacPlatform(navigator.userAgent)
 
@@ -12,6 +13,7 @@ export function Welcome({ onDone }: { readonly onDone: () => void }) {
   const m = useMessages()
   const [shortcut] = useShortcutInfo()
   const accessibility = useAccessibility(IS_MAC)
+  const location = useInstallLocation()
 
   return (
     <main className="settings welcome">
@@ -19,6 +21,8 @@ export function Welcome({ onDone }: { readonly onDone: () => void }) {
         <h1>{m.welcomeTitle}</h1>
         <p>{m.welcomeBody}</p>
       </header>
+
+      <InstallNotice location={location} />
 
       {IS_MAC && <AccessibilitySection trusted={accessibility.trusted} onRequest={accessibility.request} />}
 

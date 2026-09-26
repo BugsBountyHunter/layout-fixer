@@ -77,10 +77,23 @@ for (const page of PAGES) {
     test('has no horizontal scroll at phone width', async ({ page: p }) => {
       await p.setViewportSize({ width: 375, height: 812 })
       await p.goto(page.path)
-      const overflow = await p.evaluate(
-        () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
-      )
-      expect(overflow).toBeLessThanOrEqual(0)
+      const { overflow, offenders } = await p.evaluate(() => {
+        const width = document.documentElement.clientWidth
+        // Name the elements that stick out, so a failure says what to fix (fonts differ between CI and a Mac).
+        const offenders = Array.from(document.querySelectorAll('body *'))
+          .filter((element) => {
+            const box = element.getBoundingClientRect()
+            return box.width > 0 && (box.right > width + 0.5 || box.left < -0.5)
+          })
+          .slice(0, 10)
+          .map((element) => {
+            const box = element.getBoundingClientRect()
+            const name = `${element.tagName.toLowerCase()}.${Array.from(element.classList).join('.')}`
+            return `${name} [${Math.round(box.left)}, ${Math.round(box.right)}] ${element.textContent?.trim().slice(0, 40)}`
+          })
+        return { overflow: document.documentElement.scrollWidth - width, offenders }
+      })
+      expect(overflow, offenders.join('\n')).toBeLessThanOrEqual(0)
     })
 
     test('keeps the header on one row at phone width', async ({ page: p }) => {

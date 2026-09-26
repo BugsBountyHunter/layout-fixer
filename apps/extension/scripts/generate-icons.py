@@ -4,14 +4,20 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = ROOT.parent.parent
 SIZES = (16, 32, 48, 128)
 CANVAS = 1024
 OUT_DIR = ROOT / "public" / "icons"
-STORE_ICON = ROOT.parent.parent / "docs" / "store" / "store-icon-128.png"
+STORE_ICON = REPO_ROOT / "docs" / "store" / "store-icon-128.png"
 # Chrome Web Store: 128×128 file with 96×96 artwork and 16px transparent padding on each side.
 STORE_ARTWORK = 96
 # The logo glyph uses Plex (OFL allows it in artwork); SF Arabic's license does not.
-FONT = ROOT / "node_modules" / "@fontsource" / "ibm-plex-sans-arabic" / "files" / "ibm-plex-sans-arabic-arabic-600-normal.woff"
+FONT_FILE = Path("@fontsource", "ibm-plex-sans-arabic", "files", "ibm-plex-sans-arabic-arabic-600-normal.woff")
+# npm workspaces hoist dependencies to the repository root; an app-level copy wins if one exists.
+FONT = next(
+    (path for path in (ROOT / "node_modules" / FONT_FILE, REPO_ROOT / "node_modules" / FONT_FILE) if path.exists()),
+    REPO_ROOT / "node_modules" / FONT_FILE,
+)
 TILE = (0, 113, 227)  # --lf-accent in src/ui/tokens.css
 
 

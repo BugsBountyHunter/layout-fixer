@@ -8,7 +8,7 @@ const ease = { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easi
 const COLUMNS = [
   {
     title: 'Browsers',
-    items: ['Chrome · Edge', 'Brave · Opera', 'Firefox', 'Firefox on Android'],
+    items: ['Chrome · Edge', 'Brave · Opera', 'Vivaldi', 'ChromeOS'],
   },
   {
     title: 'Desktop app',

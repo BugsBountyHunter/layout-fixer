@@ -10,7 +10,7 @@ screen comes from the code, not from copy.
 | Keyboard | Each key lights up while `convertBetween(text, 'en-us', 'ar-pc')` builds السلام عليكم |
 | Fix | Select → Alt+Shift+F → replaced in place, Ctrl+Z undoes it |
 | Both ways | `detectDirection` picks en → ar or ar → en |
-| Everywhere | Browsers, desktop app, four ways to fix |
+| Everywhere | Chromium browsers, desktop app, four ways to fix |
 | Private | 0 network calls, 0 sites read until you opt in, 47 keys, 3 layouts |
 | Outro | The U key types ع — which becomes the logo |
 

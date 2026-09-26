@@ -26,6 +26,7 @@ describe('parseSettings', () => {
       arabicLayout: 'ar-mac',
       language: 'ar',
       showMessages: false,
+      switchLayout: false,
       shortcut: 'Ctrl+Alt+K',
       welcomed: true,
       checkUpdates: false,
@@ -39,6 +40,7 @@ describe('parseSettings', () => {
         arabicLayout: 'ar-pc',
         language: 'fr',
         showMessages: 'yes',
+        switchLayout: 'on',
         shortcut: 'F',
         welcomed: 1,
         checkUpdates: 'no',
@@ -55,6 +57,11 @@ describe('parseSettings', () => {
       expect(parseSettings(raw)).toEqual(DEFAULT_SETTINGS)
     },
   )
+})
+
+it('switches the keyboard layout by default', () => {
+  expect(DEFAULT_SETTINGS.switchLayout).toBe(true)
+  expect(parseSettings({}).switchLayout).toBe(true)
 })
 
 describe('resolveLayout', () => {

@@ -3,8 +3,10 @@ use std::sync::Mutex;
 use serde::Serialize;
 use tauri::{AppHandle, Manager, State};
 
-use crate::fix::{self, FixError, Snapshot, Timing};
-use crate::platform::{permissions, SystemClipboard, SystemKeyboard};
+use crate::fix::{self, FixError, LayoutSwitch, Snapshot, Timing};
+use crate::platform::{
+    permissions, preferred_ids, ArabicLayout, SystemClipboard, SystemInputSources, SystemKeyboard,
+};
 use crate::{hud, shortcut, tray, windows};
 
 /// The user's clipboard between capturing the selection and pasting the fix.
@@ -77,6 +79,39 @@ pub async fn restore_clipboard(pending: State<'_, PendingClipboard>) -> Result<(
     }
 }
 
+/// A language code the web side may ask for: `ar`, `en`, later others. Rejects anything else.
+fn is_language_code(code: &str) -> bool {
+    (2..=3).contains(&code.len()) && code.bytes().all(|byte| byte.is_ascii_lowercase())
+}
+
+/// After a fix: switches the OS keyboard layout to one that types `language`, if one is enabled.
+/// Runs on the main thread, which macOS requires for input-source changes.
+#[tauri::command]
+pub async fn switch_layout(
+    app: AppHandle,
+    language: String,
+    layout: ArabicLayout,
+) -> Result<LayoutSwitch, FixError> {
+    if !is_language_code(&language) {
+        return Err(FixError::System(format!("invalid language {language:?}")));
+    }
+    let (sender, receiver) = std::sync::mpsc::channel();
+    app.run_on_main_thread(move || {
+        let _ = sender.send(fix::switch_to(
+            &SystemInputSources,
+            &language,
+            preferred_ids(layout),
+        ));
+    })
+    .map_err(|error| FixError::System(error.to_string()))?;
+    blocking(move || {
+        receiver
+            .recv()
+            .map_err(|error| FixError::System(error.to_string()))?
+    })
+    .await
+}
+
 #[tauri::command]
 pub fn accessibility_status() -> bool {
     permissions::accessibility_trusted()
@@ -146,4 +181,19 @@ pub fn session_info() -> SessionInfo {
 #[tauri::command]
 pub fn show_hud(app: AppHandle, message: String) {
     hud::show(&app, &message);
+}
+
+#[cfg(test)]
+mod tests {
+    use super::is_language_code;
+
+    #[test]
+    fn accepts_only_plain_language_codes() {
+        for code in ["ar", "en", "fil"] {
+            assert!(is_language_code(code), "{code}");
+        }
+        for code in ["", "a", "EN", "en-GB", "arab", "../"] {
+            assert!(!is_language_code(code), "{code}");
+        }
+    }
 }

@@ -9,6 +9,7 @@ export interface FixContext {
   readonly layout: ArabicLayoutId
   readonly messages: Messages
   readonly showMessages: boolean
+  readonly switchLayout: boolean
 }
 
 export interface EngineDeps {
@@ -25,8 +26,8 @@ export function createFixHandler(deps: EngineDeps): () => Promise<FixOutcome | n
     if (running) return null
     running = true
     try {
-      const { layout, messages, showMessages } = await deps.context()
-      const outcome = await fixSelection(deps.bridge, layout)
+      const { layout, messages, showMessages, switchLayout } = await deps.context()
+      const outcome = await fixSelection(deps.bridge, layout, { switchLayout })
       const accessibilityDenied = outcome.kind === 'error' && outcome.code === 'accessibility-denied'
       const message = messageFor(outcome, messages)
       // Without the permission nothing works, so that message shows even when messages are off.

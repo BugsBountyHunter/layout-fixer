@@ -25,6 +25,11 @@ export function GeneralSection({ settings, update }: Props) {
           checked={settings.showMessages}
           onChange={(showMessages) => update({ showMessages })}
         />
+        <SwitchRow
+          label={m.switchLayout}
+          checked={settings.switchLayout}
+          onChange={(switchLayout) => update({ switchLayout })}
+        />
         <label className="row">
           <span className="row-label">{m.language}</span>
           <select
@@ -40,6 +45,7 @@ export function GeneralSection({ settings, update }: Props) {
         </label>
       </div>
       <p className="footnote">{m.showMessagesHint}</p>
+      <p className="footnote">{m.switchLayoutHint}</p>
     </section>
   )
 }

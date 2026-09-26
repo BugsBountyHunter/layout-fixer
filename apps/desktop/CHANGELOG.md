@@ -2,6 +2,16 @@
 
 All notable changes to the desktop app. The browser extension has its own [CHANGELOG](../../CHANGELOG.md).
 
+## [Unreleased]
+
+### Added
+
+- After fixing the text, the keyboard switches to the language the text was fixed to, so you can keep typing.
+  It only picks from the layouts you already have (preferring the Arabic layout chosen in Settings) and does
+  nothing if one for that language is already active. On by default; turn it off in Settings → General.
+  Works on macOS and Windows. On Linux X11 it switches the XKB group, which works on KDE, Xfce, Cinnamon and MATE;
+  GNOME keeps one layout in the keymap at a time, so nothing switches there yet.
+
 ## [1.0.3] - 2026-09-26
 
 ### Fixed

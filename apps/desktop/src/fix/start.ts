@@ -20,6 +20,7 @@ export function startFixEngine(): void {
         layout: resolveLayout(settings, IS_MAC),
         messages: messagesFor(resolveLanguage(settings.language, navigator.languages)),
         showMessages: settings.showMessages,
+        switchLayout: settings.switchLayout,
       }
     },
     showMessage: (message) => {

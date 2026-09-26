@@ -10,10 +10,12 @@ describe('tauriBridge', () => {
     await tauriBridge.captureSelection()
     await tauriBridge.pasteText('مرحبا')
     await tauriBridge.restoreClipboard()
+    await tauriBridge.switchLayout('ar', 'ar-mac')
     expect(vi.mocked(invoke).mock.calls).toEqual([
       ['capture_selection'],
       ['paste_text', { text: 'مرحبا' }],
       ['restore_clipboard'],
+      ['switch_layout', { language: 'ar', layout: 'ar-mac' }],
     ])
   })
 })

@@ -33,6 +33,7 @@ pub fn run() {
             commands::capture_selection,
             commands::paste_text,
             commands::restore_clipboard,
+            commands::switch_layout,
             commands::accessibility_status,
             commands::request_accessibility,
             commands::shortcut_info,

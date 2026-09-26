@@ -1,8 +1,10 @@
 mod clipboard;
+mod input_sources;
 mod keyboard;
 pub mod session;
 
 pub use clipboard::LinuxClipboard as SystemClipboard;
+pub use input_sources::{preferred_ids, LinuxInputSources as SystemInputSources};
 pub use keyboard::LinuxKeyboard as SystemKeyboard;
 
 /// X11 needs no permission to send keys.

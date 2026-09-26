@@ -141,6 +141,10 @@ layout-fixer/
 ├── packages/core/                # @layout-fixer/core — its own tests and 90/85 coverage thresholds
 │   ├── src/                      # converter, scripts, languages, layouts/ (+ OS fixtures) — pure
 │   └── scripts/                  # dump-macos-layout.swift, generate-layout.py
+├── packages/ui/                  # @layout-fixer/ui — tokens.css, theme.css, grouped.css, icons, ShortcutKeys
+├── apps/desktop/                 # @layout-fixer/desktop — Tauri 2 app (plan: docs/plans/2026-09-26-desktop-app.md)
+│   ├── src/                      # React Settings window + platform/ (validated settings, OS detection)
+│   └── src-tauri/                # Rust: tray menu, single instance, window lifecycle, capabilities/
 └── apps/extension/               # @layout-fixer/extension
     ├── src/
     │   ├── manifest.ts           # buildManifest('chrome' | 'firefox')
@@ -183,6 +187,9 @@ npm run package:firefox # zip for addons.mozilla.org
 npm run icons           # regenerate icons (Python + Pillow, macOS fonts)
 python3 packages/core/scripts/generate-layout.py <macOS id> <layout id>   # key data from a fixture
 npm run <script> -w @layout-fixer/core    # run a script in one workspace (typecheck, test, …)
+npm run desktop:dev     # desktop app with hot reload (needs Rust: rustup.rs)
+npm run desktop:build   # desktop installers in apps/desktop/src-tauri/target/release/bundle
+npm run check:desktop   # desktop typecheck, tests + coverage, web build (Rust: cargo fmt/clippy/test in src-tauri)
 ```
 
 ---

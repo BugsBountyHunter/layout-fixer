@@ -76,8 +76,11 @@ Legend: ✅ checked on macOS 27 (Apple silicon, built-in 2× display + external 
 - [x] ✅ macOS: the host answers framed messages like Chrome sends them (ping; ABC → Arabic → "already-active" → ABC;
       an unknown request is refused)
 - [x] ✅ Automated: `apps/extension/e2e/desktop.spec.ts` (fake host in the Playwright profile)
-- [ ] After opening the app once, `~/Library/Application Support/Google/Chrome/NativeMessagingHosts/io.github.bugsbountyhunter.layoutfixer.json`
-      exists and points at `/Applications/Layout Fixer.app/Contents/MacOS/layout-fixer-desktop`
+- [x] ✅ After opening the app once, `~/Library/Application Support/Google/Chrome/NativeMessagingHosts/io.github.bugsbountyhunter.layoutfixer.json`
+      exists and points at `/Applications/Layout Fixer.app/Contents/MacOS/layout-fixer-desktop`, allowing only the store id
+      (verified with the installed, release-signed 1.3.2)
+- [x] ✅ The installed release app answers as the host (1.3.2: ping; ABC → Arabic → "already-active" → ABC; unknown
+      request refused)
 - [ ] Store extension in Chrome: Settings → Keyboard layout → switch on → permission prompt → "Connected to Layout
       Fixer for desktop 1.3.0"; fixing `hgsghl` in a text field switches the menu-bar input source to Arabic
 - [ ] Desktop app not installed: the switch shows the "isn't installed" notice with the download link

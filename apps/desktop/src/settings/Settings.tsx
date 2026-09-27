@@ -4,6 +4,7 @@ import { layoutHints } from '../platform/layoutHints'
 import { isMacPlatform } from '../platform/os'
 import { resolveLayout } from '../platform/settings'
 import type { Updater } from '../update/useUpdater'
+import { About } from './About'
 import { AccessibilitySection } from './AccessibilitySection'
 import { GeneralSection } from './GeneralSection'
 import { InstallNotice } from './InstallNotice'
@@ -76,6 +77,8 @@ export function Settings({ state, updater }: { readonly state: SettingsState; re
         <h2 id="privacy-title">{m.privacyTitle}</h2>
         <p className="footnote">{m.privacyBody}</p>
       </section>
+
+      <About version={updater.version} />
     </main>
   )
 }

@@ -141,3 +141,52 @@ select {
     min-width: 140px;
   }
 }
+
+/* About section: link rows that look like list rows, and the "made with love" credit. */
+.about-link {
+  justify-content: flex-start;
+  color: var(--lf-label);
+  text-decoration: none;
+}
+.about-link:hover {
+  background: var(--lf-fill);
+  text-decoration: none;
+}
+.about-link:focus-visible {
+  outline: 2px solid var(--lf-focus);
+  outline-offset: -2px;
+}
+.about-icon {
+  display: inline-flex;
+  flex: none;
+  color: var(--lf-link);
+}
+.about-label {
+  flex: 1;
+}
+.about-trailing {
+  display: inline-flex;
+  color: var(--lf-label-secondary);
+}
+[dir='rtl'] .about-trailing svg {
+  transform: scaleX(-1);
+}
+.about-heart {
+  display: inline-flex;
+  vertical-align: -1px;
+  color: var(--lf-danger);
+}
+.about-credit a {
+  color: var(--lf-link);
+}
+.visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.about-donate .about-icon {
+  color: var(--lf-danger);
+}

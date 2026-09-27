@@ -23,9 +23,20 @@
 }
 
 @media (pointer: coarse) {
-  .links a {
+  .links a,
+  .credit a {
     display: inline-flex;
     align-items: center;
     min-block-size: 44px;
   }
+}
+
+.credit {
+  margin: 0;
+}
+
+.heart {
+  display: inline-flex;
+  vertical-align: -2px;
+  color: var(--lf-danger);
 }

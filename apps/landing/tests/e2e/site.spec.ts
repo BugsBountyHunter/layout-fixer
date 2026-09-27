@@ -29,6 +29,15 @@ for (const page of PAGES) {
       for (const link of await links.all()) await expect(link).toHaveAttribute('href', STORE_URL)
     })
 
+    test('credits the author and shows ways to help', async ({ page: p }) => {
+      await p.goto(page.path)
+      await expect(p.getByTestId('made-with-love')).toContainText(page.lang === 'en' ? 'Ahmed Saber' : 'أحمد صابر')
+      await expect(p.getByTestId('donate-link')).toHaveAttribute('href', 'https://paypal.me/A7medSR96')
+      await expect(p.getByTestId('support-rate')).toHaveAttribute('href', `${STORE_URL}/reviews`)
+      await expect(p.getByTestId('support-bug')).toHaveAttribute('target', '_blank')
+      await expect(p.locator('#support').getByRole('button')).toBeVisible()
+    })
+
     test('shows the promo video without autoplaying it', async ({ page: p, request }) => {
       await p.goto(page.path)
       const video = p.getByTestId('promo-video')

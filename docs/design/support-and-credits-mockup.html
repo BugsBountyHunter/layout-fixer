@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support and credits mockup</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+<style>
+:root{--bg:#fff;--frame:#f2f2f7;--group:#fff;--label:#1d1d1f;--label2:#6e6e73;--muted:#aeaeb2;--sep:rgba(60,60,67,.18);--link:#0066cc;--accent:#0071e3;--fill:rgba(120,120,128,.14);--heart:#e0245e}
+@media (prefers-color-scheme:dark){:root{--bg:#000;--frame:#1c1c1e;--group:#2c2c2e;--label:#f5f5f7;--label2:#98989d;--muted:#636366;--sep:rgba(84,84,88,.6);--link:#2997ff;--accent:#0a84ff;--fill:rgba(120,120,128,.32)}}
+body{margin:0;padding:24px 16px;background:var(--bg);color:var(--label);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans Arabic",sans-serif}
+main{max-width:900px;margin:auto}
+.lbl{font-size:12px;color:var(--label2);margin:0 0 8px}
+.frame{background:var(--frame);border-radius:12px;padding:20px}
+.grp{background:var(--group);border-radius:10px;overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;padding:10px 14px}
+.row+.row{border-top:.5px solid var(--sep)}
+.row>i{font-size:18px;color:var(--link)}
+.t{flex:1}.s{display:block;font-size:12px;color:var(--label2)}
+.row>i.chev{color:var(--muted);font-size:16px}
+.h{font-size:13px;color:var(--label2);font-weight:600;margin:0 0 6px 14px}
+.foot{font-size:12px;color:var(--label2);margin:8px 14px 0}
+.btn{font:inherit;font-size:13px;font-weight:600;padding:4px 12px;border-radius:999px;border:0;background:var(--fill);color:var(--label)}
+.btnp{background:var(--accent);color:#fff}
+.heart{color:var(--heart)}.a{color:var(--link)}
+.two{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:14px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+@media (max-width:640px){.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main>
+<p class="lbl">1 · Website: new section after the FAQ, plus a credit line in the footer</p>
+<div class="frame" style="margin-bottom:24px">
+  <div style="text-align:center;margin-bottom:16px">
+    <p style="font-size:22px;font-weight:700;margin:0">Help Layout Fixer grow</p>
+    <p style="color:var(--label2);margin:4px 0 0">It’s free and open source. Here’s how you can help.</p>
+  </div>
+  <div class="two">
+    <div class="grp">
+      <div class="row"><i class="ti ti-star"></i><span class="t">Rate it on the Chrome Web Store<span class="s">Reviews help people find it</span></span><i class="ti ti-chevron-right chev"></i></div>
+      <div class="row"><i class="ti ti-brand-github"></i><span class="t">Star it on GitHub</span><i class="ti ti-chevron-right chev"></i></div>
+      <div class="row"><i class="ti ti-bug"></i><span class="t">Report a bug</span><i class="ti ti-chevron-right chev"></i></div>
+      <div class="row"><i class="ti ti-language"></i><span class="t">Request a language<span class="s">Persian, Urdu, Hebrew, Russian…</span></span><i class="ti ti-chevron-right chev"></i></div>
+      <div class="row"><i class="ti ti-code"></i><span class="t">Contribute code<span class="s">Read the contributing guide</span></span><i class="ti ti-chevron-right chev"></i></div>
+      <div class="row"><i class="ti ti-share"></i><span class="t">Share with a friend</span><button type="button" class="btn">Share</button></div>
+    </div>
+    <div class="grp" style="padding:18px;display:flex;flex-direction:column;gap:8px;justify-content:center;text-align:center">
+      <i class="ti ti-heart heart" style="font-size:26px"></i>
+      <p style="font-size:15px;font-weight:600;margin:0">Support development</p>
+      <p style="font-size:13px;color:var(--label2);margin:0">A small donation keeps new languages and the desktop app coming.</p>
+      <div><button type="button" class="btn btnp">Donate with PayPal</button></div>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:18px;padding-top:12px;border-top:.5px solid var(--sep);font-size:12px;color:var(--label2)">
+    <span>© 2026 Layout Fixer · Made with <i class="ti ti-heart heart"></i> by <span class="a">Ahmed Saber</span></span>
+    <span>GitHub · Privacy · MIT License · Donate · عربي</span>
+  </div>
+</div>
+<div class="cols">
+  <div>
+    <p class="lbl">2 · Extension options: new last section (Rate hidden on Firefox)</p>
+    <div class="frame">
+      <p class="h">About</p>
+      <div class="grp">
+        <div class="row"><i class="ti ti-star"></i><span class="t">Rate Layout Fixer</span><i class="ti ti-external-link chev"></i></div>
+        <div class="row"><i class="ti ti-bug"></i><span class="t">Report a bug</span><i class="ti ti-external-link chev"></i></div>
+        <div class="row"><i class="ti ti-language"></i><span class="t">Request a language</span><i class="ti ti-external-link chev"></i></div>
+        <div class="row"><i class="ti ti-brand-github"></i><span class="t">Contribute on GitHub</span><i class="ti ti-external-link chev"></i></div>
+        <div class="row"><i class="ti ti-share"></i><span class="t">Share with a friend</span><button type="button" class="btn">Copy link</button></div>
+        <div class="row"><i class="ti ti-heart heart"></i><span class="t">Donate</span><i class="ti ti-external-link chev"></i></div>
+      </div>
+      <p class="foot">Made with <i class="ti ti-heart heart"></i> by <span class="a">Ahmed Saber</span> · Version 1.0.1</p>
+    </div>
+  </div>
+  <div>
+    <p class="lbl">3 · Desktop settings: new last section</p>
+    <div class="frame">
+      <p class="h">About</p>
+      <div class="grp">
+        <div class="row"><i class="ti ti-bug"></i><span class="t">Report a bug</span><i class="ti ti-external-link chev"></i></div>
+        <div class="row"><i class="ti ti-language"></i><span class="t">Request a language</span><i class="ti ti-external-link chev"></i></div>
+        <div class="row"><i class="ti ti-brand-github"></i><span class="t">Star or contribute on GitHub</span><i class="ti ti-external-link chev"></i></div>
+        <div class="row"><i class="ti ti-share"></i><span class="t">Share with a friend</span><button type="button" class="btn">Copy link</button></div>
+        <div class="row"><i class="ti ti-heart heart"></i><span class="t">Donate</span><i class="ti ti-external-link chev"></i></div>
+      </div>
+      <p class="foot">Made with <i class="ti ti-heart heart"></i> by <span class="a">Ahmed Saber</span> · Version 1.2.0</p>
+    </div>
+  </div>
+</div>
+</main></body></html>

@@ -132,7 +132,7 @@ extra languages/layouts, Safari.
 
 An npm workspaces monorepo. Extension paths in this file (`src/`, `e2e/`, `public/`, `build/`)
 are relative to `apps/extension/`. Apps import the core by subpath (`@layout-fixer/core/converter`,
-`/languages`, `/layouts`); it ships TypeScript source that each app's bundler compiles. The core
+`/languages`, `/layouts`, `/links` — the public URLs every About/Support section uses); it ships TypeScript source that each app's bundler compiles. The core
 must stay free of DOM and browser APIs so every app (extension, and the planned desktop app) can use it.
 
 ```
@@ -142,7 +142,7 @@ layout-fixer/
 ├── packages/core/                # @layout-fixer/core — its own tests and 90/85 coverage thresholds
 │   ├── src/                      # converter, scripts, languages, layouts/ (+ OS fixtures) — pure
 │   └── scripts/                  # dump-macos-layout.swift, generate-layout.py
-├── packages/ui/                  # @layout-fixer/ui — tokens.css, theme.css, grouped.css, icons, ShortcutKeys
+├── packages/ui/                  # @layout-fixer/ui — tokens.css, theme.css, grouped.css, icons, ShortcutKeys, AboutSection
 ├── apps/promo-video/             # Remotion promo video; imports packages/core; not a workspace
 ├── apps/desktop/                 # @layout-fixer/desktop — Tauri 2 app (plan: docs/plans/2026-09-26-desktop-app.md)
 │   ├── src/                      # React Settings window + platform/ (validated settings, OS detection)

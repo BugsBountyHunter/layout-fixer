@@ -3,6 +3,7 @@ import { t } from '../platform/i18n'
 import type { Settings } from '../platform/settings'
 import { usePlatform } from '../ui/usePlatform'
 import { useSettings } from '../ui/useSettings'
+import { About } from './components/About'
 import { ArabicLayoutSection } from './components/ArabicLayoutSection'
 import { LanguagePairPicker } from './components/LanguagePairPicker'
 import { PageHeader } from './components/PageHeader'
@@ -56,6 +57,8 @@ export function Options() {
       </Section>
 
       <PrivacyNote />
+
+      <About />
     </main>
   )
 }

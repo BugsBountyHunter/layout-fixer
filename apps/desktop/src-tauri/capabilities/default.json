@@ -10,6 +10,26 @@
     "autostart:allow-disable",
     "autostart:allow-is-enabled",
     "updater:default",
-    "process:allow-restart"
+    "process:allow-restart",
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [
+        {
+          "url": "https://github.com/BugsBountyHunter"
+        },
+        {
+          "url": "https://github.com/BugsBountyHunter/layout-fixer"
+        },
+        {
+          "url": "https://github.com/BugsBountyHunter/layout-fixer/issues/new?template=bug_report.yml"
+        },
+        {
+          "url": "https://github.com/BugsBountyHunter/layout-fixer/issues/new?template=feature_request.yml"
+        },
+        {
+          "url": "https://paypal.me/A7medSR96"
+        }
+      ]
+    }
   ]
 }

@@ -1,0 +1,119 @@
+.header {
+  display: grid;
+  justify-items: center;
+  margin-block-end: var(--lf-space-8);
+  text-align: center;
+}
+
+.header :global(.section-title) {
+  margin-block-end: var(--lf-space-3);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: var(--lf-space-5);
+  align-items: stretch;
+}
+
+.group {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--lf-radius-lg);
+  background: var(--lf-bg-grouped);
+  list-style: none;
+}
+
+.row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--lf-space-4);
+  min-block-size: 52px;
+  padding: var(--lf-space-3) var(--lf-space-5);
+  color: var(--lf-label);
+}
+
+a.row:hover {
+  background: var(--lf-fill);
+  text-decoration: none;
+}
+
+a.row:focus-visible {
+  outline-offset: -2px;
+}
+
+/* Hairline inset from the leading edge, like the Features list; flips in RTL. */
+.group > li + li::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: calc(var(--lf-space-5) + 20px + var(--lf-space-4)) 0;
+  border-block-start: 0.5px solid var(--lf-separator);
+}
+
+.group > li {
+  position: relative;
+}
+
+.icon {
+  flex: none;
+  color: var(--lf-link);
+}
+
+.text {
+  display: grid;
+  flex: 1;
+  gap: 2px;
+}
+
+.title {
+  font-size: 17px;
+}
+
+.detail {
+  color: var(--lf-label-secondary);
+  font-size: 14px;
+}
+
+.chevron {
+  flex: none;
+  color: var(--lf-label-secondary);
+}
+
+[dir='rtl'] .chevron {
+  transform: scaleX(-1);
+}
+
+.donate {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: var(--lf-space-3);
+  padding: var(--lf-space-8) var(--lf-space-6);
+  border-radius: var(--lf-radius-lg);
+  background: var(--lf-bg-grouped);
+  text-align: center;
+}
+
+.donate h3 {
+  font-size: 20px;
+  font-weight: var(--lf-weight-semibold);
+}
+
+.donate p {
+  max-inline-size: 26em;
+  margin-block-end: var(--lf-space-2);
+  font-size: var(--site-small);
+}
+
+.heart {
+  color: var(--lf-danger);
+}
+
+@media (max-width: 760px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

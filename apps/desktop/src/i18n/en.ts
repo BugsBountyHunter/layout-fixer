@@ -103,6 +103,22 @@ export const EN = {
   privacyBody:
     'Layout Fixer reads text only when you press the shortcut, converts it on this device, and never stores or sends it.',
 
+  // About
+  aboutSection: 'About',
+  aboutReportBug: 'Report a bug',
+  aboutRequestLanguage: 'Request a language',
+  aboutContribute: 'Star or contribute on GitHub',
+  aboutShare: 'Share with a friend',
+  aboutCopyLink: 'Copy link',
+  aboutCopied: 'Copied',
+  aboutCopyFailed: 'Copy this address:',
+  aboutDonate: 'Donate',
+  aboutMadeWith: 'Made with',
+  aboutLove: 'love',
+  aboutBy: 'by',
+  aboutAuthor: 'Ahmed Saber',
+  aboutNewTab: 'opens in your browser',
+
   // First-run welcome
   welcomeTitle: 'Welcome to Layout Fixer',
   welcomeBody: 'Typed a sentence with the wrong keyboard layout? Select it in any app and press the shortcut.',

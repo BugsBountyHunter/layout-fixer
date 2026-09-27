@@ -41,6 +41,20 @@ test.describe('settings page', () => {
     await expect(page.getByText(/^Version \d+\.\d+\.\d+$/)).toBeVisible()
     await expect(page.getByText(/never collects, stores or sends/)).toBeVisible()
   })
+
+  test('credits the author and links to ways to help', async ({ context }) => {
+    const page = context.pages()[0]
+    const about = page.locator('#about')
+    await expect(about.getByRole('heading', { name: 'About' })).toBeVisible()
+    await expect(about.getByRole('link', { name: /Rate Layout Fixer/ })).toHaveAttribute('href', /\/reviews$/)
+    await expect(about.getByRole('link', { name: /Report a bug/ })).toHaveAttribute('href', /template=bug_report\.yml$/)
+    await expect(about.getByRole('link', { name: /Donate/ })).toHaveAttribute('href', 'https://paypal.me/A7medSR96')
+    await expect(about).toContainText('Made with')
+    await expect(about.getByRole('link', { name: /Ahmed Saber/ })).toHaveAttribute(
+      'href',
+      'https://github.com/BugsBountyHunter',
+    )
+  })
 })
 
 test.describe('settings take effect everywhere', () => {

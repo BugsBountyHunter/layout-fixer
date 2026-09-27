@@ -184,5 +184,50 @@
   },
   "secondLanguage": {
     "message": "اللغة الثانية"
+  },
+  "aboutTitle": {
+    "message": "حول"
+  },
+  "aboutRate": {
+    "message": "قيّم Layout Fixer"
+  },
+  "aboutReportBug": {
+    "message": "أبلغ عن مشكلة"
+  },
+  "aboutRequestLanguage": {
+    "message": "اطلب لغة جديدة"
+  },
+  "aboutContribute": {
+    "message": "ساهم على GitHub"
+  },
+  "aboutShare": {
+    "message": "شاركه مع صديق"
+  },
+  "aboutCopyLink": {
+    "message": "نسخ الرابط"
+  },
+  "aboutCopied": {
+    "message": "تم النسخ"
+  },
+  "aboutCopyFailed": {
+    "message": "انسخ هذا العنوان:"
+  },
+  "aboutDonate": {
+    "message": "تبرّع"
+  },
+  "aboutMadeWith": {
+    "message": "صُنع بـ"
+  },
+  "aboutLove": {
+    "message": "حب"
+  },
+  "aboutBy": {
+    "message": "على يد"
+  },
+  "aboutAuthor": {
+    "message": "أحمد صابر"
+  },
+  "aboutNewTab": {
+    "message": "يفتح في علامة تبويب جديدة"
   }
 }

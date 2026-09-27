@@ -9,6 +9,7 @@ import { Hero } from './Hero'
 import { HowItWorks } from './HowItWorks'
 import { Privacy } from './Privacy'
 import { PromoVideo } from './PromoVideo'
+import { Support } from './Support'
 
 export function LandingPage({ locale }: { locale: Locale }) {
   const t = getDictionary(locale)
@@ -23,6 +24,7 @@ export function LandingPage({ locale }: { locale: Locale }) {
         <Privacy t={t} />
         <DesktopDownload t={t} />
         <Faq t={t} />
+        <Support t={t} />
       </main>
       <Footer t={t} locale={locale} />
     </>

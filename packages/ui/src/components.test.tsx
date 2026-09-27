@@ -1,7 +1,21 @@
 import type { ReactElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it, vi } from 'vitest'
-import { CheckIcon, CloseIcon, CopyIcon, SettingsIcon } from './icons'
+import {
+  BugIcon,
+  CheckIcon,
+  ChevronIcon,
+  CloseIcon,
+  CodeIcon,
+  CopyIcon,
+  ExternalLinkIcon,
+  GitHubIcon,
+  GlobeIcon,
+  HeartIcon,
+  SettingsIcon,
+  ShareIcon,
+  StarIcon,
+} from './icons'
 import { ShortcutKeys } from './ShortcutKeys'
 import { SwitchRow } from './SwitchRow'
 
@@ -18,6 +32,15 @@ describe('icons', () => {
     ['CopyIcon', CopyIcon],
     ['CheckIcon', CheckIcon],
     ['CloseIcon', CloseIcon],
+    ['StarIcon', StarIcon],
+    ['BugIcon', BugIcon],
+    ['GlobeIcon', GlobeIcon],
+    ['CodeIcon', CodeIcon],
+    ['ShareIcon', ShareIcon],
+    ['HeartIcon', HeartIcon],
+    ['ExternalLinkIcon', ExternalLinkIcon],
+    ['ChevronIcon', ChevronIcon],
+    ['GitHubIcon', GitHubIcon],
   ])('%s is decorative and sized 16px by default', (_name, Icon) => {
     const html = renderToStaticMarkup(<Icon />)
     expect(html).toContain('aria-hidden="true"')

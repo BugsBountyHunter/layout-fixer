@@ -184,5 +184,50 @@
   },
   "secondLanguage": {
     "message": "Second language"
+  },
+  "aboutTitle": {
+    "message": "About"
+  },
+  "aboutRate": {
+    "message": "Rate Layout Fixer"
+  },
+  "aboutReportBug": {
+    "message": "Report a bug"
+  },
+  "aboutRequestLanguage": {
+    "message": "Request a language"
+  },
+  "aboutContribute": {
+    "message": "Contribute on GitHub"
+  },
+  "aboutShare": {
+    "message": "Share with a friend"
+  },
+  "aboutCopyLink": {
+    "message": "Copy link"
+  },
+  "aboutCopied": {
+    "message": "Copied"
+  },
+  "aboutCopyFailed": {
+    "message": "Copy this address:"
+  },
+  "aboutDonate": {
+    "message": "Donate"
+  },
+  "aboutMadeWith": {
+    "message": "Made with"
+  },
+  "aboutLove": {
+    "message": "love"
+  },
+  "aboutBy": {
+    "message": "by"
+  },
+  "aboutAuthor": {
+    "message": "Ahmed Saber"
+  },
+  "aboutNewTab": {
+    "message": "opens in a new tab"
   }
 }

@@ -1,3 +1,5 @@
+import { LINKS, REPO_URL, STORE_URL } from '@layout-fixer/core/links'
+
 const DEFAULT_SITE_URL = 'https://layoutfixer.dev'
 
 interface SiteEnv {
@@ -19,8 +21,8 @@ export const SITE_URL = resolveSiteUrl({
   VERCEL_PROJECT_PRODUCTION_URL: process.env.VERCEL_PROJECT_PRODUCTION_URL,
 })
 
-export const STORE_URL = 'https://chromewebstore.google.com/detail/cikmlhdhgneblnmkkmiolciffcgbgljj'
-export const GITHUB_URL = 'https://github.com/BugsBountyHunter/layout-fixer'
+export { LINKS, STORE_URL }
+export const GITHUB_URL = REPO_URL
 export const PRIVACY_URL = `${GITHUB_URL}/blob/main/PRIVACY.md`
 export const LICENSE_URL = `${GITHUB_URL}/blob/main/LICENSE`
 

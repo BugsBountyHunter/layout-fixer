@@ -129,5 +129,5 @@ Xorg", Fedora "GNOME on Xorg", KDE Plasma X11, Linux Mint Cinnamon):
 - [ ] **Wayland session:** Settings shows the Wayland notice; Fix Selection in the tray shows
       "Fixing text needs an X11 session on Linux for now"
 
-Known limits: copied files (`text/uri-list`) and app-private formats are not restored on Linux; Wayland is v1.1
-(portal / `ydotool`).
+Known limits: copied files (`text/uri-list`) and app-private formats are not restored on Linux; fixing text on
+Wayland (portal / `ydotool`) is later work — only layout switching works there (KDE Plasma, GNOME).

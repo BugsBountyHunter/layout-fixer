@@ -40,6 +40,11 @@ Select the text and press <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd>
 | Chrome, Edge, Brave, Opera, Vivaldi | [**Add to Chrome** from the Chrome Web Store](https://chromewebstore.google.com/detail/cikmlhdhgneblnmkkmiolciffcgbgljj). To install a specific version by hand: download `layout-fixer-chrome-<version>.zip` from [Releases](https://github.com/BugsBountyHunter/layout-fixer/releases), unzip it, open `chrome://extensions`, turn on **Developer mode** and choose **Load unpacked**. |
 | Firefox (desktop and Android) | Planned. You can [build it from source](#development) today. |
 
+**Layout Fixer for desktop** fixes text in every app, not just the browser (Word, Slack, Notes, Terminal):
+select it and press the same shortcut. Download it for macOS 12+, Windows 10/11 or Linux from
+[desktop-latest](https://github.com/BugsBountyHunter/layout-fixer/releases/tag/desktop-latest); the
+[first-launch steps](docs/desktop-first-launch.md) explain the one-time confirmation.
+
 ## Features
 
 - **One shortcut** — fixes the selection, or the whole field when nothing is selected
@@ -49,6 +54,8 @@ Select the text and press <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd>
 - **Popup** with a paste-and-fix box and a direction switch
 - **Selection button** (optional, off by default): select text, click the icon, pick the language
 - **Your keyboard** — PC or Mac Arabic layout, detected automatically
+- **Switch the keyboard layout** (optional, off by default): after a fix, your computer's keyboard switches to
+  the language of the fixed text, through Layout Fixer for desktop
 - **English and Arabic interface**, light and dark mode, keyboard and touch friendly
 
 ## Screenshots

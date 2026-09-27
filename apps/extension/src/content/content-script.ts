@@ -2,6 +2,7 @@ import { loadSettings, resolveLayout } from '../platform/settings'
 import { isMacPlatform } from '../platform/shortcut'
 import { notify } from './notify'
 import { fixActiveElement } from './replace'
+import { requestLayoutSwitch } from './switch-layout'
 
 const FRAME_TAGS = new Set(['IFRAME', 'FRAME'])
 
@@ -17,6 +18,8 @@ function isFrameElement(el: Element | null): boolean {
 export async function onExecute(): Promise<void> {
   if (!document.hasFocus() || isFrameElement(document.activeElement)) return
   const settings = await loadSettings()
-  const result = await fixActiveElement({ layout: resolveLayout(settings, isMacPlatform(navigator)) })
+  const layout = resolveLayout(settings, isMacPlatform(navigator))
+  const result = await fixActiveElement({ layout })
   notify(result, settings)
+  requestLayoutSwitch(result, settings, layout)
 }

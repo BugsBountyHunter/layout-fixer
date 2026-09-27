@@ -39,7 +39,7 @@ describe('fixActiveElement — <input> and <textarea>', () => {
       const input = mount<HTMLInputElement>(`<input type="${type}" value="hgsghl ugd;l">`)
       input.setSelectionRange(3, 3)
 
-      await expect(fixActiveElement()).resolves.toEqual({ status: 'replaced' })
+      await expect(fixActiveElement()).resolves.toEqual({ status: 'replaced', language: 'ar' })
       expect(input.value).toBe('السلام عليكم')
     },
   )
@@ -71,7 +71,7 @@ describe('fixActiveElement — <input> and <textarea>', () => {
     const onInput = vi.fn()
     input.addEventListener('input', onInput)
 
-    await expect(fixActiveElement()).resolves.toEqual({ status: 'replaced' })
+    await expect(fixActiveElement()).resolves.toEqual({ status: 'replaced', language: 'ar' })
     expect(execCommand).toHaveBeenCalledWith('insertText', false, 'السلام')
     expect(input.value.slice(input.selectionStart!, input.selectionEnd!)).toBe('السلام')
     expect(onInput).not.toHaveBeenCalled()
@@ -128,13 +128,25 @@ describe('fixActiveElement — <input> and <textarea>', () => {
   })
 })
 
+describe('fixActiveElement — target language', () => {
+  it('reports English when Arabic-layout text was fixed', async () => {
+    mount<HTMLInputElement>('<input type="text" value="اثممخ">')
+    await expect(fixActiveElement()).resolves.toEqual({ status: 'replaced', language: 'en' })
+  })
+
+  it('follows an explicit direction', async () => {
+    mount<HTMLInputElement>('<input type="text" value="hello">')
+    await expect(fixActiveElement({ direction: 'ar→en' })).resolves.toEqual({ status: 'replaced', language: 'en' })
+  })
+})
+
 describe('fixActiveElement — contenteditable editors (Gmail, WhatsApp Web, Slack)', () => {
   it('inserts through execCommand so the editor keeps undo history', async () => {
     const editor = mount<HTMLDivElement>('<div contenteditable="true">hgsghl</div>')
     selectText(editor)
     const execCommand = vi.spyOn(document, 'execCommand').mockReturnValue(true)
 
-    await expect(fixActiveElement()).resolves.toEqual({ status: 'replaced' })
+    await expect(fixActiveElement()).resolves.toEqual({ status: 'replaced', language: 'ar' })
     expect(execCommand).toHaveBeenCalledWith('insertText', false, 'السلام')
   })
 

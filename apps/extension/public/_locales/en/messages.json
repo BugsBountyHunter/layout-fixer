@@ -185,6 +185,35 @@
   "secondLanguage": {
     "message": "Second language"
   },
+  "desktopSectionTitle": {
+    "message": "Keyboard layout"
+  },
+  "desktopSectionHint": {
+    "message": "After fixing text in place, switch your computer’s keyboard to the language of the fixed text. This needs Layout Fixer for desktop, and your browser will ask to let the extension talk to it — only the language name is sent."
+  },
+  "desktopSwitchLabel": {
+    "message": "Switch keyboard layout after fixing"
+  },
+  "desktopConnected": {
+    "message": "Connected to Layout Fixer for desktop $VERSION$.",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "desktopMissing": {
+    "message": "Layout Fixer for desktop 1.3 or later isn’t installed, or hasn’t been opened since it was installed."
+  },
+  "desktopDownload": {
+    "message": "Download Layout Fixer for desktop"
+  },
+  "desktopDownloadUrl": {
+    "message": "https://layoutfixer.dev/#desktop"
+  },
+  "desktopPermissionDenied": {
+    "message": "Permission wasn’t given, so the keyboard layout won’t switch."
+  },
   "aboutTitle": {
     "message": "About"
   },

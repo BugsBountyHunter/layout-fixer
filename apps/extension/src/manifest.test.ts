@@ -34,6 +34,10 @@ describe.each(TARGETS)('buildManifest(%s)', (target) => {
     expect(manifest.optional_host_permissions).toEqual(['<all_urls>'])
   })
 
+  it('asks to talk to the desktop app only as an optional permission, for the opt-in layout switch', () => {
+    expect(manifest.optional_permissions).toEqual(['nativeMessaging'])
+  })
+
   it('opens the settings page in a full tab (the only mode Firefox for Android supports)', () => {
     expect(manifest.options_ui).toEqual({ page: 'src/options/index.html', open_in_tab: true })
   })

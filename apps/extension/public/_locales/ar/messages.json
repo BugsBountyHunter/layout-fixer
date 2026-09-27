@@ -185,6 +185,35 @@
   "secondLanguage": {
     "message": "اللغة الثانية"
   },
+  "desktopSectionTitle": {
+    "message": "لغة الكيبورد"
+  },
+  "desktopSectionHint": {
+    "message": "بعد تصحيح النص في مكانه، تتبدّل لغة الكيبورد في جهازك إلى لغة النص المصحَّح. يحتاج هذا إلى مصحح لغة الكيبورد لسطح المكتب، وسيطلب المتصفح السماح للإضافة بالتواصل معه — ولا يُرسَل إليه سوى اسم اللغة."
+  },
+  "desktopSwitchLabel": {
+    "message": "تبديل لغة الكيبورد بعد التصحيح"
+  },
+  "desktopConnected": {
+    "message": "متصل بمصحح لغة الكيبورد لسطح المكتب $VERSION$.",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "desktopMissing": {
+    "message": "مصحح لغة الكيبورد لسطح المكتب (الإصدار 1.3 أو أحدث) غير مثبّت، أو لم يُفتح منذ تثبيته."
+  },
+  "desktopDownload": {
+    "message": "تنزيل مصحح لغة الكيبورد لسطح المكتب"
+  },
+  "desktopDownloadUrl": {
+    "message": "https://layoutfixer.dev/ar/#desktop"
+  },
+  "desktopPermissionDenied": {
+    "message": "لم يُمنح الإذن، لذلك لن تتبدّل لغة الكيبورد."
+  },
   "aboutTitle": {
     "message": "حول"
   },

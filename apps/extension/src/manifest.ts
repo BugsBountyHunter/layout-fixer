@@ -39,6 +39,8 @@ const SHARED: Manifest = {
   options_ui: { page: 'src/options/index.html', open_in_tab: true },
   // Requested at runtime only when the user turns on the selection button.
   optional_host_permissions: ['<all_urls>'],
+  // Requested at runtime only when the user turns on switching the keyboard layout (needs Layout Fixer for desktop).
+  optional_permissions: ['nativeMessaging'],
   commands: {
     [FIX_COMMAND]: {
       suggested_key: { default: 'Alt+Shift+F' },

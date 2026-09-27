@@ -1,10 +1,12 @@
 import { SwitchRow } from '@layout-fixer/ui/SwitchRow'
+import { supportsDesktopApp } from '../platform/desktop-app'
 import { t } from '../platform/i18n'
 import type { Settings } from '../platform/settings'
 import { usePlatform } from '../ui/usePlatform'
 import { useSettings } from '../ui/useSettings'
 import { About } from './components/About'
 import { ArabicLayoutSection } from './components/ArabicLayoutSection'
+import { KeyboardSwitchSetting } from './components/KeyboardSwitchSetting'
 import { LanguagePairPicker } from './components/LanguagePairPicker'
 import { PageHeader } from './components/PageHeader'
 import { PrivacyNote } from './components/PrivacyNote'
@@ -41,6 +43,15 @@ export function Options() {
           onChange={(selectionButton) => change({ selectionButton })}
         />
       </Section>
+
+      {supportsDesktopApp(navigator.userAgent) && (
+        <Section id="desktop" title={t('desktopSectionTitle')} hint={t('desktopSectionHint')}>
+          <KeyboardSwitchSetting
+            enabled={settings.switchKeyboardLayout}
+            onChange={(switchKeyboardLayout) => change({ switchKeyboardLayout })}
+          />
+        </Section>
+      )}
 
       {platform.hasShortcuts && (
         <Section id="shortcut" title={t('shortcutSectionTitle')} hint={t('shortcutSectionHint')}>

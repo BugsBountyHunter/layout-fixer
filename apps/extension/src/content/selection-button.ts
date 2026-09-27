@@ -9,6 +9,7 @@ import { menuOptions } from './selection/menu-options'
 import { placeButton } from './selection/placement'
 import { readSelection, type SelectionInfo } from './selection/read-selection'
 import { BUTTON_SIZE, createSelectionUi, type SelectionUi } from './selection/selection-ui'
+import { requestLayoutSwitch } from './switch-layout'
 
 const UPDATE_DELAY_MS = 200
 const STARTED = Symbol.for('layout-fixer.selection-button')
@@ -107,7 +108,9 @@ export async function startSelectionButton(): Promise<() => void> {
     onPick: async (option) => {
       state.dismissedText = state.shownText
       ui.hide()
-      notify(await fixActiveElement({ layout: layout(), direction: option.direction }), state.settings)
+      const result = await fixActiveElement({ layout: layout(), direction: option.direction })
+      notify(result, state.settings)
+      requestLayoutSwitch(result, state.settings, layout())
     },
     onOpenSettings: () => {
       ui.hide()

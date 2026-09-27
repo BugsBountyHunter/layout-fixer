@@ -2,6 +2,14 @@
 
 All notable changes to the desktop app. The browser extension has its own [CHANGELOG](../../CHANGELOG.md).
 
+## [1.3.0] - 2026-09-27
+
+### Added
+- The browser extension can now switch the keyboard layout too. The app registers a native messaging helper
+  (`io.github.bugsbountyhunter.layoutfixer`) with the installed browsers (Chrome, Chromium, Edge, Brave, Vivaldi
+  and Firefox) every time it starts, so open Layout Fixer once after installing it. The helper only switches
+  the layout; it never receives text.
+
 ## [1.2.0] - 2026-09-27
 
 ### Added

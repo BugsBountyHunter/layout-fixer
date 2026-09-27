@@ -2,12 +2,24 @@ mod commands;
 mod fix;
 mod hud;
 mod install;
+mod native_host;
 mod platform;
 mod shortcut;
 mod tray;
 mod windows;
 
 use tauri::WindowEvent;
+
+/// Runs as the browser extension's native messaging host when a browser launched the app for
+/// that; returns whether it did, in which case the app must exit instead of starting.
+pub fn run_native_host_if_requested() -> bool {
+    let args: Vec<String> = std::env::args().collect();
+    if !native_host::is_host_launch(&args) {
+        return false;
+    }
+    native_host::run();
+    true
+}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -55,6 +67,7 @@ pub fn run() {
             shortcut::register_saved(app.handle());
             tray::create(app.handle())?;
             hud::create(app.handle())?;
+            std::thread::spawn(native_host::register::register);
             Ok(())
         })
         .on_window_event(|window, event| {

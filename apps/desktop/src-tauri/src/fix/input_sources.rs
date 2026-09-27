@@ -43,6 +43,11 @@ fn types_language(layout: &InputLayout, language: &str) -> bool {
         .is_some_and(|code| code.eq_ignore_ascii_case(language))
 }
 
+/// A language code callers may ask for: `ar`, `en`, later others. Anything else is rejected.
+pub fn is_language_code(code: &str) -> bool {
+    (2..=3).contains(&code.len()) && code.bytes().all(|byte| byte.is_ascii_lowercase())
+}
+
 /// A preferred layout wins (the Arabic layout the user picked in Settings), then the first enabled
 /// layout for the language.
 pub fn choose<'a>(

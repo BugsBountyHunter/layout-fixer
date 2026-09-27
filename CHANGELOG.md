@@ -6,6 +6,11 @@ and the project uses [Semantic Versioning](https://semver.org/).
 ## [Unreleased]
 
 ### Added
+- Optional **Switch keyboard layout after fixing** (Settings → Keyboard layout). After text is fixed in place, the
+  extension asks Layout Fixer for desktop (1.3 or later) to switch your computer's keyboard to the language of the
+  fixed text. Off by default; turning it on asks for the optional `nativeMessaging` permission. Only the language
+  and your Arabic layout setting are sent to the desktop app, never the text. Settings shows whether the desktop
+  app is connected and links to its download when it isn't.
 - An **About** section in the settings page: rate the extension, report a bug, request a language, contribute on
   GitHub, share the website, or donate — plus a “Made with ❤ by Ahmed Saber” credit. The rating link only shows in
   the Chrome build.

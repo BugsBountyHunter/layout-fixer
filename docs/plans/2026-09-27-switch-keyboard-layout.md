@@ -1,7 +1,7 @@
 # Switch the keyboard layout after a fix
 
-**Status:** phases 1 and 2 released in desktop 1.1.0 (2026-09-27); phase 3 (Settings hints) implemented on
-`feat/layout-switch-hints`.
+**Status:** phases 1–2 released in desktop 1.1.0, phase 3 in desktop 1.2.0 (2026-09-27); phase 4 (the extension)
+implemented on `feat/extension-layout-switch`.
 
 **Decided 2026-09-27:** on by default in the desktop app. The extension gets it later, through native
 messaging to the desktop app (phase 4), after the desktop release.
@@ -102,7 +102,7 @@ Ship desktop first; the extension follows once the desktop release with the host
 3. ✅ **Settings hints** — missing layout, Arabic-layout mismatch. `list_layouts` returns each enabled layout's
    language and, when known, which of our Arabic layouts it is; `platform/layoutHints.ts` turns that into the hints
    (re-read when the window gains focus).
-4. **Extension via native messaging** — host mode + manifest install in the desktop app, optional
+4. ✅ **Extension via native messaging** — host mode + manifest install in the desktop app, optional
    permission and toggle in the extension. Extension 1.1.0. Update PRIVACY.md (the host receives only
    a language code) and the store listing permissions note.
 
@@ -123,3 +123,23 @@ Ship desktop first; the extension follows once the desktop release with the host
   not take focus (it doesn't today).
 - **Linux desktop environments** may override an XKB group lock. Document as best effort.
 - **Surprise.** Some users may not want it; hence the toggle, mentioned in the release notes.
+
+## Phase 4 as built
+
+- **Host:** the desktop binary itself. `main.rs` checks for a browser launch (`chrome-extension://…` or the
+  Firefox add-on id among the arguments) before starting Tauri, answers on stdin/stdout
+  (`native_host/protocol.rs`: `ping` → `{ ok, version }`, `switch-layout` → `{ ok, result }`) and exits.
+  Requests over 4 KB and anything malformed are refused; the language is checked like `switch_layout`.
+- **Registration** (`native_host/register.rs`), at every launch from an installed location: a manifest in each
+  installed browser's `NativeMessagingHosts` folder on macOS and Linux (Chrome, Chrome Beta, Chromium, Edge,
+  Brave, Vivaldi, Firefox), and on Windows `chromium.json` / `firefox.json` under `%LOCALAPPDATA%` with
+  `HKCU\Software\…\NativeMessagingHosts\<host>` keys pointing at them. `allowed_origins` is the Chrome Web
+  Store id; `LAYOUT_FIXER_EXTENSION_IDS` adds ids for unpacked builds. An Edge Add-ons listing will need its id
+  added.
+- **Extension:** `switchKeyboardLayout` setting (off), optional `nativeMessaging` permission requested by the
+  Settings switch, which then pings the app and shows "Connected … x.y.z" or a download link. Page scripts send
+  `layout-fixer:switch-layout` to the background after an in-place fix; the background re-validates it and calls
+  `runtime.sendNativeMessage`. Revoking the permission turns the setting off. Hidden on Android.
+- **Tests:** `e2e/desktop.spec.ts` registers a fake host in the Playwright profile's `NativeMessagingHosts`
+  folder and checks the real round trip (Settings ping, a fix sending `switch-layout`, nothing sent when off).
+  The real host was driven with framed messages on macOS (ABC → Arabic → ABC).

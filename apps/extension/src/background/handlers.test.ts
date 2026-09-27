@@ -49,6 +49,7 @@ function deps() {
     selectionSync: { sync: vi.fn(async () => {}) },
     saveSettings: vi.fn(async () => ({})),
     watchSettings: vi.fn(() => () => {}),
+    switchLayout: vi.fn(async () => {}),
   }
 }
 
@@ -141,5 +142,22 @@ describe('registerBackground', () => {
     await onMessage.fire({ type: 'something-else' })
     await onMessage.fire(null)
     expect(raw.runtime.openOptionsPage).toHaveBeenCalledOnce()
+  })
+
+  it('passes a valid layout switch request from a page to the desktop app', async () => {
+    const { api, onMessage } = fakeApi()
+    const d = deps()
+    registerBackground(api, SCRIPT, d)
+    await onMessage.fire({ type: 'layout-fixer:switch-layout', language: 'ar', layout: 'ar-pc' })
+    await onMessage.fire({ type: 'layout-fixer:switch-layout', language: '../x', layout: 'ar-pc' })
+    expect(d.switchLayout).toHaveBeenCalledExactlyOnceWith({ language: 'ar', layout: 'ar-pc' })
+  })
+
+  it('turns the layout switch off when the desktop permission is revoked', async () => {
+    const { api, onRemoved } = fakeApi()
+    const d = deps()
+    registerBackground(api, SCRIPT, d)
+    await onRemoved.fire({ permissions: ['nativeMessaging'] })
+    expect(d.saveSettings).toHaveBeenCalledWith({ switchKeyboardLayout: false })
   })
 })

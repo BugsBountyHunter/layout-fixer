@@ -11,6 +11,8 @@ export interface Settings {
   readonly showToasts: boolean
   /** Button next to selected text. Needs optional site access, so it is off until the user opts in. */
   readonly selectionButton: boolean
+  /** After a fix, ask the desktop app to switch the OS keyboard layout. Needs the optional nativeMessaging permission. */
+  readonly switchKeyboardLayout: boolean
 }
 
 export const DEFAULT_SETTINGS: Settings = Object.freeze({
@@ -18,6 +20,7 @@ export const DEFAULT_SETTINGS: Settings = Object.freeze({
   arabicLayout: 'auto',
   showToasts: true,
   selectionButton: false,
+  switchKeyboardLayout: false,
 })
 
 export const ARABIC_LAYOUT_CHOICES: readonly ArabicLayoutChoice[] = ['auto', 'ar-pc', 'ar-mac']
@@ -39,6 +42,10 @@ export function parseSettings(raw: unknown): Settings {
     showToasts: typeof data.showToasts === 'boolean' ? data.showToasts : DEFAULT_SETTINGS.showToasts,
     selectionButton:
       typeof data.selectionButton === 'boolean' ? data.selectionButton : DEFAULT_SETTINGS.selectionButton,
+    switchKeyboardLayout:
+      typeof data.switchKeyboardLayout === 'boolean'
+        ? data.switchKeyboardLayout
+        : DEFAULT_SETTINGS.switchKeyboardLayout,
   }
 }
 

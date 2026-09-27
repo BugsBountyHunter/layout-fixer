@@ -10,6 +10,8 @@ const { fixActiveElement, showToast, loadSettings } = vi.hoisted(() => ({
 
 vi.mock('./replace', () => ({ fixActiveElement }))
 vi.mock('./toast', () => ({ showToast }))
+const { requestLayoutSwitch } = vi.hoisted(() => ({ requestLayoutSwitch: vi.fn() }))
+vi.mock('./switch-layout', () => ({ requestLayoutSwitch }))
 vi.mock('../platform/settings', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../platform/settings')>()),
   loadSettings,
@@ -29,9 +31,19 @@ afterEach(() => {
 
 describe('onExecute', () => {
   it('stays silent after an in-place replacement', async () => {
-    fixActiveElement.mockResolvedValue({ status: 'replaced' })
+    fixActiveElement.mockResolvedValue({ status: 'replaced', language: 'ar' })
     await onExecute()
     expect(showToast).not.toHaveBeenCalled()
+  })
+
+  it('offers the result for a keyboard layout switch', async () => {
+    fixActiveElement.mockResolvedValue({ status: 'replaced', language: 'ar' })
+    await onExecute()
+    expect(requestLayoutSwitch).toHaveBeenCalledWith(
+      { status: 'replaced', language: 'ar' },
+      expect.objectContaining({ arabicLayout: 'auto' }),
+      expect.stringMatching(/^ar-(pc|mac)$/),
+    )
   })
 
   it('shows the copied text when the page could not be edited', async () => {
@@ -69,14 +81,14 @@ describe('onExecute', () => {
 
   it('converts with the layout chosen in settings', async () => {
     loadSettings.mockResolvedValue({ arabicLayout: 'ar-mac', showToasts: true })
-    fixActiveElement.mockResolvedValue({ status: 'replaced' })
+    fixActiveElement.mockResolvedValue({ status: 'replaced', language: 'ar' })
     await onExecute()
     expect(fixActiveElement).toHaveBeenCalledWith({ layout: 'ar-mac' })
   })
 
   it('picks the layout from the OS in automatic mode', async () => {
     vi.spyOn(navigator, 'platform', 'get').mockReturnValue('Win32')
-    fixActiveElement.mockResolvedValue({ status: 'replaced' })
+    fixActiveElement.mockResolvedValue({ status: 'replaced', language: 'ar' })
     await onExecute()
     expect(fixActiveElement).toHaveBeenCalledWith({ layout: 'ar-pc' })
   })

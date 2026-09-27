@@ -1,3 +1,6 @@
+import { mkdtempSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { type BrowserContext, test as base, chromium, expect, type Page, type Worker } from '@playwright/test'
 
@@ -7,6 +10,8 @@ export const FIXTURE_ORIGIN = 'http://127.0.0.1:4173'
 interface Fixtures {
   /** Browser UI language; extension i18n follows it, not the page locale. */
   uiLanguage: string
+  /** A fresh browser profile per test; Chromium also looks for native messaging hosts in it. */
+  userDataDir: string
   context: BrowserContext
   serviceWorker: Worker
   extensionId: string
@@ -36,8 +41,15 @@ export const test = base.extend<Fixtures>({
 
   uiLanguage: ['en-US', { option: true }],
 
-  context: async ({ uiLanguage }, use) => {
-    const context = await chromium.launchPersistentContext('', {
+  // biome-ignore lint/correctness/noEmptyPattern: Playwright reads fixture dependencies from this destructuring pattern.
+  userDataDir: async ({}, use) => {
+    const dir = mkdtempSync(join(tmpdir(), 'layout-fixer-e2e-'))
+    await use(dir)
+    rmSync(dir, { recursive: true, force: true })
+  },
+
+  context: async ({ uiLanguage, userDataDir }, use) => {
+    const context = await chromium.launchPersistentContext(userDataDir, {
       channel: 'chromium',
       headless: true,
       locale: uiLanguage,

@@ -46,7 +46,7 @@ beforeEach(() => {
   vi.useFakeTimers()
   loadSettings.mockResolvedValue(ENABLED)
   watchSettings.mockReturnValue(() => {})
-  fixActiveElement.mockResolvedValue({ status: 'replaced' })
+  fixActiveElement.mockResolvedValue({ status: 'replaced', language: 'ar' })
   vi.stubGlobal('chrome', { runtime: { sendMessage }, i18n: { getMessage: (key: string) => key } })
 })
 

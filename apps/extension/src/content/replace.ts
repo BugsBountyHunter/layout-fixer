@@ -1,10 +1,13 @@
-import { convert, type Direction } from '@layout-fixer/core/converter'
+import { convert, type Direction, detectDirection } from '@layout-fixer/core/converter'
 import type { LayoutId } from '@layout-fixer/core/layouts'
 import { copyText } from './clipboard'
 import { isTextField, type TextField } from './text-fields'
 
+/** The language fixed text is in, which is what the keyboard should switch to. */
+export type TargetLanguage = 'ar' | 'en'
+
 export type FixResult =
-  | { status: 'replaced' }
+  | { status: 'replaced'; language: TargetLanguage }
   | { status: 'copied'; text: string }
   | { status: 'shown'; text: string }
   | { status: 'empty' }
@@ -18,6 +21,10 @@ export interface FixOptions {
 interface Conversion {
   readonly layout: LayoutId
   readonly direction?: Direction
+}
+
+function targetLanguage(text: string, { direction }: Conversion): TargetLanguage {
+  return (direction ?? detectDirection(text)) === 'en→ar' ? 'ar' : 'en'
 }
 
 function fieldRange(field: TextField): [number, number] {
@@ -45,7 +52,7 @@ async function fixTextField(field: TextField, conversion: Conversion): Promise<F
     field.dispatchEvent(new Event('input', { bubbles: true }))
   }
   field.setSelectionRange(from, from + fixed.length)
-  return { status: 'replaced' }
+  return { status: 'replaced', language: targetLanguage(original, conversion) }
 }
 
 async function fixSelection(active: Element | null, conversion: Conversion): Promise<FixResult> {
@@ -59,7 +66,7 @@ async function fixSelection(active: Element | null, conversion: Conversion): Pro
     active.isContentEditable &&
     document.execCommand('insertText', false, convert(selected, conversion))
   ) {
-    return { status: 'replaced' }
+    return { status: 'replaced', language: targetLanguage(selected, conversion) }
   }
   return deliverWithoutEditing(selected, conversion)
 }

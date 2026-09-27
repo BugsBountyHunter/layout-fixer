@@ -63,6 +63,12 @@ describe('parseSettings', () => {
     expect(parseSettings({ selectionButton: 'true' }).selectionButton).toBe(false)
   })
 
+  it('keeps the keyboard layout switch off until the user turns it on', () => {
+    expect(DEFAULT_SETTINGS.switchKeyboardLayout).toBe(false)
+    expect(parseSettings({ switchKeyboardLayout: true }).switchKeyboardLayout).toBe(true)
+    expect(parseSettings({ switchKeyboardLayout: 1 }).switchKeyboardLayout).toBe(false)
+  })
+
   it('stores a validated pair of two languages', () => {
     expect(DEFAULT_SETTINGS.languages).toEqual(['ar', 'en'])
     expect(parseSettings({ languages: ['en', 'ar'] }).languages).toEqual(['en', 'ar'])
@@ -105,9 +111,21 @@ describe('loadSettings / saveSettings', () => {
 
   it('merges a partial update with the stored settings and returns the result', async () => {
     const { sync } = fakeStorage({
-      settings: { arabicLayout: 'ar-mac', showToasts: true, selectionButton: true, languages: ['en', 'ar'] },
+      settings: {
+        arabicLayout: 'ar-mac',
+        showToasts: true,
+        selectionButton: true,
+        switchKeyboardLayout: true,
+        languages: ['en', 'ar'],
+      },
     })
-    const expected = { arabicLayout: 'ar-mac', showToasts: false, selectionButton: true, languages: ['en', 'ar'] }
+    const expected = {
+      arabicLayout: 'ar-mac',
+      showToasts: false,
+      selectionButton: true,
+      switchKeyboardLayout: true,
+      languages: ['en', 'ar'],
+    }
     await expect(saveSettings({ showToasts: false })).resolves.toEqual(expected)
     expect(sync.set).toHaveBeenCalledWith({ settings: expected })
     await expect(loadSettings()).resolves.toEqual(expected)

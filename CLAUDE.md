@@ -39,6 +39,7 @@ simple, reliable in-browser option for Arabic.
 | F10 | Popup and on-page fixing use the saved layout; settings sync live between pages | ✅ |
 | F11 | Selection button (like a translator icon): select text → button → pick a language with preview. **Opt-in** setting, off by default; asks for optional site access when turned on | ✅ |
 | F12 | Language pair setting (two different languages). v1 offers Arabic + English only | ✅ |
+| F13 | Switch the keyboard layout after an in-place fix, through Layout Fixer for desktop (native messaging). **Opt-in**, off by default; asks for the optional `nativeMessaging` permission | ✅ |
 
 **Not in v1:** auto-detection while typing, Google Docs (canvas — toast fallback only),
 extra languages/layouts, Safari.

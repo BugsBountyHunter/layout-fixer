@@ -1,6 +1,6 @@
 # Layout Fixer — Privacy Policy
 
-_Last updated: 26 September 2026_
+_Last updated: 27 September 2026_
 
 Layout Fixer converts text typed with the wrong keyboard layout (Arabic ⇄ English). It comes as a browser
 extension and as a desktop app for macOS, Windows and Linux; this policy covers both.
@@ -14,8 +14,13 @@ extension and as a desktop app for macOS, Windows and Linux; this policy covers 
   When you turn it on, your browser asks you to allow access to websites so the button can appear
   next to text you select. The extension only looks at text you have selected, to show the button
   and its preview, and never sends it anywhere. Turning the feature off gives the access back.
-- **Your settings.** Your languages, Arabic keyboard layout, and whether on-page messages and the
-  selection button are on.
+- **Switching the keyboard layout, if you turn it on.** This optional feature is off by default and
+  needs Layout Fixer for desktop. When you turn it on, your browser asks you to let the extension
+  talk to the desktop app. After a fix, the extension sends the desktop app only the language to
+  switch to (`ar` or `en`) and your Arabic layout setting — never the text. Both stay on your
+  device. Turning the feature off gives the permission back.
+- **Your settings.** Your languages, Arabic keyboard layout, and whether on-page messages, the
+  selection button and keyboard layout switching are on.
   They are saved with your browser's extension storage and, if you use browser sync, synced by your
   browser between your own devices.
 
@@ -37,6 +42,7 @@ extension and as a desktop app for macOS, Windows and Linux; this policy covers 
 | `contextMenus` | Add "Fix keyboard layout" to the right-click menu. |
 | `storage` | Remember your settings. |
 | Access to websites (optional) | Only if you turn on the selection button: show the button next to text you select. |
+| `nativeMessaging` (optional) | Only if you turn on keyboard layout switching: ask Layout Fixer for desktop, on your device, to switch the keyboard layout. |
 
 ## The desktop app
 
@@ -47,6 +53,11 @@ extension and as a desktop app for macOS, Windows and Linux; this policy covers 
   temporary text is marked so clipboard managers and clipboard history (Win+V, cloud clipboard) skip it.
 - **No keyboard monitoring.** The app registers one global shortcut with the system; it never records what you
   type.
+- **Keyboard layout switching.** After a fix the app switches the system keyboard layout to the language of the
+  fixed text (you can turn this off). It only chooses among layouts you already have, and reads that list to
+  show hints in Settings. The browser extension can ask for the same switch: the app registers a small helper
+  with your installed browsers so the extension can start it; the helper receives only a language code and
+  your Arabic layout setting.
 - **Permissions.** macOS asks you to allow Layout Fixer under Accessibility, because the app presses ⌘C and ⌘V
   for you. Windows and Linux need no extra permission.
 - **Your settings** (language, shortcut, Arabic layout, messages, open at login) are saved in a file in your

@@ -65,8 +65,9 @@ Convert text typed with the wrong keyboard layout between Arabic and English.
 - **activeTab:** Reads and replaces the text the user selected, only on the tab where they pressed the shortcut or used the context menu.
 - **scripting:** Injects the conversion script into that tab at the moment the user asks for it; no script runs otherwise.
 - **contextMenus:** Adds the "Fix keyboard layout" item to the right-click menu.
-- **storage:** Saves the user's settings (languages, Arabic keyboard layout, on-page messages, selection button).
+- **storage:** Saves the user's settings (languages, Arabic keyboard layout, on-page messages, selection button, keyboard layout switching).
 - **Host permissions (optional, `<all_urls>`):** Requested only when the user turns on the optional selection button in Settings, so the button can appear next to text the user selects on any site. Nothing is requested at install; turning the feature off removes the access.
+- **nativeMessaging (optional):** Requested only when the user turns on "Switch keyboard layout after fixing" in Settings. After the user fixes text, the extension asks the user's own installed Layout Fixer for desktop app to switch the operating system's keyboard layout to the language of the fixed text. Only the language code (`ar`/`en`) and the Arabic layout setting are sent, never the text, and nothing leaves the device. Nothing is requested at install; turning the feature off removes the permission.
 - **Remote code:** No. All code is bundled in the package.
 
 ## Data usage disclosures

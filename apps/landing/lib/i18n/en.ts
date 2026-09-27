@@ -77,13 +77,14 @@ export const en = {
     windows: 'Download for Windows',
     linux: 'Download for Linux',
     linuxDeb: '.deb package',
-    note: 'Free and open source · macOS 12+, Windows 10 and 11, Linux (X11) · Updates itself',
+    note: 'Free and open source · macOS 12+, Windows 10 and 11, Linux (X11, or Wayland on GNOME and KDE Plasma) · Updates itself',
     allReleases: 'All downloads',
     firstLaunchTitle: 'Opening it for the first time',
     firstLaunchMac:
       'macOS: open the app. When macOS says it can’t verify it, go to System Settings → Privacy & Security and click Open Anyway. Then allow Layout Fixer under Accessibility so it can press ⌘C and ⌘V for you.',
     firstLaunchWindows: 'Windows: if SmartScreen says “Windows protected your PC”, click More info → Run anyway.',
-    firstLaunchLinux: 'Linux: make the AppImage executable and open it, or install the .deb. Use an X11 session.',
+    firstLaunchLinux:
+      'Linux: make the AppImage executable and open it, or install the .deb. On GNOME, install the GNOME extension from the app’s Settings once.',
   },
   faq: {
     title: 'Questions',

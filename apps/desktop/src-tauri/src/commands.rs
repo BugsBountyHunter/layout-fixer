@@ -79,11 +79,6 @@ pub async fn restore_clipboard(pending: State<'_, PendingClipboard>) -> Result<(
     }
 }
 
-/// A language code the web side may ask for: `ar`, `en`, later others. Rejects anything else.
-fn is_language_code(code: &str) -> bool {
-    (2..=3).contains(&code.len()) && code.bytes().all(|byte| byte.is_ascii_lowercase())
-}
-
 /// Input-source calls run on the main thread, which macOS requires.
 async fn on_main_thread<T: Send + 'static>(
     app: &AppHandle,
@@ -109,7 +104,7 @@ pub async fn switch_layout(
     language: String,
     layout: ArabicLayout,
 ) -> Result<LayoutSwitch, FixError> {
-    if !is_language_code(&language) {
+    if !fix::is_language_code(&language) {
         return Err(FixError::System(format!("invalid language {language:?}")));
     }
     on_main_thread(&app, move || {
@@ -223,10 +218,10 @@ mod tests {
     #[test]
     fn accepts_only_plain_language_codes() {
         for code in ["ar", "en", "fil"] {
-            assert!(is_language_code(code), "{code}");
+            assert!(fix::is_language_code(code), "{code}");
         }
         for code in ["", "a", "EN", "en-GB", "arab", "../"] {
-            assert!(!is_language_code(code), "{code}");
+            assert!(!fix::is_language_code(code), "{code}");
         }
     }
 

@@ -121,7 +121,11 @@ Xorg", Fedora "GNOME on Xorg", KDE Plasma X11, Linux Mint Cinnamon):
 - [ ] AppImage and .deb both install and start
 - [ ] Layout switching with `setxkbmap us,ara` (or KDE/Xfce/Cinnamon with both layouts): fixing switches the group
       and the panel indicator follows
-- [ ] GNOME on Xorg: only the active layout is in the keymap, so nothing switches (expected, documented)
+- [ ] GNOME (Ubuntu 24.04+, Fedora 40+), Wayland and Xorg: Settings → Keyboard switching on GNOME → Install → "Log
+      out to finish"; after logging back in it shows "On", and fixing text switches the top-bar indicator (the shortcut
+      on Xorg, the browser extension on Wayland)
+- [ ] GNOME with extensions turned off in the Extensions app: "Extensions are off"
+- [ ] KDE Plasma Wayland: the browser extension's fix switches the layout (KWin's `org.kde.keyboard`)
 - [ ] **Wayland session:** Settings shows the Wayland notice; Fix Selection in the tray shows
       "Fixing text needs an X11 session on Linux for now"
 

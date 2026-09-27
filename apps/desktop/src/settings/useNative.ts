@@ -3,6 +3,7 @@ import { getCurrentWindow } from '@tauri-apps/api/window'
 import { disable, enable, isEnabled } from '@tauri-apps/plugin-autostart'
 import { useCallback, useEffect, useState } from 'react'
 import { errorCode } from '../fix/bridge'
+import { type GnomeSwitching, parseGnomeSwitching } from '../platform/gnomeSwitching'
 import { type LayoutInfo, parseLayoutList } from '../platform/layoutHints'
 
 export interface ShortcutInfo {
@@ -101,4 +102,37 @@ export function useInstallLocation(): InstallLocation {
     invoke<InstallLocation>('install_location').then(setLocation).catch(logError('Could not read the install location'))
   }, [])
   return location
+}
+
+export interface GnomeSwitchingState {
+  /** `null` outside GNOME, and while unknown. */
+  readonly status: GnomeSwitching | null
+  readonly busy: boolean
+  readonly failed: boolean
+  readonly enable: () => void
+}
+
+/** GNOME only: Layout Fixer's GNOME Shell extension, re-read on focus (e.g. after logging back in). */
+export function useGnomeSwitching(): GnomeSwitchingState {
+  const [status, setStatus] = useState<GnomeSwitching | null>(null)
+  const [busy, setBusy] = useState(false)
+  const [failed, setFailed] = useState(false)
+  const check = useCallback(() => {
+    invoke<unknown>('gnome_switching')
+      .then((raw) => setStatus(parseGnomeSwitching(raw)))
+      .catch(logError('Could not read the GNOME extension state'))
+  }, [])
+  useOnFocus(check)
+  const enableExtension = useCallback(() => {
+    setBusy(true)
+    setFailed(false)
+    invoke<unknown>('enable_gnome_switching')
+      .then((raw) => setStatus(parseGnomeSwitching(raw)))
+      .catch((error: unknown) => {
+        setFailed(true)
+        logError('Could not install the GNOME extension')(error)
+      })
+      .finally(() => setBusy(false))
+  }, [])
+  return { status, busy, failed, enable: enableExtension }
 }

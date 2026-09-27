@@ -74,6 +74,21 @@ export const AR: Messages = {
     `جهازك يستخدم تخطيط ${have} العربي وليس هذا التخطيط، لذلك قد يخرج النص المصحَّح خاطئًا.`,
   layoutMismatchUse: (name: string) => `استخدم ${name}`,
 
+  gnomeSection: 'تبديل الكيبورد في GNOME',
+  gnomeLabel: 'إضافة Layout Fixer',
+  gnomeInstall: 'تثبيت',
+  gnomeOn: 'تعمل',
+  gnomeLogOut: 'سجّل الخروج للإكمال',
+  gnomeExtensionsOff: 'الإضافات متوقفة',
+  gnomeIncompatible: 'غير مدعومة',
+  gnomeOffHint:
+    'لا يسمح GNOME للتطبيقات بتبديل لغة الكيبورد إلا عبر إضافة GNOME Shell. يثبّت Layout Fixer إضافة صغيرة خاصة به، وهي تبدّل اللغة فقط ولا ترى ما تكتبه.',
+  gnomeOnHint: 'يبدّل Layout Fixer لغة الكيبورد عبر إضافته في GNOME Shell.',
+  gnomeLogOutHint: 'سجّل الخروج ثم الدخول مجددًا للإكمال، فـGNOME يحمّل الإضافات الجديدة عند تسجيل الدخول.',
+  gnomeExtensionsOffHint: 'شغّل الإضافات من تطبيق «الإضافات» (Extensions)، ثم سجّل الخروج والدخول مجددًا.',
+  gnomeIncompatibleHint: 'لا يستطيع هذا الإصدار من GNOME تشغيل الإضافة بعد. حدّث Layout Fixer للحصول على إصدار يدعمه.',
+  gnomeFailed: 'تعذّر تثبيت الإضافة. حاول مجددًا، أو تأكد من إمكانية الكتابة في مجلد المنزل.',
+
   waylandTitle: 'جلسة Wayland',
   waylandBody:
     'لا يسمح Wayland حاليًا للتطبيقات بالضغط على المفاتيح داخل تطبيقات أخرى، لذا لا يعمل التصحيح في هذه الجلسة. سجّل الدخول بجلسة X11 ‏(Xorg) لاستخدام التطبيق، ودعم Wayland مخطط له.',

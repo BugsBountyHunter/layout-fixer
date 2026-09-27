@@ -1,5 +1,7 @@
 mod cinnamon;
 mod clipboard;
+mod gnome;
+pub mod gnome_extension;
 mod input_sources;
 mod kde;
 mod keyboard;

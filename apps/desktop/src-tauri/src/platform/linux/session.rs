@@ -41,6 +41,26 @@ pub fn is_kde() -> bool {
     )
 }
 
+/// An XDG base directory: the variable when it holds an absolute path (the spec says to ignore an
+/// empty or relative one), else `$HOME/<fallback>`.
+pub fn xdg_dir(variable: &str, fallback: &str) -> Option<std::path::PathBuf> {
+    xdg_dir_from(
+        std::env::var_os(variable).map(std::path::PathBuf::from),
+        std::env::var_os("HOME").map(std::path::PathBuf::from),
+        fallback,
+    )
+}
+
+fn xdg_dir_from(
+    value: Option<std::path::PathBuf>,
+    home: Option<std::path::PathBuf>,
+    fallback: &str,
+) -> Option<std::path::PathBuf> {
+    value
+        .filter(|path| path.is_absolute())
+        .or_else(|| home.map(|home| home.join(fallback)))
+}
+
 fn names_include(current_desktop: Option<&str>, wanted: &[&str]) -> bool {
     current_desktop
         .unwrap_or_default()
@@ -74,6 +94,17 @@ mod tests {
     fn recognizes_kde() {
         assert!(names_include(Some("KDE"), &["kde"]));
         assert!(!names_include(Some("X-Cinnamon"), &["kde"]));
+    }
+
+    #[test]
+    fn ignores_an_empty_or_relative_xdg_variable() {
+        let home = Some("/home/me".into());
+        let dir =
+            |value: Option<&str>| xdg_dir_from(value.map(Into::into), home.clone(), ".local/share");
+        assert_eq!(dir(Some("/data")), Some("/data".into()));
+        assert_eq!(dir(Some("")), Some("/home/me/.local/share".into()));
+        assert_eq!(dir(Some("data")), Some("/home/me/.local/share".into()));
+        assert_eq!(dir(None), Some("/home/me/.local/share".into()));
     }
 
     #[test]

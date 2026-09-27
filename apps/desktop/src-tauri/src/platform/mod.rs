@@ -45,6 +45,43 @@ impl ArabicLayout {
     }
 }
 
+/// GNOME only: whether Layout Fixer's GNOME Shell extension can switch the keyboard layout.
+#[cfg_attr(not(target_os = "linux"), allow(dead_code))]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum GnomeSwitching {
+    /// Not a GNOME session: nothing to install.
+    Unavailable,
+    Off,
+    On,
+    /// Installed and enabled; GNOME Shell loads it at the next login.
+    LogOut,
+    /// The user turned off all extensions in the Extensions app.
+    ExtensionsOff,
+    /// GNOME Shell can't run it (a GNOME version the extension doesn't list).
+    Incompatible,
+}
+
+pub fn gnome_switching() -> GnomeSwitching {
+    #[cfg(target_os = "linux")]
+    return linux::gnome_extension::status();
+    #[cfg(not(target_os = "linux"))]
+    GnomeSwitching::Unavailable
+}
+
+pub fn enable_gnome_switching() -> Result<GnomeSwitching, String> {
+    #[cfg(target_os = "linux")]
+    return linux::gnome_extension::enable();
+    #[cfg(not(target_os = "linux"))]
+    Ok(GnomeSwitching::Unavailable)
+}
+
+/// Rewrites an installed GNOME Shell extension that an app update changed.
+pub fn refresh_gnome_extension() {
+    #[cfg(target_os = "linux")]
+    linux::gnome_extension::refresh();
+}
+
 /// Whether this session blocks the fix (Linux on Wayland).
 pub fn is_wayland() -> bool {
     #[cfg(target_os = "linux")]

@@ -59,6 +59,8 @@ pub fn run() {
             commands::reveal_applications_folder,
             commands::session_info,
             commands::show_hud,
+            commands::gnome_switching,
+            commands::enable_gnome_switching,
         ])
         .setup(|app| {
             // A menu-bar utility: no Dock icon and no app switcher entry.
@@ -68,6 +70,7 @@ pub fn run() {
             tray::create(app.handle())?;
             hud::create(app.handle())?;
             std::thread::spawn(native_host::register::register);
+            std::thread::spawn(platform::refresh_gnome_extension);
             Ok(())
         })
         .on_window_event(|window, event| {

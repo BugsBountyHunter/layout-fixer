@@ -1,0 +1,8 @@
+{
+  "uuid": "layout-fixer@layoutfixer.dev",
+  "name": "Layout Fixer",
+  "description": "Lets Layout Fixer for desktop switch the keyboard layout after it fixes text.",
+  "shell-version": ["45", "46", "47", "48", "49", "50", "51"],
+  "url": "https://github.com/BugsBountyHunter/layout-fixer",
+  "version": 1
+}

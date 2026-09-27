@@ -80,6 +80,23 @@ export const EN = {
     `Your computer has the ${have} Arabic layout, not this one, so fixed text may come out wrong.`,
   layoutMismatchUse: (name: string) => `Use ${name}`,
 
+  // GNOME (Linux)
+  gnomeSection: 'Keyboard switching on GNOME',
+  gnomeLabel: 'Layout Fixer extension',
+  gnomeInstall: 'Install',
+  gnomeOn: 'On',
+  gnomeLogOut: 'Log out to finish',
+  gnomeExtensionsOff: 'Extensions are off',
+  gnomeIncompatible: 'Not supported',
+  gnomeOffHint:
+    'GNOME lets apps switch the keyboard layout only through a GNOME Shell extension. Layout Fixer installs its own small one; it only switches the layout and never sees what you type.',
+  gnomeOnHint: 'Layout Fixer switches the keyboard layout through its GNOME Shell extension.',
+  gnomeLogOutHint: 'Log out and back in to finish: GNOME loads new extensions when you log in.',
+  gnomeExtensionsOffHint: 'Turn on Extensions in the Extensions app, then log out and back in.',
+  gnomeIncompatibleHint:
+    'This version of GNOME can’t run the extension yet. Update Layout Fixer to get one that supports it.',
+  gnomeFailed: 'The extension couldn’t be installed. Try again, or check that your home folder is writable.',
+
   // Wayland (Linux)
   waylandTitle: 'Wayland session',
   waylandBody:

@@ -207,6 +207,16 @@ pub fn session_info() -> SessionInfo {
 }
 
 #[tauri::command]
+pub async fn gnome_switching() -> crate::platform::GnomeSwitching {
+    crate::platform::gnome_switching()
+}
+
+#[tauri::command]
+pub async fn enable_gnome_switching() -> Result<crate::platform::GnomeSwitching, String> {
+    crate::platform::enable_gnome_switching()
+}
+
+#[tauri::command]
 pub fn show_hud(app: AppHandle, message: String) {
     hud::show(&app, &message);
 }

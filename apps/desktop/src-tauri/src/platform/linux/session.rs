@@ -14,9 +14,33 @@ fn is_wayland_session(session_type: Option<&str>, wayland_display: bool) -> bool
     }
 }
 
+/// GNOME keeps its own input-source list and loads one layout into XKB at a time, so the XKB
+/// groups don't show the user's layouts. `XDG_CURRENT_DESKTOP` is colon-separated (`ubuntu:GNOME`).
+pub fn is_gnome() -> bool {
+    is_gnome_desktop(std::env::var("XDG_CURRENT_DESKTOP").ok().as_deref())
+}
+
+fn is_gnome_desktop(current_desktop: Option<&str>) -> bool {
+    current_desktop
+        .unwrap_or_default()
+        .split(':')
+        .any(|name| name.eq_ignore_ascii_case("gnome"))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn recognizes_gnome_among_the_desktop_names() {
+        assert!(is_gnome_desktop(Some("GNOME")));
+        assert!(is_gnome_desktop(Some("ubuntu:GNOME")));
+        assert!(is_gnome_desktop(Some("pop:GNOME")));
+        assert!(!is_gnome_desktop(Some("X-Cinnamon")));
+        assert!(!is_gnome_desktop(Some("KDE")));
+        assert!(is_gnome_desktop(Some("GNOME-Flashback:GNOME")));
+        assert!(!is_gnome_desktop(None));
+    }
 
     #[test]
     fn follows_the_session_type_first() {

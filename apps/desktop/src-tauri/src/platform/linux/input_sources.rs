@@ -1,7 +1,8 @@
 //! XKB groups on X11. The layouts come from `_XKB_RULES_NAMES` (what `setxkbmap -query` reads), one
 //! group per layout, and switching locks the group. This works where the desktop keeps every layout
 //! in the keymap (KDE, Xfce, Cinnamon, MATE, window managers with setxkbmap). GNOME loads one layout
-//! at a time, so there only the active layout is listed and nothing switches.
+//! at a time, so its XKB groups are not the user's list: there the list is `Unsupported` rather than
+//! a one-layout list that would say the other language isn't installed.
 
 use x11rb::connection::Connection;
 use x11rb::protocol::xkb::{self, ConnectionExt as _};
@@ -112,6 +113,9 @@ fn current_group(conn: &RustConnection) -> Result<usize, FixError> {
 
 impl InputSources for LinuxInputSources {
     fn enabled(&self) -> Result<Vec<InputLayout>, FixError> {
+        if session::is_gnome() && !session::is_wayland() {
+            return Err(FixError::Unsupported);
+        }
         let (conn, screen) = connect()?;
         groups(&conn, screen)
     }

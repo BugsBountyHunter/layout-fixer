@@ -2,6 +2,13 @@
 
 All notable changes to the desktop app. The browser extension has its own [CHANGELOG](../../CHANGELOG.md).
 
+## [Unreleased]
+
+### Fixed
+- Linux (GNOME on X11): Settings no longer asks you to add an Arabic (or English) keyboard you already have. GNOME
+  shows other apps only the active layout, so Layout Fixer can't see or switch to the others there yet, and now
+  says nothing rather than something wrong.
+
 ## [1.3.1] - 2026-09-27
 
 ### Fixed

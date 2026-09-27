@@ -71,6 +71,7 @@ pub fn run() {
             hud::create(app.handle())?;
             std::thread::spawn(native_host::register::register);
             std::thread::spawn(platform::refresh_gnome_extension);
+            std::thread::spawn(platform::register_kde_input);
             Ok(())
         })
         .on_window_event(|window, event| {

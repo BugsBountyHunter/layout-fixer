@@ -65,6 +65,10 @@ extension and as a desktop app for macOS, Windows and Linux; this policy covers 
   shortcut it presses Copy and Paste, hands the copied text to the app and puts your clipboard back, and it
   holds the shortcut. It never watches what you type, keeps nothing and makes no network requests. You can
   remove it in GNOME's Extensions app.
+- **KDE Plasma on Wayland.** The app presses Copy and Paste through KWin, reads and restores the clipboard only
+  while it fixes the text you selected, and registers its shortcut with KDE (it appears in System Settings →
+  Shortcuts). KWin up to Plasma 6.7 allows that only for apps listed in a desktop file, so the app writes a hidden
+  one for itself in your user's applications folder; it contains only the app's path.
 - **Permissions.** macOS asks you to allow Layout Fixer under Accessibility, because the app presses ⌘C and ⌘V
   for you. Windows and Linux need no extra permission (on GNOME, see the Shell extension above).
 - **Your settings** (language, shortcut, Arabic layout, messages, open at login) are saved in a file in your

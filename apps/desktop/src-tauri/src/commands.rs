@@ -195,14 +195,18 @@ pub fn show_settings(app: AppHandle) {
 }
 
 #[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct SessionInfo {
     wayland: bool,
+    /// The shortcut fixes text in this Wayland session as it is (KDE Plasma).
+    fixes_on_wayland: bool,
 }
 
 #[tauri::command]
 pub fn session_info() -> SessionInfo {
     SessionInfo {
         wayland: crate::platform::is_wayland(),
+        fixes_on_wayland: crate::platform::fixes_on_wayland(),
     }
 }
 

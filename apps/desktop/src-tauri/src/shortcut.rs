@@ -6,7 +6,7 @@ use tauri::{AppHandle, Emitter, Manager, Runtime};
 use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut, ShortcutState};
 use tauri_plugin_store::StoreExt;
 
-use crate::platform::gnome_shortcut;
+use crate::platform::wayland_shortcut;
 use crate::windows;
 
 /// Same default as the extension: ⌥⇧F on macOS, Alt+Shift+F elsewhere.
@@ -102,37 +102,37 @@ fn saved_accelerator<R: Runtime>(app: &AppHandle<R>) -> Option<String> {
     parse(&accelerator).is_ok().then_some(accelerator)
 }
 
-/// How often the shortcut is re-asserted on GNOME Wayland: the extension may start after the app
-/// (at login) or be turned off and on, which drops its grab.
-const GNOME_KEEP_ALIVE: std::time::Duration = std::time::Duration::from_secs(5);
+/// How often the shortcut is re-asserted on Wayland: the GNOME extension or kglobalaccel may start
+/// after the app (at login), and the extension drops its grab when turned off and on.
+const WAYLAND_KEEP_ALIVE: std::time::Duration = std::time::Duration::from_secs(5);
 
-/// Grabs the shortcut with the global-shortcut plugin, or on GNOME Wayland through the extension.
+/// Grabs the shortcut with the global-shortcut plugin, or under Wayland through the desktop.
 fn grab<R: Runtime>(app: &AppHandle<R>, accelerator: &str) -> bool {
-    if gnome_shortcut::handles() {
-        return gnome_shortcut::grab(accelerator);
+    if wayland_shortcut::handles() {
+        return wayland_shortcut::grab(accelerator);
     }
     let shortcuts = app.global_shortcut();
     shortcuts.is_registered(accelerator) || shortcuts.register(accelerator).is_ok()
 }
 
 fn release<R: Runtime>(app: &AppHandle<R>, accelerator: &str) {
-    if gnome_shortcut::handles() {
-        gnome_shortcut::release();
+    if wayland_shortcut::handles() {
+        wayland_shortcut::release();
     } else {
         let _ = app.global_shortcut().unregister(accelerator);
     }
 }
 
-/// GNOME Wayland: runs the fix on each press, and keeps the grab alive.
-fn start_gnome_shortcut<R: Runtime>(app: &AppHandle<R>) {
+/// Wayland: runs the fix on each use of the shortcut, and keeps the grab alive.
+fn start_wayland_shortcut<R: Runtime>(app: &AppHandle<R>) {
     let watcher = app.clone();
-    std::thread::spawn(move || gnome_shortcut::watch(|| request_fix(&watcher)));
+    std::thread::spawn(move || wayland_shortcut::watch(|| request_fix(&watcher)));
     let keeper = app.clone();
     std::thread::spawn(move || loop {
-        std::thread::sleep(GNOME_KEEP_ALIVE);
+        std::thread::sleep(WAYLAND_KEEP_ALIVE);
         let hotkey = keeper.state::<Hotkey>();
         if !hotkey.is_paused() {
-            let registered = gnome_shortcut::grab(&hotkey.accelerator());
+            let registered = wayland_shortcut::grab(&hotkey.accelerator());
             hotkey.registered.store(registered, Ordering::Relaxed);
         }
     });
@@ -144,8 +144,8 @@ pub fn register_saved<R: Runtime>(app: &AppHandle<R>) {
     let accelerator = saved_accelerator(app).unwrap_or_else(|| DEFAULT.into());
     let hotkey = app.state::<Hotkey>();
     hotkey.set_accelerator(&accelerator);
-    if gnome_shortcut::handles() {
-        start_gnome_shortcut(app);
+    if wayland_shortcut::handles() {
+        start_wayland_shortcut(app);
     }
     let registered = grab(app, &accelerator);
     if !registered {

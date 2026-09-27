@@ -22,7 +22,7 @@ system asks you to confirm the first launch once:
 - **Windows:** when SmartScreen says "Windows protected your PC", click **More info → Run anyway**.
 - **Linux:** make the AppImage executable (`chmod +x`) and open it, or install the `.deb`. On GNOME 45+ install
   Layout Fixer's GNOME Shell extension from Settings (then log out and back in once): the shortcut then fixes
-  text on Wayland too. Other Wayland desktops need an X11 session for the shortcut; switching the keyboard
-  layout from the browser extension works on KDE Plasma under Wayland.
+  text on Wayland too. On KDE Plasma the shortcut works on Wayland as it is. Other Wayland desktops need an
+  X11 session for the shortcut.
 
 Updates install themselves after that, verified with the project's signing key.

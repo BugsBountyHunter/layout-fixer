@@ -1,6 +1,6 @@
 [package]
 name = "layout-fixer-desktop"
-version = "1.5.0"
+version = "1.6.0"
 description = "Fix text typed with the wrong keyboard layout, in any app"
 authors = ["Layout Fixer contributors"]
 license = "MIT"
@@ -62,9 +62,12 @@ windows = { version = "0.61", features = [
 ] }
 
 [target.'cfg(target_os = "linux")'.dependencies]
-arboard = "3"
+arboard = { version = "3", features = ["wayland-data-control"] }
 x11rb = { version = "0.13", features = ["xkb", "xtest"] }
 zbus = "5"
+# KWin's fake-input protocol presses Ctrl+C / Ctrl+V on KDE Plasma under Wayland.
+wayland-client = "0.31"
+wayland-protocols-plasma = { version = "0.3", features = ["client"] }
 # Already in the tree through GTK; reads and writes GNOME Shell's settings.
 gio = "0.18"
 

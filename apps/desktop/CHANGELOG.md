@@ -4,6 +4,18 @@ All notable changes to the desktop app. The browser extension has its own [CHANG
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-09-27
+
+### Added
+- Linux (KDE Plasma 6 on Wayland): the shortcut fixes text on Wayland too, with nothing to install. The app presses
+  Copy and Paste through KWin's fake-input protocol, reads and restores the clipboard through the data-control
+  protocol, and registers the shortcut with KDE's global shortcuts, where it also shows up in System Settings →
+  Shortcuts. Plasma 6.7 and earlier hand fake input only to apps listed in a desktop file, so the app writes a hidden
+  one for itself (`~/.local/share/applications/io.github.bugsbountyhunter.layoutfixer-kwin.desktop`).
+
+### Changed
+- The "Wayland session" notice in Settings now shows only on Wayland desktops other than GNOME and KDE Plasma.
+
 ## [1.5.0] - 2026-09-27
 
 ### Added

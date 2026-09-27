@@ -134,7 +134,11 @@ Xorg", Fedora "GNOME on Xorg", KDE Plasma X11, Linux Mint Cinnamon):
       and with the Arabic layout active; the previous clipboard is back afterwards; no screen-sharing indicator appears
 - [ ] GNOME Wayland without the extension: the shortcut does nothing; Fix Selection in the tray says to install it
 - [ ] Updating from 1.4.0 with the extension on: Settings shows "Log out to finish" until the next login
-- [ ] **Other Wayland sessions (KDE):** Settings shows the Wayland notice; Fix Selection in the tray shows
+- [ ] **KDE Plasma Wayland** (Plasma 6.x): no notice in Settings; select `hgsghl ugd;l` in Kate / Firefox and press
+      Alt+Shift+F → `السلام عليكم` (English and Arabic layout); the previous clipboard is back; "Layout Fixer → Fix the
+      selected text" is listed in System Settings → Shortcuts; `~/.local/share/applications/…layoutfixer-kwin.desktop`
+      names the running executable (AppImage: its current mount path)
+- [ ] **Other Wayland sessions (Sway, Hyprland):** Settings shows the Wayland notice; Fix Selection in the tray shows
       "Fixing text needs an X11 session on Linux for now"
 
 Known limits: copied files (`text/uri-list`) and app-private formats are not restored on Linux; fixing text on

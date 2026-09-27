@@ -131,6 +131,7 @@ describe('errorCode', () => {
     [{ code: 'secure-input' }, 'secure-input'],
     [{ code: 'elevated-app' }, 'elevated-app'],
     [{ code: 'wayland' }, 'wayland'],
+    [{ code: 'gnome-extension' }, 'gnome-extension'],
     [{ code: 'unsupported' }, 'unsupported'],
     [{ code: 'something-new' }, 'system'],
     [new Error('x'), 'system'],

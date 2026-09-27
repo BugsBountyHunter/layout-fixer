@@ -7,6 +7,7 @@ export type FixErrorCode =
   | 'secure-input'
   | 'elevated-app'
   | 'wayland'
+  | 'gnome-extension'
   | 'unsupported'
   | 'system'
 
@@ -30,6 +31,7 @@ const CODES: readonly FixErrorCode[] = [
   'secure-input',
   'elevated-app',
   'wayland',
+  'gnome-extension',
   'unsupported',
   'system',
 ]

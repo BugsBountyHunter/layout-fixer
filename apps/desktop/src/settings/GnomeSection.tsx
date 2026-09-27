@@ -39,7 +39,10 @@ function Status({ state }: { readonly state: GnomeSwitchingState }) {
   }
 }
 
-/** GNOME only: apps can switch the keyboard layout there only through a GNOME Shell extension. */
+/**
+ * GNOME only: apps can switch the keyboard layout there, and on Wayland fix text, only through a
+ * GNOME Shell extension. On Wayland it stands in for the X11-only notice.
+ */
 export function GnomeSection({ state }: { readonly state: GnomeSwitchingState }) {
   const m = useMessages()
   if (!state.status) return null

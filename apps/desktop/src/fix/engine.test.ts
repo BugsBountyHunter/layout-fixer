@@ -93,6 +93,7 @@ describe('messageFor', () => {
     [{ kind: 'error', code: 'secure-input' } as const, EN.hudSecureInput],
     [{ kind: 'error', code: 'elevated-app' } as const, EN.hudElevated],
     [{ kind: 'error', code: 'wayland' } as const, EN.hudWayland],
+    [{ kind: 'error', code: 'gnome-extension' } as const, EN.hudGnomeExtension],
     [{ kind: 'error', code: 'unsupported' } as const, EN.hudUnsupported],
     [{ kind: 'error', code: 'system' } as const, EN.hudFailed],
   ])('%j → %s', (outcome, message) => {

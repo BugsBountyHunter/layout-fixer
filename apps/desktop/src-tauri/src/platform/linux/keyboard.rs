@@ -5,7 +5,7 @@ use x11rb::protocol::xproto::{ConnectionExt as _, KEY_PRESS_EVENT, KEY_RELEASE_E
 use x11rb::protocol::xtest::ConnectionExt as _;
 use x11rb::wrapper::ConnectionExt as _;
 
-use super::session;
+use super::{gnome, session};
 use crate::fix::{FixError, Keyboard};
 
 // Evdev keycodes, used by every current X server (Xorg and XWayland). They name physical keys, so
@@ -61,9 +61,25 @@ fn ctrl_chord(letter: u8, held: &[u8]) -> Vec<(u8, u8)> {
     events
 }
 
+/// Wayland lets no app press keys in another; on GNOME, Layout Fixer's Shell extension does it.
+fn send_ctrl_wayland(letter: u8) -> Result<(), FixError> {
+    if !session::is_gnome() {
+        return Err(FixError::Wayland);
+    }
+    if !gnome::can_fix() {
+        return Err(FixError::GnomeExtension);
+    }
+    let sent = if letter == KEY_C {
+        gnome::copy()
+    } else {
+        gnome::paste()
+    };
+    sent.map_err(system)
+}
+
 fn send_ctrl(letter: u8) -> Result<(), FixError> {
     if session::is_wayland() {
-        return Err(FixError::Wayland);
+        return send_ctrl_wayland(letter);
     }
     let (conn, _screen) = x11rb::connect(None).map_err(system)?;
     for (event, keycode) in ctrl_chord(letter, &held_modifiers_after_wait(&conn)?) {

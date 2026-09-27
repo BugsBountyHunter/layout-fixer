@@ -49,6 +49,30 @@ describe('sendLayoutSwitch', () => {
     expect(warn).toHaveBeenCalledOnce()
     warn.mockRestore()
   })
+
+  it.each(['wayland', 'unsupported', 'system'])('warns with the code when the desktop app answers %s', async (code) => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const sendNativeMessage = vi.fn(async () => ({ ok: false, version: '1.3.1', error: code }))
+    await expect(sendLayoutSwitch({ sendNativeMessage }, { language: 'ar', layout: 'ar-pc' })).resolves.toBeUndefined()
+    expect(warn).toHaveBeenCalledWith('[layout-fixer] The desktop app could not switch the keyboard layout:', code)
+    warn.mockRestore()
+  })
+
+  it('warns when the answer is not from a known desktop app', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const sendNativeMessage = vi.fn(async () => 'hello')
+    await sendLayoutSwitch({ sendNativeMessage }, { language: 'ar', layout: 'ar-pc' })
+    expect(warn).toHaveBeenCalledWith('[layout-fixer] The desktop app could not switch the keyboard layout:', 'unknown')
+    warn.mockRestore()
+  })
+
+  it('stays quiet when the switch succeeds', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const sendNativeMessage = vi.fn(async () => ({ ok: true, version: '1.3.1', result: 'not-installed' }))
+    await sendLayoutSwitch({ sendNativeMessage }, { language: 'ar', layout: 'ar-pc' })
+    expect(warn).not.toHaveBeenCalled()
+    warn.mockRestore()
+  })
 })
 
 describe('pingDesktop', () => {

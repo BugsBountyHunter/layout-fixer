@@ -9,8 +9,15 @@ export default defineConfig(({ mode }) => {
   const outDir = mode === 'e2e' ? 'dist/e2e' : `dist/${target}`
   const manifest = buildManifest(target)
   // Playwright can't press extension shortcuts or answer permission prompts, so the e2e build
-  // is granted site access up front instead of relying on activeTab and optional permissions.
-  const e2eManifest = mode === 'e2e' ? { ...manifest, host_permissions: ['<all_urls>'] } : manifest
+  // is granted site access and native messaging up front instead of relying on activeTab and optional permissions.
+  const e2eManifest =
+    mode === 'e2e'
+      ? {
+          ...manifest,
+          host_permissions: ['<all_urls>'],
+          permissions: [...(manifest.permissions ?? []), 'nativeMessaging'],
+        }
+      : manifest
 
   return {
     plugins: [

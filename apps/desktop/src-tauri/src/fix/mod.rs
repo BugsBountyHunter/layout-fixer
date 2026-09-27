@@ -9,4 +9,4 @@ pub use clipboard::{Clipboard, Keyboard, Snapshot};
 pub use clipboard::Representation;
 pub use error::FixError;
 pub use flow::{capture, replace, Timing};
-pub use input_sources::{switch_to, InputLayout, InputSources, LayoutSwitch};
+pub use input_sources::{is_language_code, switch_to, InputLayout, InputSources, LayoutSwitch};

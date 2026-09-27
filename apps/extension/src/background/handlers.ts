@@ -1,3 +1,4 @@
+import { type LayoutSwitchRequest, parseLayoutSwitchMessage } from '../platform/desktop-app'
 import type { Settings } from '../platform/settings'
 import { FIX_COMMAND, OPEN_OPTIONS_MESSAGE } from '../shared/constants'
 import { ALL_SITES, type SelectionScriptSync } from './selection-script'
@@ -16,6 +17,8 @@ export interface BackgroundDependencies {
   readonly selectionSync: SelectionScriptSync
   readonly saveSettings: (patch: Partial<Settings>) => Promise<unknown>
   readonly watchSettings: (onChange: (settings: Settings) => void) => () => void
+  /** Asks the desktop app to switch the OS keyboard layout. */
+  readonly switchLayout: (request: LayoutSwitchRequest) => Promise<void>
 }
 
 export interface Background {
@@ -29,7 +32,7 @@ function isOpenOptionsMessage(message: unknown): boolean {
 }
 
 export function registerBackground(api: ExtensionApi, contentScript: string, deps: BackgroundDependencies): Background {
-  const { selectionSync, saveSettings, watchSettings } = deps
+  const { selectionSync, saveSettings, watchSettings, switchLayout } = deps
 
   async function fixLayoutInTab(tabId: number): Promise<void> {
     try {
@@ -56,11 +59,14 @@ export function registerBackground(api: ExtensionApi, contentScript: string, dep
   api.permissions?.onAdded.addListener(() => selectionSync.sync())
   api.permissions?.onRemoved.addListener(async (removed) => {
     if (removed.origins?.includes(ALL_SITES)) await saveSettings({ selectionButton: false })
+    if (removed.permissions?.includes('nativeMessaging')) await saveSettings({ switchKeyboardLayout: false })
     await selectionSync.sync()
   })
 
   api.runtime.onMessage.addListener((message) => {
     if (isOpenOptionsMessage(message)) void api.runtime.openOptionsPage()
+    const layoutSwitch = parseLayoutSwitchMessage(message)
+    if (layoutSwitch) void switchLayout(layoutSwitch)
   })
 
   api.contextMenus?.onClicked.addListener((info, tab) => {

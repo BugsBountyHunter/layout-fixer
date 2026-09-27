@@ -71,6 +71,21 @@ Legend: ✅ checked on macOS 27 (Apple silicon, built-in 2× display + external 
       Keyboard → Text Input"; adding one and returning to Settings clears it
 - [ ] The same two hints in Arabic, on Windows and on Linux X11
 
+## Browser extension → desktop app (native messaging)
+
+- [x] ✅ macOS: the host answers framed messages like Chrome sends them (ping; ABC → Arabic → "already-active" → ABC;
+      an unknown request is refused)
+- [x] ✅ Automated: `apps/extension/e2e/desktop.spec.ts` (fake host in the Playwright profile)
+- [ ] After opening the app once, `~/Library/Application Support/Google/Chrome/NativeMessagingHosts/io.github.bugsbountyhunter.layoutfixer.json`
+      exists and points at `/Applications/Layout Fixer.app/Contents/MacOS/layout-fixer-desktop`
+- [ ] Store extension in Chrome: Settings → Keyboard layout → switch on → permission prompt → "Connected to Layout
+      Fixer for desktop 1.3.0"; fixing `hgsghl` in a text field switches the menu-bar input source to Arabic
+- [ ] Desktop app not installed: the switch shows the "isn't installed" notice with the download link
+- [ ] Windows: registry keys under `HKCU\Software\Google\Chrome\NativeMessagingHosts` and Edge; the switch works in
+      Chrome and Edge (no console window flashes)
+- [ ] Linux X11: manifest in `~/.config/google-chrome/NativeMessagingHosts`; the AppImage path is the `.AppImage` file
+- [ ] Firefox (desktop): manifest in the Mozilla folder; the switch works with the Firefox build
+
 ## Windows
 
 Automated on the Windows CI runner: the real clipboard round trip (write, read, restore a standard and a registered

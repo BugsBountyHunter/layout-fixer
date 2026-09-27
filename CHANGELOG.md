@@ -3,6 +3,12 @@
 All notable changes to Layout Fixer. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and the project uses [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+- When the desktop app can't switch the keyboard layout (for example on a Linux Wayland session), the extension now
+  logs the reason instead of treating the answer as a success.
+
 ## [1.2.0] - 2026-09-27
 
 ### Added

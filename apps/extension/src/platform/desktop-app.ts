@@ -27,11 +27,23 @@ export function parseLayoutSwitchMessage(message: unknown): LayoutSwitchRequest 
   return { language, layout }
 }
 
-/** The text is already fixed, so a missing or failing desktop app is only logged. */
+/** The desktop app's stable error code (`wayland`, `unsupported`, `system`), or `unknown` for an odd answer. */
+function failureCode(answer: unknown): string | null {
+  if (!isRecord(answer)) return 'unknown'
+  if (answer.ok === true) return null
+  return typeof answer.error === 'string' ? answer.error : 'unknown'
+}
+
+/**
+ * The text is already fixed, so a missing or failing desktop app is only logged. The desktop app
+ * answers a failed switch (a Wayland session, an unsupported desktop) instead of rejecting.
+ */
 export async function sendLayoutSwitch(runtime: NativeRuntime, request: LayoutSwitchRequest): Promise<void> {
   if (!runtime.sendNativeMessage) return
   try {
-    await runtime.sendNativeMessage(DESKTOP_HOST, { type: 'switch-layout', ...request })
+    const answer = await runtime.sendNativeMessage(DESKTOP_HOST, { type: 'switch-layout', ...request })
+    const code = failureCode(answer)
+    if (code) console.warn('[layout-fixer] The desktop app could not switch the keyboard layout:', code)
   } catch (error) {
     console.warn('[layout-fixer] Could not switch the keyboard layout:', error)
   }

@@ -69,13 +69,14 @@ export const ar: Dictionary = {
     windows: 'تنزيل لنظام Windows',
     linux: 'تنزيل لنظام Linux',
     linuxDeb: 'حزمة ‎.deb',
-    note: 'مجاني ومفتوح المصدر · macOS 12 وأحدث، وWindows 10 و11، وLinux ‏(X11) · يحدّث نفسه',
+    note: 'مجاني ومفتوح المصدر · macOS 12 وأحدث، وWindows 10 و11، وLinux ‏(X11، أو Wayland مع GNOME وKDE Plasma) · يحدّث نفسه',
     allReleases: 'كل التنزيلات',
     firstLaunchTitle: 'عند فتحه أول مرة',
     firstLaunchMac:
       'macOS: افتح التطبيق. عندما يقول macOS إنه لا يستطيع التحقق منه، اذهب إلى إعدادات النظام ← الخصوصية والأمن وانقر «الفتح على أي حال». ثم اسمح للتطبيق في «تسهيلات الاستخدام» حتى يضغط ⌘C و⌘V نيابةً عنك.',
     firstLaunchWindows: 'Windows: إذا ظهرت رسالة SmartScreen «Windows protected your PC»، انقر More info ← Run anyway.',
-    firstLaunchLinux: 'Linux: اجعل ملف AppImage قابلًا للتشغيل وافتحه، أو ثبّت حزمة ‎.deb. استخدم جلسة X11.',
+    firstLaunchLinux:
+      'Linux: اجعل ملف AppImage قابلًا للتشغيل وافتحه، أو ثبّت حزمة ‎.deb. على GNOME ثبّت إضافة GNOME من إعدادات التطبيق مرة واحدة.',
   },
   faq: {
     title: 'أسئلة شائعة',

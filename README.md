@@ -54,7 +54,7 @@ a fix, for itself and for the browser extension.
 | --- | --- |
 | macOS 12+ (Apple silicon and Intel) | [Layout-Fixer-macOS.dmg](https://github.com/BugsBountyHunter/layout-fixer/releases/download/desktop-latest/Layout-Fixer-macOS.dmg) |
 | Windows 10 / 11 | [Layout-Fixer-Windows-setup.exe](https://github.com/BugsBountyHunter/layout-fixer/releases/download/desktop-latest/Layout-Fixer-Windows-setup.exe) (or the [.msi](https://github.com/BugsBountyHunter/layout-fixer/releases/download/desktop-latest/Layout-Fixer-Windows.msi)) |
-| Linux (X11, or GNOME Wayland with the GNOME extension) | [Layout-Fixer-Linux.AppImage](https://github.com/BugsBountyHunter/layout-fixer/releases/download/desktop-latest/Layout-Fixer-Linux.AppImage) (or the [.deb](https://github.com/BugsBountyHunter/layout-fixer/releases/download/desktop-latest/Layout-Fixer-Linux.deb)) |
+| Linux (X11; on Wayland, KDE Plasma and GNOME with its extension) | [Layout-Fixer-Linux.AppImage](https://github.com/BugsBountyHunter/layout-fixer/releases/download/desktop-latest/Layout-Fixer-Linux.AppImage) (or the [.deb](https://github.com/BugsBountyHunter/layout-fixer/releases/download/desktop-latest/Layout-Fixer-Linux.deb)) |
 
 The app isn't signed with a paid Apple or Microsoft certificate yet, so the system asks you to confirm the first
 launch once — see the [first-launch steps](docs/desktop-first-launch.md). Updates install themselves after that.

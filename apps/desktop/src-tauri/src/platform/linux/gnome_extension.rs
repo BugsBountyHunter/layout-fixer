@@ -140,31 +140,15 @@ pub fn enable() -> Result<GnomeSwitching, String> {
     Ok(status())
 }
 
-/// GNOME on Wayland: the shortcut is grabbed by the extension, because the global-shortcut plugin
-/// can't grab keys there.
-pub fn handles_shortcut() -> bool {
-    session::is_wayland() && session::is_gnome()
-}
-
 /// Grabs (or keeps) the shortcut; `false` when the extension isn't running or another app holds it.
-pub fn grab_shortcut(accelerator: &str) -> bool {
+pub(super) fn grab_shortcut(accelerator: &str) -> bool {
     gnome::gtk_accelerator(accelerator)
         .and_then(|accelerator| gnome::set_shortcut(&accelerator).ok())
         .unwrap_or(false)
 }
 
-pub fn release_shortcut() {
+pub(super) fn release_shortcut() {
     let _ = gnome::set_shortcut("");
-}
-
-/// Runs for the life of the app, calling `on_activated` for each press of the shortcut.
-pub fn watch_shortcut(on_activated: impl Fn()) {
-    loop {
-        if let Err(error) = gnome::watch_activated(&on_activated) {
-            eprintln!("[layout-fixer] GNOME shortcut watch stopped: {error}");
-        }
-        std::thread::sleep(std::time::Duration::from_secs(5));
-    }
 }
 
 /// Keeps an installed copy in step with the app after an update; GNOME loads it at the next login.

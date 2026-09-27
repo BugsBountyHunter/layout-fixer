@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { errorCode } from '../fix/bridge'
 import { type GnomeSwitching, parseGnomeSwitching } from '../platform/gnomeSwitching'
 import { type LayoutInfo, parseLayoutList } from '../platform/layoutHints'
+import { blocksFixing } from '../platform/session'
 
 export interface ShortcutInfo {
   readonly accelerator: string
@@ -70,12 +71,12 @@ export function useInputLayouts(): readonly LayoutInfo[] | null {
   return layouts
 }
 
-/** Linux on Wayland can't send keys to other apps yet; Settings explains that. */
+/** Linux on a Wayland desktop where the shortcut can't fix text; Settings explains that. */
 export function useWaylandSession(): boolean {
   const [wayland, setWayland] = useState(false)
   useEffect(() => {
-    invoke<{ wayland: boolean }>('session_info')
-      .then((info) => setWayland(info.wayland))
+    invoke<unknown>('session_info')
+      .then((info) => setWayland(blocksFixing(info)))
       .catch(logError('Could not read the session type'))
   }, [])
   return wayland

@@ -14,17 +14,18 @@ const TEXT: &str = "text/plain;charset=utf-8";
 const HTML: &str = "text/html";
 const IMAGE_PREFIX: &str = "image/rgba;";
 
-/// X11 through `arboard`; on Wayland only GNOME lets the app at the clipboard, through its Shell
-/// extension (the keyboard reports a missing extension, so the fix stops before touching it).
+/// `arboard`: X11, or on Wayland the data-control protocol (KDE Plasma, wlroots desktops). GNOME
+/// offers no data-control, so there Layout Fixer's Shell extension serves the clipboard (the
+/// keyboard reports a missing extension, so the fix stops before touching it).
 pub struct LinuxClipboard;
 
-struct X11Clipboard;
+struct ArboardClipboard;
 
 fn backend() -> &'static dyn Clipboard {
-    if session::is_wayland() {
+    if session::is_wayland() && session::is_gnome() {
         &GnomeClipboard
     } else {
-        &X11Clipboard
+        &ArboardClipboard
     }
 }
 
@@ -88,8 +89,8 @@ fn unique_marker() -> String {
     )
 }
 
-impl Clipboard for X11Clipboard {
-    /// X11 has no change counter; a hash of the text changes whenever the copied text differs from
+impl Clipboard for ArboardClipboard {
+    /// X11 (and data-control) has no change counter; a hash of the text changes whenever the copied text differs from
     /// the marker written by `mark_before_copy`.
     fn change_count(&self) -> i64 {
         let mut hasher = DefaultHasher::new();
@@ -191,7 +192,7 @@ mod tests {
         if std::env::var_os("DISPLAY").is_none() {
             return;
         }
-        let clipboard = X11Clipboard;
+        let clipboard = ArboardClipboard;
         let original = Snapshot {
             items: vec![vec![
                 Representation {

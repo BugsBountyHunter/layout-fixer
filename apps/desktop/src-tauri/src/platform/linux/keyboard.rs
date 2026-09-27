@@ -5,7 +5,7 @@ use x11rb::protocol::xproto::{ConnectionExt as _, KEY_PRESS_EVENT, KEY_RELEASE_E
 use x11rb::protocol::xtest::ConnectionExt as _;
 use x11rb::wrapper::ConnectionExt as _;
 
-use super::{gnome, session};
+use super::{gnome, kde_input, session};
 use crate::fix::{FixError, Keyboard};
 
 // Evdev keycodes, used by every current X server (Xorg and XWayland). They name physical keys, so
@@ -61,8 +61,17 @@ fn ctrl_chord(letter: u8, held: &[u8]) -> Vec<(u8, u8)> {
     events
 }
 
-/// Wayland lets no app press keys in another; on GNOME, Layout Fixer's Shell extension does it.
+/// Wayland lets no app press keys in another: on GNOME, Layout Fixer's Shell extension does it, on
+/// KDE Plasma KWin's fake-input protocol.
 fn send_ctrl_wayland(letter: u8) -> Result<(), FixError> {
+    if session::is_kde() {
+        let key = if letter == KEY_C {
+            kde_input::KEY_C
+        } else {
+            kde_input::KEY_V
+        };
+        return kde_input::ctrl_chord(key);
+    }
     if !session::is_gnome() {
         return Err(FixError::Wayland);
     }

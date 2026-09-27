@@ -202,7 +202,7 @@ npm run check:landing   # website lint (ESLint), typecheck, tests, build, Playwr
 with a fake bridge) and `src-tauri/src/fix/` (Rust: clipboard snapshot/restore and key timing, unit-tested with fake
 `Clipboard`/`Keyboard` traits). Natives are in `src-tauri/src/platform/macos/` and `platform/windows/` (Win32 clipboard with every memory format,
 `SendInput`, elevated-app detection) and `platform/linux/` (X11 via `arboard` + XTest through `x11rb`; X11 has no
-clipboard counter, so a unique marker is written before Ctrl+C; on Wayland only GNOME works, through the extension below, and other sessions are detected and explained). After a fix the app can
+clipboard counter, so a unique marker is written before Ctrl+C; on Wayland GNOME works through the extension below and KDE Plasma natively, and other sessions are detected and explained). After a fix the app can
 switch the OS keyboard layout (`fix/input_sources.rs` picks an enabled layout for the target language; natives in
 `platform/<os>/input_sources.rs`: TIS on macOS, main thread only; `WM_INPUTLANGCHANGEREQUEST` to the focused window on
 Windows; on Linux the desktop's own D-Bus API where it has one: Cinnamon 6.6+ (`org.Cinnamon`, whose window manager
@@ -210,8 +210,14 @@ undoes outside group changes), KDE (`org.kde.keyboard`, also on Wayland) and GNO
 installed from Settings by `platform/linux/gnome_extension.rs`; add each new GNOME version to its `metadata.json`), else an
 XKB group lock on X11). On GNOME Wayland the same extension (API v2, `ApiVersion`) also does the fix's Ctrl+C / Ctrl+V
 (Clutter virtual keyboard), the clipboard (`platform/linux/gnome_clipboard.rs`) and the shortcut grab (`shortcut.rs` routes
-there via `platform::gnome_shortcut`); all calls share one D-Bus connection, because the grab lives as long as the caller's
-bus name. Bump `API_VERSION` in `extension.js` and `FIX_API_VERSION` in `gnome.rs` together when the D-Bus API changes. Plan: [docs/plans/2026-09-27-switch-keyboard-layout.md](docs/plans/2026-09-27-switch-keyboard-layout.md). Windows and Linux
+there via `platform::wayland_shortcut`); all calls share one D-Bus connection, because the grab lives as long as the caller's
+bus name. Bump `API_VERSION` in `extension.js` and `FIX_API_VERSION` in `gnome.rs` together when the D-Bus API changes.
+On KDE Plasma Wayland: Ctrl+C / Ctrl+V through KWin's `org_kde_kwin_fake_input` (`platform/linux/kde_input.rs`; KWin ≤ 6.7
+allows it only for an executable listed in a desktop file's `X-KDE-Wayland-Interfaces`, so the app writes a hidden entry
+for its own path at startup), the clipboard through arboard's data-control backend (ext and wlr), and the shortcut
+through kglobalaccel (`platform/linux/kglobalaccel.rs`, fired on release). `platform/linux/wayland_shortcut.rs` picks
+GNOME or KDE; `platform::wayland_shortcut` is what `shortcut.rs` calls. D-Bus arrays must be slices or `Vec`s: serde
+sends a fixed-size array as a struct. Plan: [docs/plans/2026-09-27-switch-keyboard-layout.md](docs/plans/2026-09-27-switch-keyboard-layout.md). Windows and Linux
 code can't be built on a Mac (Tauri's build scripts need the Windows resource compiler / GTK), but they can be
 type-checked: put the platform's dependencies in a scratch crate that includes `src/fix` and `src/platform/<os>` via
 `#[path]`, then `cargo clippy --target x86_64-pc-windows-msvc` or `--target x86_64-unknown-linux-gnu`. Manual checks: [docs/testing/desktop-checklist.md](docs/testing/desktop-checklist.md).

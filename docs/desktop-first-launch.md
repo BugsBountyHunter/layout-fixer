@@ -20,8 +20,9 @@ system asks you to confirm the first launch once:
   scroll down and click **Open Anyway**. Then allow Layout Fixer under **Accessibility** when asked, so it can
   press ⌘C and ⌘V for you.
 - **Windows:** when SmartScreen says "Windows protected your PC", click **More info → Run anyway**.
-- **Linux:** make the AppImage executable (`chmod +x`) and open it, or install the `.deb`. Fixing text with the
-  shortcut needs an X11 session. Switching the keyboard layout from the browser extension also works on Wayland
-  with KDE Plasma, and on GNOME 45+ after you install Layout Fixer's GNOME Shell extension from Settings.
+- **Linux:** make the AppImage executable (`chmod +x`) and open it, or install the `.deb`. On GNOME 45+ install
+  Layout Fixer's GNOME Shell extension from Settings (then log out and back in once): the shortcut then fixes
+  text on Wayland too. Other Wayland desktops need an X11 session for the shortcut; switching the keyboard
+  layout from the browser extension works on KDE Plasma under Wayland.
 
 Updates install themselves after that, verified with the project's signing key.

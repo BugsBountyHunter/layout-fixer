@@ -4,6 +4,20 @@ All notable changes to the desktop app. The browser extension has its own [CHANG
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-09-27
+
+### Added
+- Linux (GNOME 45 and later on Wayland, e.g. Ubuntu 24.04+ and Fedora): the shortcut fixes text on Wayland too. Wayland
+  lets no app press keys in another app, read the clipboard in the background or grab a global shortcut, so on GNOME
+  Layout Fixer's GNOME Shell extension does those: it presses Copy and Paste for the fix, puts your clipboard back
+  afterwards and grabs the shortcut. Install it from Settings → GNOME extension (log out and back in once); an
+  extension installed with 1.4.0 is updated automatically and works from the next login. No system prompt and no
+  screen-sharing indicator. Other Wayland desktops (KDE Plasma next) still need an X11 session for the shortcut.
+
+### Changed
+- On GNOME Wayland, Settings shows the GNOME extension section instead of the "needs an X11 session" notice, and a fix
+  without the extension says to install it.
+
 ## [1.4.0] - 2026-09-27
 
 ### Added

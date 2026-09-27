@@ -16,6 +16,9 @@ pub enum FixError {
     /// Linux on Wayland: apps may not send keys to other apps.
     #[cfg_attr(not(target_os = "linux"), allow(dead_code))]
     Wayland,
+    /// GNOME on Wayland: Layout Fixer's GNOME Shell extension isn't running (or is too old).
+    #[cfg_attr(not(target_os = "linux"), allow(dead_code))]
+    GnomeExtension,
     /// This OS has no implementation.
     #[cfg_attr(
         any(target_os = "macos", windows, target_os = "linux"),

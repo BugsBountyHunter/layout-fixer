@@ -7,6 +7,7 @@ const ERROR_KEYS: Readonly<Record<FixErrorCode, keyof Messages>> = {
   'secure-input': 'hudSecureInput',
   'elevated-app': 'hudElevated',
   wayland: 'hudWayland',
+  'gnome-extension': 'hudGnomeExtension',
   unsupported: 'hudUnsupported',
   system: 'hudFailed',
 }

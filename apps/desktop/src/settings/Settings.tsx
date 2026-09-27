@@ -49,7 +49,7 @@ export function Settings({ state, updater }: { readonly state: SettingsState; re
         </p>
       )}
       <InstallNotice location={location} />
-      {wayland && <WaylandNotice />}
+      {wayland && !gnome.status && <WaylandNotice />}
       {IS_MAC && <AccessibilitySection trusted={accessibility.trusted} onRequest={accessibility.request} />}
 
       <ShortcutSection
@@ -62,7 +62,7 @@ export function Settings({ state, updater }: { readonly state: SettingsState; re
       />
 
       <GeneralSection settings={settings} update={update} missingLayouts={hints.missing} />
-      {settings.switchLayout && <GnomeSection state={gnome} />}
+      {(settings.switchLayout || wayland) && <GnomeSection state={gnome} />}
 
       <section className="section" aria-labelledby="layout-title">
         <h2 id="layout-title">{m.layoutSection}</h2>

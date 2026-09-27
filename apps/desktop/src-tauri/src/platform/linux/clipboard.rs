@@ -6,13 +6,48 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 use arboard::{ImageData, SetExtLinux};
 
+use super::gnome_clipboard::GnomeClipboard;
+use super::session;
 use crate::fix::{Clipboard, FixError, Representation, Snapshot};
 
 const TEXT: &str = "text/plain;charset=utf-8";
 const HTML: &str = "text/html";
 const IMAGE_PREFIX: &str = "image/rgba;";
 
+/// X11 through `arboard`; on Wayland only GNOME lets the app at the clipboard, through its Shell
+/// extension (the keyboard reports a missing extension, so the fix stops before touching it).
 pub struct LinuxClipboard;
+
+struct X11Clipboard;
+
+fn backend() -> &'static dyn Clipboard {
+    if session::is_wayland() {
+        &GnomeClipboard
+    } else {
+        &X11Clipboard
+    }
+}
+
+impl Clipboard for LinuxClipboard {
+    fn change_count(&self) -> i64 {
+        backend().change_count()
+    }
+    fn mark_before_copy(&self) -> Result<bool, FixError> {
+        backend().mark_before_copy()
+    }
+    fn read_text(&self) -> Option<String> {
+        backend().read_text()
+    }
+    fn snapshot(&self) -> Snapshot {
+        backend().snapshot()
+    }
+    fn restore(&self, snapshot: &Snapshot) -> Result<(), FixError> {
+        backend().restore(snapshot)
+    }
+    fn write_transient_text(&self, text: &str) -> Result<(), FixError> {
+        backend().write_transient_text(text)
+    }
+}
 
 /// On X11 the app that owns the clipboard serves its contents, so one instance stays alive for the
 /// whole process instead of being dropped (and its contents lost) after each call.
@@ -53,7 +88,7 @@ fn unique_marker() -> String {
     )
 }
 
-impl Clipboard for LinuxClipboard {
+impl Clipboard for X11Clipboard {
     /// X11 has no change counter; a hash of the text changes whenever the copied text differs from
     /// the marker written by `mark_before_copy`.
     fn change_count(&self) -> i64 {
@@ -156,7 +191,7 @@ mod tests {
         if std::env::var_os("DISPLAY").is_none() {
             return;
         }
-        let clipboard = LinuxClipboard;
+        let clipboard = X11Clipboard;
         let original = Snapshot {
             items: vec![vec![
                 Representation {

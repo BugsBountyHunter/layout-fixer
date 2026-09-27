@@ -17,6 +17,7 @@ export const AR: Messages = {
   hudSecureInput: 'لا يمكن تصحيح النص في حقول كلمات المرور',
   hudElevated: 'لا يمكن تصحيح النص في تطبيقات تعمل كمسؤول',
   hudWayland: 'يحتاج تصحيح النص إلى جلسة X11 على Linux حاليًا',
+  hudGnomeExtension: 'ثبّت إضافة Layout Fixer لـGNOME من الإعدادات لتصحيح النص',
   hudUnsupported: 'تصحيح النص غير متاح على هذا النظام بعد',
   hudFailed: 'تعذّر تصحيح النص',
 
@@ -74,7 +75,7 @@ export const AR: Messages = {
     `جهازك يستخدم تخطيط ${have} العربي وليس هذا التخطيط، لذلك قد يخرج النص المصحَّح خاطئًا.`,
   layoutMismatchUse: (name: string) => `استخدم ${name}`,
 
-  gnomeSection: 'تبديل الكيبورد في GNOME',
+  gnomeSection: 'إضافة GNOME',
   gnomeLabel: 'إضافة Layout Fixer',
   gnomeInstall: 'تثبيت',
   gnomeOn: 'تعمل',
@@ -82,8 +83,8 @@ export const AR: Messages = {
   gnomeExtensionsOff: 'الإضافات متوقفة',
   gnomeIncompatible: 'غير مدعومة',
   gnomeOffHint:
-    'لا يسمح GNOME للتطبيقات بتبديل لغة الكيبورد إلا عبر إضافة GNOME Shell. يثبّت Layout Fixer إضافة صغيرة خاصة به، وهي تبدّل اللغة فقط ولا ترى ما تكتبه.',
-  gnomeOnHint: 'يبدّل Layout Fixer لغة الكيبورد عبر إضافته في GNOME Shell.',
+    'لا يسمح GNOME للتطبيقات بتبديل لغة الكيبورد، ولا بتصحيح النص المحدد في Wayland، إلا عبر إضافة GNOME Shell. يثبّت Layout Fixer إضافة صغيرة خاصة به: تنسخ وتلصق النص الذي تصحّحه فقط عند ضغط الاختصار، ولا تسجّل شيئًا.',
+  gnomeOnHint: 'يصحّح Layout Fixer النص ويبدّل لغة الكيبورد عبر إضافته في GNOME Shell.',
   gnomeLogOutHint: 'سجّل الخروج ثم الدخول مجددًا للإكمال، فـGNOME يحمّل الإضافات الجديدة عند تسجيل الدخول.',
   gnomeExtensionsOffHint: 'شغّل الإضافات من تطبيق «الإضافات» (Extensions)، ثم سجّل الخروج والدخول مجددًا.',
   gnomeIncompatibleHint: 'لا يستطيع هذا الإصدار من GNOME تشغيل الإضافة بعد. حدّث Layout Fixer للحصول على إصدار يدعمه.',

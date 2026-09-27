@@ -76,6 +76,37 @@ pub fn enable_gnome_switching() -> Result<GnomeSwitching, String> {
     Ok(GnomeSwitching::Unavailable)
 }
 
+/// GNOME on Wayland: the shortcut is grabbed by Layout Fixer's GNOME Shell extension, because apps
+/// can't grab keys there. These do nothing elsewhere.
+pub mod gnome_shortcut {
+    pub fn handles() -> bool {
+        #[cfg(target_os = "linux")]
+        return super::linux::gnome_extension::handles_shortcut();
+        #[cfg(not(target_os = "linux"))]
+        false
+    }
+
+    #[cfg_attr(not(target_os = "linux"), allow(unused_variables))]
+    pub fn grab(accelerator: &str) -> bool {
+        #[cfg(target_os = "linux")]
+        return super::linux::gnome_extension::grab_shortcut(accelerator);
+        #[cfg(not(target_os = "linux"))]
+        false
+    }
+
+    pub fn release() {
+        #[cfg(target_os = "linux")]
+        super::linux::gnome_extension::release_shortcut();
+    }
+
+    /// Blocks for the life of the app, calling `on_activated` for each press.
+    #[cfg_attr(not(target_os = "linux"), allow(unused_variables))]
+    pub fn watch(on_activated: impl Fn()) {
+        #[cfg(target_os = "linux")]
+        super::linux::gnome_extension::watch_shortcut(on_activated);
+    }
+}
+
 /// Rewrites an installed GNOME Shell extension that an app update changed.
 pub fn refresh_gnome_extension() {
     #[cfg(target_os = "linux")]

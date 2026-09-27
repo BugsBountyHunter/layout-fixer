@@ -17,6 +17,7 @@ export const EN = {
   hudSecureInput: 'Can’t fix text in password fields',
   hudElevated: 'Can’t fix text in apps running as administrator',
   hudWayland: 'Fixing text needs an X11 session on Linux for now',
+  hudGnomeExtension: 'Install Layout Fixer’s GNOME extension in Settings to fix text',
   hudUnsupported: 'Fixing text isn’t available on this system yet',
   hudFailed: 'Couldn’t fix the text',
 
@@ -81,7 +82,7 @@ export const EN = {
   layoutMismatchUse: (name: string) => `Use ${name}`,
 
   // GNOME (Linux)
-  gnomeSection: 'Keyboard switching on GNOME',
+  gnomeSection: 'GNOME extension',
   gnomeLabel: 'Layout Fixer extension',
   gnomeInstall: 'Install',
   gnomeOn: 'On',
@@ -89,8 +90,8 @@ export const EN = {
   gnomeExtensionsOff: 'Extensions are off',
   gnomeIncompatible: 'Not supported',
   gnomeOffHint:
-    'GNOME lets apps switch the keyboard layout only through a GNOME Shell extension. Layout Fixer installs its own small one; it only switches the layout and never sees what you type.',
-  gnomeOnHint: 'Layout Fixer switches the keyboard layout through its GNOME Shell extension.',
+    'GNOME lets apps switch the keyboard layout, and on Wayland fix the selected text, only through a GNOME Shell extension. Layout Fixer installs its own small one: it copies and pastes only the text you fix, when you press the shortcut, and records nothing.',
+  gnomeOnHint: 'Layout Fixer fixes text and switches the keyboard layout through its GNOME Shell extension.',
   gnomeLogOutHint: 'Log out and back in to finish: GNOME loads new extensions when you log in.',
   gnomeExtensionsOffHint: 'Turn on Extensions in the Extensions app, then log out and back in.',
   gnomeIncompatibleHint:

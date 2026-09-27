@@ -129,7 +129,12 @@ Xorg", Fedora "GNOME on Xorg", KDE Plasma X11, Linux Mint Cinnamon):
       on Xorg, the browser extension on Wayland)
 - [ ] GNOME with extensions turned off in the Extensions app: "Extensions are off"
 - [ ] KDE Plasma Wayland: the browser extension's fix switches the layout (KWin's `org.kde.keyboard`)
-- [ ] **Wayland session:** Settings shows the Wayland notice; Fix Selection in the tray shows
+- [ ] **GNOME Wayland** (Ubuntu 24.04+, Fedora): Settings → GNOME extension → Install → log out/in → "On"; select
+      `hgsghl ugd;l` in gedit / GNOME Text Editor / Firefox and press Alt+Shift+F → `السلام عليكم`, with the English
+      and with the Arabic layout active; the previous clipboard is back afterwards; no screen-sharing indicator appears
+- [ ] GNOME Wayland without the extension: the shortcut does nothing; Fix Selection in the tray says to install it
+- [ ] Updating from 1.4.0 with the extension on: Settings shows "Log out to finish" until the next login
+- [ ] **Other Wayland sessions (KDE):** Settings shows the Wayland notice; Fix Selection in the tray shows
       "Fixing text needs an X11 session on Linux for now"
 
 Known limits: copied files (`text/uri-list`) and app-private formats are not restored on Linux; fixing text on

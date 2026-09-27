@@ -4,7 +4,12 @@ All notable changes to the desktop app. The browser extension has its own [CHANG
 
 ## [Unreleased]
 
+## [1.3.2] - 2026-09-27
+
 ### Fixed
+- Linux (Cinnamon 6.6 and later, e.g. Linux Mint 22.3): switching the keyboard layout after a fix still didn't
+  stick. Cinnamon's window manager puts back its own layout as soon as another app changes it, so the switch was
+  undone at once. The app now switches through Cinnamon itself, and the panel's layout indicator follows.
 - Linux (GNOME on X11): Settings no longer asks you to add an Arabic (or English) keyboard you already have. GNOME
   shows other apps only the active layout, so Layout Fixer can't see or switch to the others there yet, and now
   says nothing rather than something wrong.

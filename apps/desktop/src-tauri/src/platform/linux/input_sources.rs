@@ -1,6 +1,7 @@
-//! XKB groups on X11. The layouts come from `_XKB_RULES_NAMES` (what `setxkbmap -query` reads), one
+//! Cinnamon 6.6 and later switch through their own D-Bus API (see `cinnamon`); elsewhere, XKB groups
+//! on X11. The layouts come from `_XKB_RULES_NAMES` (what `setxkbmap -query` reads), one
 //! group per layout, and switching locks the group. This works where the desktop keeps every layout
-//! in the keymap (KDE, Xfce, Cinnamon, MATE, window managers with setxkbmap). GNOME loads one layout
+//! in the keymap (KDE, Xfce, older Cinnamon, MATE, window managers with setxkbmap). GNOME loads one layout
 //! at a time, so its XKB groups are not the user's list: there the list is `Unsupported` rather than
 //! a one-layout list that would say the other language isn't installed.
 
@@ -9,7 +10,7 @@ use x11rb::protocol::xkb::{self, ConnectionExt as _};
 use x11rb::protocol::xproto::{AtomEnum, ConnectionExt as _};
 use x11rb::rust_connection::RustConnection;
 
-use super::session;
+use super::{cinnamon, session};
 use crate::fix::{FixError, InputLayout, InputSources};
 use crate::platform::ArabicLayout;
 
@@ -20,7 +21,7 @@ const MAX_GROUPS: usize = 4;
 pub struct LinuxInputSources;
 
 /// XKB layout names are mostly country codes; these are the languages Layout Fixer converts.
-fn language_of(layout: &str) -> Option<&'static str> {
+pub(super) fn language_of(layout: &str) -> Option<&'static str> {
     Some(match layout {
         "us" | "gb" | "au" | "ie" | "nz" | "za" => "en",
         "ara" | "eg" | "iq" | "sy" => "ar",
@@ -33,6 +34,15 @@ pub fn preferred_ids(layout: ArabicLayout) -> &'static [&'static str] {
     match layout {
         ArabicLayout::ArPc => &["ara"],
         ArabicLayout::ArMac => &["ara(mac)"],
+    }
+}
+
+/// `ara(mac)`: the layout with its variant, as `setxkbmap` would take it.
+pub(super) fn layout_id(layout: &str, variant: &str) -> String {
+    if variant.is_empty() {
+        layout.to_owned()
+    } else {
+        format!("{layout}({variant})")
     }
 }
 
@@ -54,11 +64,7 @@ fn parse_rules_names(value: &[u8]) -> Vec<InputLayout> {
         .map(|(group, layout)| {
             let variant = variants.get(group).copied().unwrap_or_default();
             InputLayout {
-                id: if variant.is_empty() {
-                    layout.to_owned()
-                } else {
-                    format!("{layout}({variant})")
-                },
+                id: layout_id(layout, variant),
                 languages: language_of(layout)
                     .map(|code| vec![code.to_owned()])
                     .unwrap_or_default(),
@@ -111,8 +117,19 @@ fn current_group(conn: &RustConnection) -> Result<usize, FixError> {
     Ok(usize::from(u8::from(state.group)))
 }
 
+/// Cinnamon's input sources when its D-Bus API answers; `None` means XKB groups are the way.
+fn cinnamon_sources() -> Option<Vec<cinnamon::Source>> {
+    if !session::is_cinnamon() {
+        return None;
+    }
+    cinnamon::sources().ok()
+}
+
 impl InputSources for LinuxInputSources {
     fn enabled(&self) -> Result<Vec<InputLayout>, FixError> {
+        if let Some(sources) = cinnamon_sources() {
+            return Ok(sources.into_iter().map(|source| source.layout).collect());
+        }
         if session::is_gnome() && !session::is_wayland() {
             return Err(FixError::Unsupported);
         }
@@ -121,12 +138,25 @@ impl InputSources for LinuxInputSources {
     }
 
     fn current(&self) -> Option<InputLayout> {
+        if let Some(sources) = cinnamon_sources() {
+            return sources
+                .into_iter()
+                .find(|source| source.current)
+                .map(|source| source.layout);
+        }
         let (conn, screen) = connect().ok()?;
         let group = current_group(&conn).ok()?;
         groups(&conn, screen).ok()?.into_iter().nth(group)
     }
 
     fn select(&self, id: &str) -> Result<(), FixError> {
+        if let Some(sources) = cinnamon_sources() {
+            let source = sources
+                .iter()
+                .find(|source| source.layout.id == id)
+                .ok_or_else(|| FixError::System(format!("no Cinnamon input source for {id}")))?;
+            return cinnamon::activate(source.index).map_err(system);
+        }
         let (conn, screen) = connect()?;
         let group = groups(&conn, screen)?
             .iter()

@@ -21,10 +21,23 @@ pub fn is_gnome() -> bool {
 }
 
 fn is_gnome_desktop(current_desktop: Option<&str>) -> bool {
+    names_include(current_desktop, &["gnome"])
+}
+
+/// Cinnamon sets `XDG_CURRENT_DESKTOP=X-Cinnamon`.
+pub fn is_cinnamon() -> bool {
+    is_cinnamon_desktop(std::env::var("XDG_CURRENT_DESKTOP").ok().as_deref())
+}
+
+fn is_cinnamon_desktop(current_desktop: Option<&str>) -> bool {
+    names_include(current_desktop, &["x-cinnamon", "cinnamon"])
+}
+
+fn names_include(current_desktop: Option<&str>, wanted: &[&str]) -> bool {
     current_desktop
         .unwrap_or_default()
         .split(':')
-        .any(|name| name.eq_ignore_ascii_case("gnome"))
+        .any(|name| wanted.iter().any(|want| name.eq_ignore_ascii_case(want)))
 }
 
 #[cfg(test)]
@@ -40,6 +53,13 @@ mod tests {
         assert!(!is_gnome_desktop(Some("KDE")));
         assert!(is_gnome_desktop(Some("GNOME-Flashback:GNOME")));
         assert!(!is_gnome_desktop(None));
+    }
+
+    #[test]
+    fn recognizes_cinnamon() {
+        assert!(is_cinnamon_desktop(Some("X-Cinnamon")));
+        assert!(!is_cinnamon_desktop(Some("GNOME")));
+        assert!(!is_cinnamon_desktop(None));
     }
 
     #[test]

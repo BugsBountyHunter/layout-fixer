@@ -65,6 +65,8 @@ windows = { version = "0.61", features = [
 arboard = "3"
 x11rb = { version = "0.13", features = ["xkb", "xtest"] }
 zbus = "5"
+# Already in the tree through GTK; reads and writes GNOME Shell's settings.
+gio = "0.18"
 
 [profile.release]
 codegen-units = 1

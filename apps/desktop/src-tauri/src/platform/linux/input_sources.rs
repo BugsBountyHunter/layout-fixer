@@ -1,5 +1,5 @@
-//! Cinnamon 6.6 and later and KDE Plasma switch through their own D-Bus APIs (see `cinnamon`, `kde`);
-//! KDE's also works on Wayland. Elsewhere, XKB groups on X11. The layouts come from
+//! Cinnamon 6.6 and later and KDE Plasma switch through their own D-Bus APIs (see `cinnamon`, `kde`),
+//! GNOME through Layout Fixer's GNOME Shell extension (`gnome`); KDE and GNOME also on Wayland. Elsewhere, XKB groups on X11. The layouts come from
 //! `_XKB_RULES_NAMES` (what `setxkbmap -query` reads), one group per layout, and switching locks the
 //! group. This works where the desktop keeps every layout in the keymap (Plasma 6.7 and later on
 //! X11, Xfce, older Cinnamon, MATE, window managers with setxkbmap). GNOME loads one layout at a
@@ -11,7 +11,7 @@ use x11rb::protocol::xkb::{self, ConnectionExt as _};
 use x11rb::protocol::xproto::{AtomEnum, ConnectionExt as _};
 use x11rb::rust_connection::RustConnection;
 
-use super::{cinnamon, kde, session};
+use super::{cinnamon, gnome, kde, session};
 use crate::fix::{FixError, InputLayout, InputSources};
 use crate::platform::ArabicLayout;
 
@@ -131,6 +131,7 @@ pub(super) struct Source {
 #[derive(Clone, Copy)]
 enum DesktopApi {
     Cinnamon,
+    Gnome,
     Kde,
 }
 
@@ -138,6 +139,8 @@ impl DesktopApi {
     fn detect() -> Option<Self> {
         if session::is_cinnamon() {
             Some(Self::Cinnamon)
+        } else if session::is_gnome() {
+            Some(Self::Gnome)
         } else if session::is_kde() {
             Some(Self::Kde)
         } else {
@@ -148,6 +151,7 @@ impl DesktopApi {
     fn sources(self) -> zbus::Result<Vec<Source>> {
         match self {
             Self::Cinnamon => cinnamon::sources(),
+            Self::Gnome => gnome::sources(),
             Self::Kde => kde::layouts(),
         }
     }
@@ -155,6 +159,7 @@ impl DesktopApi {
     fn activate(self, source: &Source) -> Result<(), FixError> {
         match self {
             Self::Cinnamon => cinnamon::activate(source.index).map_err(system),
+            Self::Gnome => gnome::activate(source.index).map_err(system),
             Self::Kde => match kde::activate(source.index).map_err(system)? {
                 true => Ok(()),
                 false => Err(FixError::System(format!(
@@ -167,7 +172,7 @@ impl DesktopApi {
 }
 
 /// The desktop's layouts when its API answers; `None` means XKB groups are the way (older Cinnamon,
-/// Plasma without KWin's API, other desktops).
+/// Plasma without KWin's API, GNOME without the extension, other desktops).
 fn desktop_sources() -> Option<(DesktopApi, Vec<Source>)> {
     let api = DesktopApi::detect()?;
     api.sources().ok().map(|sources| (api, sources))

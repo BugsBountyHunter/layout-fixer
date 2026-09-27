@@ -6,6 +6,7 @@ use std::path::PathBuf;
 use zbus::blocking::Connection;
 
 use super::input_sources::{language_of, layout_id, Source};
+use super::session;
 use crate::fix::InputLayout;
 
 const SERVICE: &str = "org.kde.keyboard";
@@ -70,10 +71,7 @@ fn sources(names: &[String], current: u32, kxkbrc: &str) -> Vec<Source> {
 }
 
 fn kxkbrc_path() -> Option<PathBuf> {
-    let config = std::env::var_os("XDG_CONFIG_HOME")
-        .map(PathBuf::from)
-        .or_else(|| std::env::var_os("HOME").map(|home| PathBuf::from(home).join(".config")))?;
-    Some(config.join("kxkbrc"))
+    Some(session::xdg_dir("XDG_CONFIG_HOME", ".config")?.join("kxkbrc"))
 }
 
 /// The layouts in KWin's order. Fails where KWin (or Plasma 5's keyboard daemon) doesn't answer.

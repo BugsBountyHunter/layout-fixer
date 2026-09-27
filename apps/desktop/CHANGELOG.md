@@ -11,6 +11,10 @@ All notable changes to the desktop app. The browser extension has its own [CHANG
   service, so the browser extension can switch the layout after a fix in a Plasma Wayland session. The app's own
   shortcut still needs an X11 session, because Wayland doesn't let apps press keys in other apps. On Plasma X11 the
   app uses the same service where Plasma provides it (6.6 and earlier) and switches the XKB layout otherwise.
+- Linux (GNOME 45 and later, Wayland and X11): the keyboard layout can switch on GNOME too. GNOME lets apps switch
+  layouts only through a GNOME Shell extension, so Settings → Keyboard switching on GNOME installs Layout Fixer's own
+  small extension with one click; it works after you log out and back in. The extension only lists and switches the
+  layouts, and never sees what you type. Settings also says when extensions are turned off or GNOME is too new for it.
 
 ## [1.3.2] - 2026-09-27
 

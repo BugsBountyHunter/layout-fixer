@@ -205,8 +205,8 @@ with a fake bridge) and `src-tauri/src/fix/` (Rust: clipboard snapshot/restore a
 clipboard counter, so a unique marker is written before Ctrl+C; Wayland is detected and explained). After a fix the app can
 switch the OS keyboard layout (`fix/input_sources.rs` picks an enabled layout for the target language; natives in
 `platform/<os>/input_sources.rs`: TIS on macOS, main thread only; `WM_INPUTLANGCHANGEREQUEST` to the focused window on
-Windows; Cinnamon 6.6+ through its `org.Cinnamon` D-Bus API, whose window manager undoes outside group changes, else
-XKB group lock on X11). Plan: [docs/plans/2026-09-27-switch-keyboard-layout.md](docs/plans/2026-09-27-switch-keyboard-layout.md). Windows and Linux
+Windows; on Linux the desktop's own D-Bus API where it has one: Cinnamon 6.6+ (`org.Cinnamon`, whose window manager
+undoes outside group changes) and KDE (`org.kde.keyboard`, also on Wayland), else an XKB group lock on X11). Plan: [docs/plans/2026-09-27-switch-keyboard-layout.md](docs/plans/2026-09-27-switch-keyboard-layout.md). Windows and Linux
 code can't be built on a Mac (Tauri's build scripts need the Windows resource compiler / GTK), but they can be
 type-checked: put the platform's dependencies in a scratch crate that includes `src/fix` and `src/platform/<os>` via
 `#[path]`, then `cargo clippy --target x86_64-pc-windows-msvc` or `--target x86_64-unknown-linux-gnu`. Manual checks: [docs/testing/desktop-checklist.md](docs/testing/desktop-checklist.md).

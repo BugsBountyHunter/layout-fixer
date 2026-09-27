@@ -4,6 +4,14 @@ All notable changes to the desktop app. The browser extension has its own [CHANG
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-09-27
+
+### Added
+- Linux (KDE Plasma): switching the keyboard layout now works on Wayland too, through KWin's own keyboard-layout
+  service, so the browser extension can switch the layout after a fix in a Plasma Wayland session. The app's own
+  shortcut still needs an X11 session, because Wayland doesn't let apps press keys in other apps. On Plasma X11 the
+  app uses the same service where Plasma provides it (6.6 and earlier) and switches the XKB layout otherwise.
+
 ## [1.3.2] - 2026-09-27
 
 ### Fixed

@@ -1,16 +1,17 @@
-//! Cinnamon 6.6 and later switch through their own D-Bus API (see `cinnamon`); elsewhere, XKB groups
-//! on X11. The layouts come from `_XKB_RULES_NAMES` (what `setxkbmap -query` reads), one
-//! group per layout, and switching locks the group. This works where the desktop keeps every layout
-//! in the keymap (KDE, Xfce, older Cinnamon, MATE, window managers with setxkbmap). GNOME loads one layout
-//! at a time, so its XKB groups are not the user's list: there the list is `Unsupported` rather than
-//! a one-layout list that would say the other language isn't installed.
+//! Cinnamon 6.6 and later and KDE Plasma switch through their own D-Bus APIs (see `cinnamon`, `kde`);
+//! KDE's also works on Wayland. Elsewhere, XKB groups on X11. The layouts come from
+//! `_XKB_RULES_NAMES` (what `setxkbmap -query` reads), one group per layout, and switching locks the
+//! group. This works where the desktop keeps every layout in the keymap (Plasma 6.7 and later on
+//! X11, Xfce, older Cinnamon, MATE, window managers with setxkbmap). GNOME loads one layout at a
+//! time, so its XKB groups are not the user's list: there the list is `Unsupported` rather than a
+//! one-layout list that would say the other language isn't installed.
 
 use x11rb::connection::Connection;
 use x11rb::protocol::xkb::{self, ConnectionExt as _};
 use x11rb::protocol::xproto::{AtomEnum, ConnectionExt as _};
 use x11rb::rust_connection::RustConnection;
 
-use super::{cinnamon, session};
+use super::{cinnamon, kde, session};
 use crate::fix::{FixError, InputLayout, InputSources};
 use crate::platform::ArabicLayout;
 
@@ -117,17 +118,64 @@ fn current_group(conn: &RustConnection) -> Result<usize, FixError> {
     Ok(usize::from(u8::from(state.group)))
 }
 
-/// Cinnamon's input sources when its D-Bus API answers; `None` means XKB groups are the way.
-fn cinnamon_sources() -> Option<Vec<cinnamon::Source>> {
-    if !session::is_cinnamon() {
-        return None;
+/// A layout as a desktop's D-Bus API reports it.
+#[derive(Debug, PartialEq, Eq)]
+pub(super) struct Source {
+    pub layout: InputLayout,
+    /// What the desktop's switch method takes.
+    pub index: u32,
+    pub current: bool,
+}
+
+/// Desktops that own the keyboard state and switch layouts through their own API.
+#[derive(Clone, Copy)]
+enum DesktopApi {
+    Cinnamon,
+    Kde,
+}
+
+impl DesktopApi {
+    fn detect() -> Option<Self> {
+        if session::is_cinnamon() {
+            Some(Self::Cinnamon)
+        } else if session::is_kde() {
+            Some(Self::Kde)
+        } else {
+            None
+        }
     }
-    cinnamon::sources().ok()
+
+    fn sources(self) -> zbus::Result<Vec<Source>> {
+        match self {
+            Self::Cinnamon => cinnamon::sources(),
+            Self::Kde => kde::layouts(),
+        }
+    }
+
+    fn activate(self, source: &Source) -> Result<(), FixError> {
+        match self {
+            Self::Cinnamon => cinnamon::activate(source.index).map_err(system),
+            Self::Kde => match kde::activate(source.index).map_err(system)? {
+                true => Ok(()),
+                false => Err(FixError::System(format!(
+                    "KDE refused layout {}",
+                    source.layout.id
+                ))),
+            },
+        }
+    }
+}
+
+/// The desktop's layouts when its API answers; `None` means XKB groups are the way (older Cinnamon,
+/// Plasma without KWin's API, other desktops).
+fn desktop_sources() -> Option<(DesktopApi, Vec<Source>)> {
+    let api = DesktopApi::detect()?;
+    api.sources().ok().map(|sources| (api, sources))
 }
 
 impl InputSources for LinuxInputSources {
     fn enabled(&self) -> Result<Vec<InputLayout>, FixError> {
-        if let Some(sources) = cinnamon_sources() {
+        if let Some((_, sources)) = desktop_sources() {
             return Ok(sources.into_iter().map(|source| source.layout).collect());
         }
         if session::is_gnome() && !session::is_wayland() {
@@ -138,7 +186,7 @@ impl InputSources for LinuxInputSources {
     }
 
     fn current(&self) -> Option<InputLayout> {
-        if let Some(sources) = cinnamon_sources() {
+        if let Some((_, sources)) = desktop_sources() {
             return sources
                 .into_iter()
                 .find(|source| source.current)
@@ -150,12 +198,12 @@ impl InputSources for LinuxInputSources {
     }
 
     fn select(&self, id: &str) -> Result<(), FixError> {
-        if let Some(sources) = cinnamon_sources() {
+        if let Some((api, sources)) = desktop_sources() {
             let source = sources
                 .iter()
                 .find(|source| source.layout.id == id)
-                .ok_or_else(|| FixError::System(format!("no Cinnamon input source for {id}")))?;
-            return cinnamon::activate(source.index).map_err(system);
+                .ok_or_else(|| FixError::System(format!("no desktop layout {id}")))?;
+            return api.activate(source);
         }
         let (conn, screen) = connect()?;
         let group = groups(&conn, screen)?

@@ -1,3 +1,4 @@
+mod cinnamon;
 mod clipboard;
 mod input_sources;
 mod keyboard;

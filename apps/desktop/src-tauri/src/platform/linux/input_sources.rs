@@ -129,18 +129,20 @@ impl InputSources for LinuxInputSources {
             .position(|layout| layout.id == id)
             .ok_or_else(|| FixError::System(format!("no XKB group for {id}")))?;
         let group = u8::try_from(group).map_err(system)?;
-        conn.xkb_latch_lock_state(
-            xkb::ID::USE_CORE_KBD.into(),
-            Default::default(),
-            Default::default(),
-            true,
-            xkb::Group::from(group),
-            Default::default(),
-            false,
-            0,
-        )
-        .map_err(system)?;
-        conn.flush().map_err(system)
+        let lock = conn
+            .xkb_latch_lock_state(
+                xkb::ID::USE_CORE_KBD.into(),
+                Default::default(),
+                Default::default(),
+                true,
+                xkb::Group::from(group),
+                Default::default(),
+                false,
+                0,
+            )
+            .map_err(system)?;
+        // Wait for the server: a request still in flight when the connection closes can be lost.
+        lock.check().map_err(system)
     }
 }
 

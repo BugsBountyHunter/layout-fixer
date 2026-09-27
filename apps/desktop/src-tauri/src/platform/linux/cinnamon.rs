@@ -4,7 +4,7 @@
 
 use zbus::blocking::Connection;
 
-use super::input_sources::{language_of, layout_id};
+use super::input_sources::{language_of, layout_id, Source};
 use crate::fix::InputLayout;
 
 const SERVICE: &str = "org.Cinnamon";
@@ -29,17 +29,9 @@ type RawSource = (
     bool,
 );
 
-#[derive(Debug, PartialEq, Eq)]
-pub struct Source {
-    pub layout: InputLayout,
-    /// What `ActivateInputSourceIndex` takes.
-    pub index: i32,
-    pub current: bool,
-}
-
 /// XKB sources get the same ids as XKB groups (`ara(mac)`). IBus input methods keep their engine
 /// name and no language, so they are never chosen.
-fn source(raw: RawSource) -> Source {
+fn source(raw: RawSource) -> Option<Source> {
     let (kind, id, index, _, _, _, _, layout, variant, _, _, current) = raw;
     let layout = if kind == XKB {
         InputLayout {
@@ -54,15 +46,15 @@ fn source(raw: RawSource) -> Source {
             languages: Vec::new(),
         }
     };
-    Source {
+    Some(Source {
         layout,
-        index,
+        index: u32::try_from(index).ok()?,
         current,
-    }
+    })
 }
 
 /// The user's input sources in order. Fails where Cinnamon is older than 6.6 or not running.
-pub fn sources() -> zbus::Result<Vec<Source>> {
+pub(super) fn sources() -> zbus::Result<Vec<Source>> {
     let reply = Connection::session()?.call_method(
         Some(SERVICE),
         PATH,
@@ -71,10 +63,11 @@ pub fn sources() -> zbus::Result<Vec<Source>> {
         &(),
     )?;
     let (raw,): (Vec<RawSource>,) = reply.body().deserialize()?;
-    Ok(raw.into_iter().map(source).collect())
+    Ok(raw.into_iter().filter_map(source).collect())
 }
 
-pub fn activate(index: i32) -> zbus::Result<()> {
+pub(super) fn activate(index: u32) -> zbus::Result<()> {
+    let index = i32::try_from(index).map_err(|error| zbus::Error::Failure(error.to_string()))?;
     Connection::session()?.call_method(
         Some(SERVICE),
         PATH,
@@ -115,7 +108,7 @@ mod tests {
 
     #[test]
     fn xkb_sources_use_the_xkb_group_ids() {
-        let source = source(raw("xkb", "ara+mac", 2, "ara", "mac", false));
+        let source = source(raw("xkb", "ara+mac", 2, "ara", "mac", false)).unwrap();
         assert_eq!(source.layout.id, "ara(mac)");
         assert_eq!(source.layout.languages, vec!["ar".to_owned()]);
         assert_eq!(source.index, 2);
@@ -123,14 +116,19 @@ mod tests {
 
     #[test]
     fn keeps_the_current_flag() {
-        let source = source(raw("xkb", "eg", 1, "eg", "", true));
+        let source = source(raw("xkb", "eg", 1, "eg", "", true)).unwrap();
         assert_eq!(source.layout.id, "eg");
         assert!(source.current);
     }
 
     #[test]
+    fn skips_a_negative_index() {
+        assert!(source(raw("xkb", "us", -1, "us", "", false)).is_none());
+    }
+
+    #[test]
     fn input_methods_have_no_language() {
-        let source = source(raw("ibus", "anthy", 3, "jp", "", false));
+        let source = source(raw("ibus", "anthy", 3, "jp", "", false)).unwrap();
         assert_eq!(source.layout.id, "anthy");
         assert!(source.layout.languages.is_empty());
     }

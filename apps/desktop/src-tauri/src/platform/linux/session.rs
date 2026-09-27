@@ -33,6 +33,14 @@ fn is_cinnamon_desktop(current_desktop: Option<&str>) -> bool {
     names_include(current_desktop, &["x-cinnamon", "cinnamon"])
 }
 
+/// Plasma sets `XDG_CURRENT_DESKTOP=KDE`.
+pub fn is_kde() -> bool {
+    names_include(
+        std::env::var("XDG_CURRENT_DESKTOP").ok().as_deref(),
+        &["kde"],
+    )
+}
+
 fn names_include(current_desktop: Option<&str>, wanted: &[&str]) -> bool {
     current_desktop
         .unwrap_or_default()
@@ -60,6 +68,12 @@ mod tests {
         assert!(is_cinnamon_desktop(Some("X-Cinnamon")));
         assert!(!is_cinnamon_desktop(Some("GNOME")));
         assert!(!is_cinnamon_desktop(None));
+    }
+
+    #[test]
+    fn recognizes_kde() {
+        assert!(names_include(Some("KDE"), &["kde"]));
+        assert!(!names_include(Some("X-Cinnamon"), &["kde"]));
     }
 
     #[test]

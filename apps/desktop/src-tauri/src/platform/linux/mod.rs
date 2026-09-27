@@ -1,6 +1,7 @@
 mod cinnamon;
 mod clipboard;
 mod input_sources;
+mod kde;
 mod keyboard;
 pub mod session;
 

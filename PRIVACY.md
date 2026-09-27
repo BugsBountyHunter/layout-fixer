@@ -58,10 +58,13 @@ extension and as a desktop app for macOS, Windows and Linux; this policy covers 
   show hints in Settings. The browser extension can ask for the same switch: the app registers a small helper
   with your installed browsers so the extension can start it; the helper receives only a language code and
   your Arabic layout setting.
-- **GNOME Shell extension (Linux, only if you install it).** GNOME lets apps switch the keyboard layout only
-  through a GNOME Shell extension, so on GNOME Settings offers to install Layout Fixer's own small extension
-  into your user's GNOME extensions folder. It only lists your keyboard layouts and switches between them; it
-  never sees what you type and makes no network requests. You can remove it in GNOME's Extensions app.
+- **GNOME Shell extension (Linux, only if you install it).** GNOME lets apps switch the keyboard layout, and on
+  Wayland fix the selected text, only through a GNOME Shell extension, so on GNOME Settings offers to install
+  Layout Fixer's own small extension into your user's GNOME extensions folder. It lists your keyboard layouts
+  and switches between them, and on Wayland it does for the app what X11 lets any app do: when you press the
+  shortcut it presses Copy and Paste, hands the copied text to the app and puts your clipboard back, and it
+  holds the shortcut. It never watches what you type, keeps nothing and makes no network requests. You can
+  remove it in GNOME's Extensions app.
 - **Permissions.** macOS asks you to allow Layout Fixer under Accessibility, because the app presses ⌘C and ⌘V
   for you. Windows and Linux need no extra permission (on GNOME, see the Shell extension above).
 - **Your settings** (language, shortcut, Arabic layout, messages, open at login) are saved in a file in your

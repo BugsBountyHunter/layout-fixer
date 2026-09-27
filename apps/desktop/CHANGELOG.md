@@ -2,6 +2,13 @@
 
 All notable changes to the desktop app. The browser extension has its own [CHANGELOG](../../CHANGELOG.md).
 
+## [1.3.1] - 2026-09-27
+
+### Fixed
+- Linux (X11): switching the keyboard layout after a fix didn't take effect, from the shortcut or from the browser
+  extension. The app closed its connection to the X server before the switch was applied; it now waits for the
+  server to confirm it.
+
 ## [1.3.0] - 2026-09-27
 
 ### Added

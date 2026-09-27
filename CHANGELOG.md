@@ -6,7 +6,7 @@ and the project uses [Semantic Versioning](https://semver.org/).
 ## [Unreleased]
 
 ### Fixed
-- When the desktop app can't switch the keyboard layout (for example on a Linux Wayland session), the extension now
+- When the desktop app can't switch the keyboard layout (for example on a Linux Wayland desktop other than KDE Plasma or GNOME), the extension now
   logs the reason instead of treating the answer as a success.
 
 ## [1.2.0] - 2026-09-27

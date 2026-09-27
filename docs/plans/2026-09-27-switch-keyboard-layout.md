@@ -1,7 +1,8 @@
 # Switch the keyboard layout after a fix
 
-**Status:** phases 1–2 released in desktop 1.1.0, phase 3 in desktop 1.2.0 (2026-09-27); phase 4 (the extension)
-implemented on `feat/extension-layout-switch`.
+**Status:** done (2026-09-27). Phases 1–2 released in desktop 1.1.0, phase 3 in 1.2.0, phase 4 in desktop 1.3.0 and
+extension 1.1.0 (#26–#28; the extension is in Chrome Web Store review). Linux follow-ups (#31–#36) are listed in the
+Platform APIs table.
 
 **Decided 2026-09-27:** on by default in the desktop app. The extension gets it later, through native
 messaging to the desktop app (phase 4), after the desktop release.
@@ -50,7 +51,7 @@ enabled source is `com.apple.keylayout.Arabic` (the Mac layout), a mismatch the 
 |---|---|---|---|
 | macOS | `TISCreateInputSourceList` (keyboard, select-capable), `kTISPropertyInputSourceLanguages` | `TISSelectInputSource` | Carbon/HIToolbox. No permission. Verified listing on 2026-09-27 (ABC + Arabic). Check with "Automatically switch to a document's input source" on. |
 | Windows | `GetKeyboardLayoutList`, `PRIMARYLANGID(LOWORD(hkl))` | `PostMessageW(GetForegroundWindow(), WM_INPUTLANGCHANGEREQUEST, 0, hkl)` | Layouts are per thread, so we ask the focused window to change. Elevated windows ignore it (UIPI), same limit as the paste. Console and some UWP windows need a manual check. |
-| Linux X11 | `_XKB_RULES_NAMES` on the root window (what `setxkbmap -query` reads: `us,ara` + variants) | `xkb::latch_lock_state` (lock group) | Works where every layout is an XKB group (KDE, Xfce, Cinnamon, MATE, setxkbmap). GNOME loads one layout at a time, so only the active one is listed and nothing switches; a GNOME route (its input-source D-Bus/gsettings) is later work. Wayland is already unsupported. |
+| Linux X11 | `_XKB_RULES_NAMES` on the root window (what `setxkbmap -query` reads: `us,ara` + variants) | `xkb::latch_lock_state` (lock group) | Where every layout is an XKB group (Xfce, MATE, setxkbmap). Desktops that manage their own layouts got their own route after phase 4: Cinnamon (#34, 1.3.2), KDE Plasma incl. Wayland through KWin's `org.kde.keyboard` (#35), and GNOME 45+ incl. Wayland through a bundled GNOME Shell extension (#36). Other Wayland sessions stay unsupported. |
 
 ## Changes
 

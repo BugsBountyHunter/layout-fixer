@@ -5,7 +5,11 @@ and the project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-09-30
+
 ### Fixed
+- The selection button now appears inside `srcdoc`, `about:blank` and `blob:` iframes, such as rich-text editors that
+  write into a blank frame. Users who had already turned the button on get the fix without toggling it.
 - When the desktop app can't switch the keyboard layout (for example on a Linux Wayland desktop other than KDE Plasma or GNOME), the extension now
   logs the reason instead of treating the answer as a success.
 

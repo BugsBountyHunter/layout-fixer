@@ -25,8 +25,9 @@ const tauriPackages = Object.keys(npmDependencies).filter(
   (name) => name === '@tauri-apps/api' || name.startsWith('@tauri-apps/plugin-'),
 )
 
-// `tauri build` refuses to bundle when an npm package and its Rust crate differ in major.minor. Dependabot updates
-// the two ecosystems in separate PRs, so a bump on one side passes CI and only breaks the release workflow.
+// A plugin's JS side invokes commands on its Rust side, so Tauri expects both on the same major.minor: a newer npm
+// package can call a command the older crate lacks, which only fails at runtime. `tauri build` doesn't catch it, and
+// Dependabot updates the two ecosystems in separate PRs.
 describe('Tauri npm packages and Rust crates', () => {
   it('finds the Tauri packages to compare', () => {
     expect(tauriPackages).toContain('@tauri-apps/api')

@@ -12,8 +12,9 @@ const minor = (version: string) => version.split('.').slice(0, 2).join('.')
 const npmVersion = (name: string): string | undefined =>
   (npmLock[`apps/desktop/node_modules/${name}`] ?? npmLock[`node_modules/${name}`])?.version
 
+// `\r?` because Windows checkouts have CRLF line endings.
 const crateVersions = (name: string): string[] =>
-  [...cargoLock.matchAll(/^name = "(.+)"\nversion = "(.+)"$/gm)]
+  [...cargoLock.matchAll(/^name = "(.+)"\r?\nversion = "(.+)"$/gm)]
     .filter(([, crate]) => crate === name)
     .map(([, , version]) => version)
 

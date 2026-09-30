@@ -13,7 +13,9 @@ can't update and macOS users must allow Accessibility again.
 
 1. In a pull request, bump the version in `apps/desktop/package.json`, `apps/desktop/src-tauri/tauri.conf.json`
    and `apps/desktop/src-tauri/Cargo.toml` (+ `Cargo.lock`), and add a `## [x.y.z]` section to
-   `apps/desktop/CHANGELOG.md`.
+   `apps/desktop/CHANGELOG.md`. Each `@tauri-apps/*` npm package must match its Rust crate on major.minor
+   (`@tauri-apps/api` ↔ `tauri`, `@tauri-apps/plugin-x` ↔ `tauri-plugin-x`); a mismatch builds fine but can fail
+   at runtime. `src/tauri-versions.test.ts` checks this, and `cargo update -p <crate> --precise <version>` fixes it.
 2. After it merges, tag `main`: `git tag desktop-vX.Y.Z && git push origin desktop-vX.Y.Z`.
 3. `.github/workflows/release-desktop.yml` checks the versions, builds and signs on macOS (universal),
    Windows and Ubuntu 22.04, publishes the `desktop-vX.Y.Z` release with the changelog and

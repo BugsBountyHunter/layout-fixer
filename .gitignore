@@ -19,3 +19,4 @@ apps/desktop/src-tauri/gen/
 .vscode/
 .idea/
 *.log
+graphify-out/

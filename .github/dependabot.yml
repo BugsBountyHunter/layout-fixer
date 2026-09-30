@@ -9,12 +9,28 @@ updates:
       # vitest and its coverage plugin must share a major version, so they update together — majors included.
       vitest:
         patterns: ['vitest', '@vitest/*']
+      # The Tauri npm packages must match their Rust crates (the cargo entry below) on major.minor;
+      # apps/desktop/src/tauri-versions.test.ts fails CI until both sides are bumped.
+      tauri:
+        patterns: ['@tauri-apps/*']
       # Build and test tooling moves together; one weekly PR instead of many.
       dev-tooling:
         dependency-type: development
         update-types: [minor, patch]
       runtime:
         dependency-type: production
+        update-types: [minor, patch]
+
+  - package-ecosystem: cargo
+    directory: /apps/desktop/src-tauri
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      # Pairs with the npm `tauri` group above.
+      tauri:
+        patterns: ['tauri', 'tauri-*']
+      rust:
         update-types: [minor, patch]
 
   - package-ecosystem: github-actions

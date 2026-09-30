@@ -4,6 +4,15 @@ All notable changes to the desktop app. The browser extension has its own [CHANG
 
 ## [Unreleased]
 
+## [1.6.1] - 2026-09-30
+
+### Fixed
+- If putting the fixed text on the clipboard failed (for example on Windows while another app held the clipboard
+  open), your previous clipboard contents were lost. The app now puts them back and skips the paste.
+
+### Changed
+- Updated Tauri to 2.12 and its plugins (autostart, opener, process, store, updater).
+
 ## [1.6.0] - 2026-09-27
 
 ### Added

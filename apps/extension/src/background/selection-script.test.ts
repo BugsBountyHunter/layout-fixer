@@ -3,8 +3,8 @@ import { ALL_SITES, createSelectionScriptSync, SELECTION_SCRIPT_ID, type Selecti
 
 const SCRIPT = 'assets/selection-loader.js'
 
-function fakeApi({ granted = true, registered = false } = {}) {
-  let scripts = registered ? [{ id: SELECTION_SCRIPT_ID }] : []
+function fakeApi({ granted = true, registered = false, current = true } = {}) {
+  let scripts = registered ? [{ id: SELECTION_SCRIPT_ID, ...(current ? { matchOriginAsFallback: true } : {}) }] : []
   const api = {
     permissions: { contains: vi.fn(async () => granted) },
     scripting: {
@@ -15,6 +15,7 @@ function fakeApi({ granted = true, registered = false } = {}) {
       unregisterContentScripts: vi.fn(async () => {
         scripts = []
       }),
+      updateContentScripts: vi.fn(async () => {}),
       executeScript: vi.fn(async () => []),
     },
     tabs: { query: vi.fn(async () => [{ id: 1 }, { id: 2 }, {}]) },
@@ -37,6 +38,7 @@ describe('selection script sync', () => {
         js: [SCRIPT],
         matches: [ALL_SITES],
         allFrames: true,
+        matchOriginAsFallback: true,
         runAt: 'document_idle',
         persistAcrossSessions: true,
       },
@@ -62,6 +64,21 @@ describe('selection script sync', () => {
     await createSelectionScriptSync(api, SCRIPT, on).sync()
     expect(raw.scripting.registerContentScripts).not.toHaveBeenCalled()
     expect(raw.scripting.executeScript).not.toHaveBeenCalled()
+  })
+
+  it('upgrades a registration saved before it covered about:blank and srcdoc frames', async () => {
+    const { api, raw } = fakeApi({ registered: true, current: false })
+    await createSelectionScriptSync(api, SCRIPT, on).sync()
+    expect(raw.scripting.updateContentScripts).toHaveBeenCalledWith([
+      expect.objectContaining({ id: SELECTION_SCRIPT_ID, js: [SCRIPT], matchOriginAsFallback: true }),
+    ])
+    expect(raw.scripting.registerContentScripts).not.toHaveBeenCalled()
+  })
+
+  it('leaves an up-to-date registration alone', async () => {
+    const { api, raw } = fakeApi({ registered: true })
+    await createSelectionScriptSync(api, SCRIPT, on).sync()
+    expect(raw.scripting.updateContentScripts).not.toHaveBeenCalled()
   })
 
   it('unregisters when the setting is off', async () => {

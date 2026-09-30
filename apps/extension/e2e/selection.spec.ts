@@ -98,6 +98,21 @@ test.describe('selection button', () => {
     await expect(page.locator('#second')).toBeFocused()
   })
 
+  test('appears inside srcdoc iframes on pages opened after it was turned on', async ({
+    openFixture,
+    enableSelectionButton,
+  }) => {
+    await enableSelectionButton()
+    const page = await openFixture(`<iframe id="frame" srcdoc='<input id="inner" value="hgsghl ugd;l">'></iframe>`)
+    const frame = page.frameLocator('#frame')
+    await frame.locator('#inner').click({ clickCount: 3 })
+
+    await frame.locator(BUTTON).click()
+    await frame.getByRole('button', { name: /العربية/ }).click()
+    await expect(frame.locator('#inner')).toHaveValue('السلام عليكم')
+    await expect(page.locator(BUTTON)).toHaveCount(0)
+  })
+
   test('never appears in password fields', async ({ openFixture, enableSelectionButton }) => {
     await enableSelectionButton()
     const page = await openFixture('<input id="secret" type="password" value="hgsghl">')

@@ -5,7 +5,11 @@ export interface SelectionScriptApi {
   readonly permissions?: Pick<typeof chrome.permissions, 'contains'>
   readonly scripting: Pick<
     typeof chrome.scripting,
-    'getRegisteredContentScripts' | 'registerContentScripts' | 'unregisterContentScripts' | 'executeScript'
+    | 'getRegisteredContentScripts'
+    | 'registerContentScripts'
+    | 'unregisterContentScripts'
+    | 'updateContentScripts'
+    | 'executeScript'
   >
   readonly tabs: Pick<typeof chrome.tabs, 'query'>
 }
@@ -18,6 +22,9 @@ const REGISTRATION: Readonly<Omit<chrome.scripting.RegisteredContentScript, 'js'
   id: SELECTION_SCRIPT_ID,
   matches: [ALL_SITES],
   allFrames: true,
+  // about:blank, about:srcdoc and blob: frames have no URL of their own to match, so without this the
+  // button never appears in them (e.g. srcdoc iframes, rich editors that write into a blank iframe).
+  matchOriginAsFallback: true,
   runAt: 'document_idle',
   persistAcrossSessions: true,
 }
@@ -44,6 +51,9 @@ async function reconcile(api: SelectionScriptApi, script: string, loadSettings: 
     if (wanted && registered.length === 0) {
       await api.scripting.registerContentScripts([{ ...REGISTRATION, js: [script] }])
       await injectIntoOpenTabs(api, script)
+    } else if (wanted && registered[0]?.matchOriginAsFallback !== true) {
+      // persistAcrossSessions keeps registrations made by older versions, so bring them up to date.
+      await api.scripting.updateContentScripts([{ ...REGISTRATION, js: [script] }])
     } else if (!wanted && registered.length > 0) {
       await api.scripting.unregisterContentScripts({ ids: [SELECTION_SCRIPT_ID] })
     }

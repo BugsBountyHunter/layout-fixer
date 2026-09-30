@@ -1755,7 +1755,7 @@ dependencies = [
  "js-sys",
  "log",
  "wasm-bindgen",
- "windows-core 0.61.2",
+ "windows-core 0.62.2",
 ]
 
 [[package]]
@@ -2193,7 +2193,7 @@ dependencies = [
  "tauri-plugin-updater",
  "wayland-client",
  "wayland-protocols-plasma",
- "windows 0.61.3",
+ "windows 0.62.2",
  "x11rb",
  "zbus",
 ]

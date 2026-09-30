@@ -32,6 +32,6 @@
     "happy-dom": "^20.14.5",
     "serve": "^14.2.6",
     "typescript": "^6.0.3",
-    "vitest": "^5.0.1"
+    "vitest": "^5.0.2"
   }
 }

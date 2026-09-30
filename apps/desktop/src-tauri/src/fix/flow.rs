@@ -88,7 +88,11 @@ pub fn replace(
     previous: &Snapshot,
     timing: Timing,
 ) -> Result<(), FixError> {
-    clipboard.write_transient_text(text)?;
+    // The caller has already handed over `previous`, so this is the last chance to put it back.
+    if let Err(error) = clipboard.write_transient_text(text) {
+        clipboard.restore(previous)?;
+        return Err(error);
+    }
     let pasted = keyboard.paste();
     thread::sleep(timing.paste_settle);
     let restored = clipboard.restore(previous);
@@ -113,6 +117,8 @@ mod tests {
         log: Mutex<Vec<String>>,
         /// Behave like X11: write a marker before copying.
         marks: bool,
+        /// The OS refuses clipboard writes (another app holds the clipboard open on Windows).
+        write_fails: bool,
     }
 
     fn text_snapshot(kind: &str, text: &str) -> Snapshot {
@@ -162,6 +168,9 @@ mod tests {
             Ok(())
         }
         fn write_transient_text(&self, text: &str) -> Result<(), FixError> {
+            if self.write_fails {
+                return Err(FixError::System("clipboard busy".into()));
+            }
             self.log.lock().unwrap().push(format!("write {text}"));
             self.app_copies(text_snapshot("text", text));
             Ok(())
@@ -358,5 +367,23 @@ mod tests {
             Err(FixError::SecureInput)
         );
         assert_eq!(clipboard.current(), original);
+    }
+
+    #[test]
+    fn replace_restores_the_clipboard_when_writing_the_fix_fails() {
+        let original = text_snapshot("text", "keep me");
+        // After capture the clipboard holds the copied selection, not the user's content.
+        let clipboard = FakeClipboard {
+            write_fails: true,
+            ..FakeClipboard::holding(text_snapshot("text", "hgsghl"))
+        };
+        let keys = keyboard(&clipboard, None);
+
+        assert_eq!(
+            replace(&clipboard, &keys, "السلام", &original, FAST),
+            Err(FixError::System("clipboard busy".into()))
+        );
+        assert_eq!(clipboard.current(), original);
+        assert_eq!(*clipboard.log.lock().unwrap(), vec!["restore"]);
     }
 }

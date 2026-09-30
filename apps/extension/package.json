@@ -1,6 +1,6 @@
 {
   "name": "@layout-fixer/extension",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Fix text typed with the wrong keyboard layout — Arabic ⇄ English. Browser extension for Chrome, Edge, Firefox and more.",
   "license": "MIT",
   "repository": {

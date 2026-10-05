@@ -40,6 +40,7 @@ export default defineConfig(({ mode }) => {
           'src/platform/shortcut.ts',
           'src/platform/i18n.ts',
           'src/manifest.ts',
+          'build/chrome-web-store.ts',
         ],
         thresholds: { lines: 90, branches: 85, functions: 90, statements: 90 },
       },

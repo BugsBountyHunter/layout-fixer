@@ -279,8 +279,12 @@ Release process (every change reaches `main` through a pull request; the ruleset
 2. After it merges, tag `main`: `git tag vX.Y.Z && git push origin vX.Y.Z`.
 3. `.github/workflows/release.yml` checks the tag matches `apps/extension/package.json`, runs `npm run check`, and
    publishes a GitHub Release with the Chrome zip and the changelog section as notes.
-4. Upload that zip in the Chrome Web Store dashboard. Texts, permission justifications and the
-   asset table are in `docs/store/listing.md`; images come from `npm run store:screenshots`.
+4. Its `chrome-web-store` job uploads that zip through the Chrome Web Store API and submits it for review after
+   you approve the run (`.github/workflows/publish-chrome.yml`; setup in
+   [docs/chrome-web-store-api.md](docs/chrome-web-store-api.md)). Until the API is set up the job is skipped: upload
+   the zip in the dashboard. Texts, permission justifications and the asset table are in `docs/store/listing.md`;
+   images come from `npm run store:screenshots`. Chrome blocks extensions (Claude in Chrome too) from scripting the
+   Web Store dashboard, so browser automation can't do the upload.
 
 **Website:** merging to `main` anything under `apps/landing/`, `packages/core/` or `packages/ui/` runs
 `.github/workflows/deploy-landing.yml`: `npm run check:landing`, then `apps/landing/deploy/deploy.sh` over SSH to the

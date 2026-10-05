@@ -35,3 +35,15 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release create "$GITHUB_REF_NAME" apps/extension/artifacts/layout-fixer-chrome-*.zip --verify-tag --title "Layout Fixer $GITHUB_REF_NAME" --notes-file notes.md
+
+  chrome-web-store:
+    name: Chrome Web Store
+    needs: release
+    # Skipped until the API is set up (docs/chrome-web-store-api.md); upload the zip by hand meanwhile.
+    if: vars.CWS_PUBLISHER_ID != ''
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/publish-chrome.yml
+    with:
+      tag: ${{ github.ref_name }}

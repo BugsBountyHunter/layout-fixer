@@ -69,7 +69,7 @@ zbus = "5"
 wayland-client = "0.31"
 wayland-protocols-plasma = { version = "0.3", features = ["client"] }
 # Already in the tree through GTK; reads and writes GNOME Shell's settings.
-gio = "0.18"
+gio = "0.22"
 
 [profile.release]
 codegen-units = 1

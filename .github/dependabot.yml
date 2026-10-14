@@ -5,6 +5,11 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    ignore:
+      # eslint-plugin-react, pulled in by eslint-config-next, crashes on ESLint 10 ("contextOrFilename.getFilename is
+      # not a function", #63). Drop this once eslint-config-next supports ESLint 10.
+      - dependency-name: eslint
+        update-types: ['version-update:semver-major']
     groups:
       # vitest and its coverage plugin must share a major version, so they update together — majors included.
       vitest:

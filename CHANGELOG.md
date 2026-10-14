@@ -5,6 +5,8 @@ and the project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-10-14
+
 ### Added
 - **Fix what you just typed, without selecting it.** With nothing selected, the shortcut now fixes the mistyped
   words right before the cursor — in text boxes and in rich editors like Gmail, WhatsApp Web and Slack, which used

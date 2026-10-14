@@ -43,8 +43,22 @@ export const RemotionRoot: React.FC = () => (
       height={1080}
     />
     <Folder name="WhatsNewScenes">
-      <Composition id="NewTitle" component={Title} durationInFrames={SCENES.title} fps={30} width={1080} height={1080} />
-      <Composition id="NewMixed" component={MixedText} durationInFrames={SCENES.mixed} fps={30} width={1080} height={1080} />
+      <Composition
+        id="NewTitle"
+        component={Title}
+        durationInFrames={SCENES.title}
+        fps={30}
+        width={1080}
+        height={1080}
+      />
+      <Composition
+        id="NewMixed"
+        component={MixedText}
+        durationInFrames={SCENES.mixed}
+        fps={30}
+        width={1080}
+        height={1080}
+      />
       <Composition
         id="NewNoSelection"
         component={NoSelection}
@@ -53,7 +67,14 @@ export const RemotionRoot: React.FC = () => (
         width={1080}
         height={1080}
       />
-      <Composition id="NewEnding" component={Ending} durationInFrames={SCENES.ending} fps={30} width={1080} height={1080} />
+      <Composition
+        id="NewEnding"
+        component={Ending}
+        durationInFrames={SCENES.ending}
+        fps={30}
+        width={1080}
+        height={1080}
+      />
     </Folder>
   </>
 )

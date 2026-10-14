@@ -26,6 +26,18 @@ describe('fixSelection', () => {
     expect(native.pasteText).toHaveBeenCalledWith('hello')
   })
 
+  it('fixes only the mistyped words of mixed text', async () => {
+    const native = bridge('meeting at 5 hgsghl ugd;l')
+    await fixSelection(native, 'ar-pc')
+    expect(native.pasteText).toHaveBeenCalledWith('meeting at 5 السلام عليكم')
+  })
+
+  it('fixes each mistyped word in its own direction', async () => {
+    const native = bridge('اثممخ hgsghl')
+    await fixSelection(native, 'ar-pc')
+    expect(native.pasteText).toHaveBeenCalledWith('hello السلام')
+  })
+
   it('uses the chosen Arabic layout', async () => {
     const pc = bridge('lvpfh')
     const mac = bridge('lnpfh')
@@ -79,6 +91,12 @@ describe('fixSelection with layout switching', () => {
 
   it('switches to English after fixing English typed on the Arabic layout', async () => {
     const native = bridge('اثممخ')
+    await fixSelection(native, 'ar-pc', SWITCH)
+    expect(native.switchLayout).toHaveBeenCalledWith('en', 'ar-pc')
+  })
+
+  it('switches to the language of the fixed words, not the majority of the text', async () => {
+    const native = bridge('see you at the office اثممخ')
     await fixSelection(native, 'ar-pc', SWITCH)
     expect(native.switchLayout).toHaveBeenCalledWith('en', 'ar-pc')
   })

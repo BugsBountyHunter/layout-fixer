@@ -72,6 +72,18 @@ test.describe('fixing text on a web page', () => {
     await expect(page.locator('#field')).toHaveValue('hello\nworld')
   })
 
+  test('fixes only the mistyped words of mixed text, with undo', async ({ openFixture, fixLayout }) => {
+    const page = await openFixture('<input id="field" value="meeting at 5 hgsghl ugd;l">')
+    const field = page.locator('#field')
+    await field.focus()
+
+    await fixLayout()
+    await expect(field).toHaveValue('meeting at 5 السلام عليكم')
+
+    await page.keyboard.press('ControlOrMeta+Z')
+    await expect(field).toHaveValue('meeting at 5 hgsghl ugd;l')
+  })
+
   test('notifies framework-controlled inputs through an input event', async ({ openFixture, fixLayout }) => {
     const page = await openFixture(`
       <input id="field" value="hgsghl"><span id="state"></span>

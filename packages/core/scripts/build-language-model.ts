@@ -1,0 +1,125 @@
+/**
+ * Generates src/detect/model.ts and the held-out accuracy fixtures from FrequencyWords
+ * (https://github.com/hermitdave/FrequencyWords, OpenSubtitles 2018, CC BY-SA 4.0).
+ * Run from the repository root: npm run model -w @layout-fixer/core
+ */
+import { writeFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+
+const COMMIT = '525f9b560de45753a5ea01069454e72e9aa541c6'
+const LIST_SIZE = 50_000
+/**
+ * Every HOLD_OUT_EVERY-th word of HOLD_OUT_RANGE words, after the SHORT_WORD_RANGE most common ones, is kept out of the
+ * model for the accuracy test. The most common words stay in so the short-word list is complete.
+ */
+const HOLD_OUT_RANGE = 20_000
+const HOLD_OUT_EVERY = 10
+const SHORT_WORD_LENGTH = 3
+const SHORT_WORD_RANGE = 5_000
+/** Single letters are only words when they are this common ("a", "I", "و"); subtitles are full of stray ones. */
+const SINGLE_LETTER_RANGE = 100
+/** Additive smoothing, so a pair never seen in training is rare rather than impossible. */
+const SMOOTHING = 0.1
+const SCALE = 100
+
+const LANGUAGES = {
+  en: {
+    alphabet: "abcdefghijklmnopqrstuvwxyz'",
+    // The lists split contractions ("don", "'t"); keep only whole words.
+    normalize: (word: string) => (/^'|'$/.test(word) ? '' : word.toLowerCase()),
+  },
+  ar: {
+    alphabet: Array.from({ length: 0x064a - 0x0621 + 1 }, (_, i) => String.fromCodePoint(0x0621 + i))
+      .filter((char) => char <= 'غ' || char >= 'ف')
+      .join(''),
+    // Harakat and tatweel are optional in Arabic writing and never change which keys were meant.
+    normalize: (word: string) => word.replace(/[ً-ْـ]/g, ''),
+  },
+} as const
+
+type Language = keyof typeof LANGUAGES
+type Entry = readonly [word: string, count: number]
+
+const here = (path: string) => fileURLToPath(new URL(path, import.meta.url))
+
+async function download(language: Language): Promise<Entry[]> {
+  const url = `https://raw.githubusercontent.com/hermitdave/FrequencyWords/${COMMIT}/content/2018/${language}/${language}_50k.txt`
+  const response = await fetch(url)
+  if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`)
+  const { alphabet, normalize } = LANGUAGES[language]
+  const seen = new Set<string>()
+  const entries: Entry[] = []
+  for (const line of (await response.text()).trim().split('\n').slice(0, LIST_SIZE)) {
+    const [raw, count] = line.trim().split(' ')
+    const word = normalize(raw ?? '')
+    if (!word || seen.has(word) || !Array.from(word).every((char) => alphabet.includes(char))) continue
+    seen.add(word)
+    entries.push([word, Number(count)])
+  }
+  return entries
+}
+
+function isHeldOut(rank: number): boolean {
+  const offset = rank - SHORT_WORD_RANGE
+  return offset >= 0 && offset < HOLD_OUT_RANGE && offset % HOLD_OUT_EVERY === HOLD_OUT_EVERY / 2
+}
+
+/** Row/column 0 is the word boundary; letter i is index i + 1. Values are scaled natural-log probabilities. */
+function bigrams(language: Language, training: readonly Entry[]): number[] {
+  const { alphabet } = LANGUAGES[language]
+  const size = Array.from(alphabet).length + 1
+  const counts = new Float64Array(size * size)
+  const index = (char: string | undefined) => (char === undefined ? 0 : Array.from(alphabet).indexOf(char) + 1)
+  for (const [word, count] of training) {
+    const chars = Array.from(word)
+    const weight = Math.log1p(count)
+    for (let i = -1; i < chars.length; i++) counts[index(chars[i]) * size + index(chars[i + 1])] += weight
+  }
+  const table: number[] = []
+  for (let row = 0; row < size; row++) {
+    const total = counts.slice(row * size, (row + 1) * size).reduce((sum, value) => sum + value, 0)
+    for (let col = 0; col < size; col++) {
+      const probability = (counts[row * size + col] + SMOOTHING) / (total + SMOOTHING * size)
+      table.push(Math.round(Math.log(probability) * SCALE))
+    }
+  }
+  return table
+}
+
+function shortWords(training: readonly Entry[]): string[] {
+  return training
+    .slice(0, SHORT_WORD_RANGE)
+    .map(([word]) => word)
+    .filter((word, rank) => {
+      const length = Array.from(word).length
+      return length <= SHORT_WORD_LENGTH && (length > 1 || rank < SINGLE_LETTER_RANGE)
+    })
+}
+
+async function build(): Promise<void> {
+  const models: string[] = []
+  for (const language of Object.keys(LANGUAGES) as Language[]) {
+    const entries = await download(language)
+    const training = entries.filter((_, rank) => !isHeldOut(rank))
+    const heldOut = entries.filter((_, rank) => isHeldOut(rank)).map(([word]) => word)
+    writeFileSync(here(`../src/detect/fixtures/held-out-${language}.txt`), `${heldOut.join('\n')}\n`)
+    models.push(
+      `  ${language}: {\n` +
+        `    alphabet: ${JSON.stringify(LANGUAGES[language].alphabet)},\n` +
+        `    bigrams: [${bigrams(language, training).join(',')}],\n` +
+        `    shortWords: ${JSON.stringify(shortWords(training))},\n` +
+        '  },\n',
+    )
+  }
+  writeFileSync(
+    here('../src/detect/model.ts'),
+    '// Generated by scripts/build-language-model.ts from FrequencyWords (CC BY-SA 4.0, see NOTICE). Do not edit.\n' +
+      "import type { LanguageModel } from './types'\n\n" +
+      `export const SCALE = ${SCALE}\n\n` +
+      'export const MODELS = {\n' +
+      models.join('') +
+      '} as const satisfies Readonly<Record<string, LanguageModel>>\n',
+  )
+}
+
+await build()

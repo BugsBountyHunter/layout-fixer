@@ -102,8 +102,17 @@ extra languages/layouts, Safari.
   from, to)` finds the keystroke each character came from in `from` and types it on `to`, so any
   layout converts to any other. Longest match first (lam-alef `لا` is one key on PC). ASCII typed on
   a non-Latin layout is kept as real punctuation; `aliases` read Arabic-Indic digits as digit keys.
-  `detectScript()` picks the majority script (Latin on ties). `convert()` is the current
-  English ⇄ Arabic convenience wrapper for the UI.
+  `detectScript()` picks the majority script (Latin on ties). `convert()` / `fix()` are what every app calls:
+  they retype only the words typed on the wrong layout (see below); `convertBetween()` stays literal.
+- **Mixed text** (`packages/core/src/detect/`, plan: `docs/plans/2026-10-14-mixed-text-detection.md`):
+  `chunks.ts` splits text into words (URLs, addresses and words with digits are protected), `judge.ts` reads each
+  word as typed and retyped on the other layout and compares letter-pair scores from `score.ts` (plus a list of
+  common short words); unsure words follow their same-script neighbours. If no word is mistyped, `fix()` converts
+  everything, as before. `fix().direction` is where most converted letters went — the language to switch the
+  keyboard to. `model.ts` is **generated** from FrequencyWords (CC BY-SA 4.0, see `NOTICE`) by
+  `npm run model -w @layout-fixer/core`; never edit it by hand. `accuracy.test.ts` holds the detector to ≥ 95 %
+  caught and ≤ 1 % false alarms on held-out words for both Arabic layouts — re-run it after any change to the
+  margins, the edge punctuation rules or the model.
 - **Layouts:** `en-us`, `ar-pc` (Windows 101 = macOS Arabic-PC = Linux XKB), `ar-mac` (macOS default
   "Arabic"). Each is generated from real OS data in `layouts/fixtures/` and verified by
   `layouts.test.ts`. To add one: dump the fixture (`packages/core/scripts/dump-macos-layout.swift`), generate the
@@ -265,7 +274,8 @@ certificate from GitHub secrets. Releasing: [docs/desktop-release.md](docs/deskt
 > **Paused plan (after v1.0):** [docs/plans/2026-09-23-multi-language-selection-button.md](docs/plans/2026-09-23-multi-language-selection-button.md) — more languages (Russian, Ukrainian next) and smart ranking. Done for v1: phase 0 (physical-key model), the language-pair setting, and the selection button for Arabic ⇄ English. **v1.0 is Arabic ⇄ English only — don't add languages until the plan resumes.**
 
 
-- **v1.2:** smart detection — offer to fix a word that is not a real word in either language
+- **Done (2026-10-14):** fix only the mistyped words of mixed text (`packages/core/src/detect/`)
+- **Next:** offer a fix while typing (opt-in), reusing the word judge
 - **v1.3:** macOS "Arabic" layout, Persian, Urdu, Hebrew, Russian maps
 - **v2:** Safari (macOS/iOS) via Xcode Safari Web Extension converter
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { convert, convertBetween, detectDirection, detectScript } from './converter'
+import { convert, convertBetween, detectDirection, detectScript, fix } from './converter'
 
 describe('convert — en→ar on the PC layout (default)', () => {
   it.each([
@@ -222,5 +222,48 @@ describe('detectScript', () => {
     ['123 !?', 'Latn'],
   ] as const)('%s → %s', (text, script) => {
     expect(detectScript(text)).toBe(script)
+  })
+})
+
+describe('fix — only the mistyped words of mixed text', () => {
+  it.each([
+    ['meeting at 5 hgsghl ugd;l', 'meeting at 5 السلام عليكم'],
+    ['see you hgsghl!', 'see you السلام!'],
+    ['ok lvpfh fhguhgl', 'ok مرحبا بالعالم'],
+    ['السلام عليكم اثممخ', 'السلام عليكم hello'],
+    ['اثممخ hgsghl', 'hello السلام'],
+    ['hgsghl https://example.com ugd;l', 'السلام https://example.com عليكم'],
+  ])('%s → %s', (input, expected) => {
+    expect(convert(input)).toBe(expected)
+  })
+
+  it('converts everything when no word looks mistyped, as the user asked for a fix', () => {
+    expect(convert('hello world')).toBe('اثممخ صخقمي')
+    expect(convert('hello world', { direction: 'en→ar' })).toBe('اثممخ صخقمي')
+    expect(convert('السلام', { direction: 'ar→en' })).toBe('hgsbl')
+  })
+
+  it('only fixes words in the source script of an explicit direction', () => {
+    expect(convert('اثممخ hgsghl', { direction: 'en→ar' })).toBe('اثممخ السلام')
+    expect(convert('meeting hgsghl', { direction: 'en→ar' })).toBe('meeting السلام')
+  })
+
+  it('reads the mistyped words with the chosen Arabic layout', () => {
+    expect(convert('meeting lnpfh', { layout: 'ar-mac' })).toBe('meeting مرحبا')
+  })
+
+  it('reports the direction that converted the most letters', () => {
+    expect(fix('meeting at 5 hgsghl ugd;l').direction).toBe('en→ar')
+    expect(fix('السلام عليكم كيف حالك اثممخ').direction).toBe('ar→en')
+    expect(fix('اثممخ صخقمي hgsghl').direction).toBe('ar→en')
+  })
+
+  it('reports the fallback direction when it converts everything', () => {
+    expect(fix('hello world')).toEqual({ text: 'اثممخ صخقمي', direction: 'en→ar' })
+    expect(fix('hello world', { direction: 'ar→en' })).toEqual({ text: 'hello world', direction: 'ar→en' })
+  })
+
+  it('keeps whitespace exactly', () => {
+    expect(convert('  meeting\n\thgsghl  ')).toBe('  meeting\n\tالسلام  ')
   })
 })

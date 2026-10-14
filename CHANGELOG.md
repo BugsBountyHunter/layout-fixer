@@ -5,7 +5,16 @@ and the project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- **Fix what you just typed, without selecting it.** With nothing selected, the shortcut now fixes the mistyped
+  words right before the cursor — in text boxes and in rich editors like Gmail, WhatsApp Web and Slack, which used
+  to need a selection. A cursor inside a word fixes the whole word. Undo still works.
+
 ### Changed
+- In a text box with nothing selected, only the mistyped words before the cursor are fixed. The whole field is
+  fixed only when there are none.
+- The message when there is nothing to fix now says so: "Nothing to fix before the cursor. Select the text you want
+  to fix."
 - **Mixed text keeps its correct words.** Fixing `meeting at 5 hgsghl ugd;l` now gives
   `meeting at 5 السلام عليكم` instead of converting the English words too. Each word is checked on your device
   against letter statistics for Arabic and English, and only the words typed on the wrong layout are retyped, each

@@ -30,7 +30,7 @@ simple, reliable in-browser option for Arabic.
 | F1 | Select text → `Alt+Shift+F` (`⌥⇧F` on macOS) → replaced in place | ✅ |
 | F2 | Right-click → "Fix keyboard layout" | ✅ |
 | F3 | Auto-detect direction (en→ar / ar→en) | ✅ |
-| F4 | Nothing selected in an input/textarea → convert the whole field | ✅ |
+| F4 | Nothing selected → fix the mistyped words before the caret (inputs, textareas and rich editors); inputs fall back to the whole field | ✅ |
 | F5 | Undo with `Ctrl/Cmd+Z` in inputs, textareas and rich editors (all via `execCommand('insertText')`) | ✅ |
 | F6 | Read-only text / uneditable editors → copy fixed text + show it in a toast | ✅ |
 | F7 | Popup: paste-and-fix box, direction override, copy, live shortcut display | ✅ |
@@ -122,6 +122,11 @@ extra languages/layouts, Safari.
 - **Content script** (`src/content/`): inputs, textareas and `contenteditable` all insert via
   `execCommand('insertText')` so the browser records undo (fields fall back to `setRangeText` + a
   bubbling `input` event if it's unavailable); read-only/uneditable targets → copy + toast.
+  With nothing selected, `mistypedTailStart()` (core `detect/tail.ts`) finds the mistyped words that end at the caret
+  (a caret inside a word counts from the word's end). Fields slice their value; rich editors use `src/content/caret.ts`:
+  it reads the caret's block (`<br>` as a newline), then extends the selection backward with `Selection.modify` one
+  grapheme at a time — so it moves through the editor's own text like arrow keys — and gives up, caret restored,
+  if the selected text doesn't match what it read.
   Page scripts are imported with `?iife`, so each is one self-contained classic script with no
   loader; `*.entry.ts` files only call `onExecute()`, keeping the logic importable by unit tests.
 - **Background** (`src/background/handlers.ts`): context menu + command → `scripting.executeScript`

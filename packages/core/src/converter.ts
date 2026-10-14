@@ -4,6 +4,7 @@ import { convertBetween } from './keystrokes'
 import type { ArabicLayoutId } from './layouts'
 import { detectScript } from './scripts'
 
+export { mistypedTailStart } from './detect/tail'
 export { convertBetween } from './keystrokes'
 export type { Script } from './scripts'
 export { detectScript } from './scripts'

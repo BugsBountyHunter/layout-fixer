@@ -84,6 +84,16 @@ test.describe('fixing text on a web page', () => {
     await expect(field).toHaveValue('meeting at 5 hgsghl ugd;l')
   })
 
+  test('fixes the mistyped words before the caret in an input', async ({ openFixture, fixLayout }) => {
+    const page = await openFixture('<input id="field" value="hgsghl meeting at 5 hgsghl">')
+    const field = page.locator('#field')
+    await field.focus()
+    await page.keyboard.press('End')
+
+    await fixLayout()
+    await expect(field).toHaveValue('hgsghl meeting at 5 السلام')
+  })
+
   test('notifies framework-controlled inputs through an input event', async ({ openFixture, fixLayout }) => {
     const page = await openFixture(`
       <input id="field" value="hgsghl"><span id="state"></span>
@@ -107,6 +117,41 @@ test.describe('fixing text on a web page', () => {
     await expect(editor).toHaveText('hgsghl ugd;l')
   })
 
+  test('fixes the mistyped words before the caret in an editor, with undo', async ({ openFixture, fixLayout }) => {
+    const page = await openFixture('<div id="editor" contenteditable="true">meeting at 5 hgsghl ugd;l</div>')
+    const editor = page.locator('#editor')
+    await editor.click()
+    await page.keyboard.press('End')
+
+    await fixLayout()
+    await expect(editor).toHaveText('meeting at 5 السلام عليكم')
+
+    await page.keyboard.press('ControlOrMeta+Z')
+    await expect(editor).toHaveText('meeting at 5 hgsghl ugd;l')
+  })
+
+  test('fixes across formatting but not into the previous line of an editor', async ({ openFixture, fixLayout }) => {
+    const page = await openFixture(
+      '<div id="editor" contenteditable="true"><div>Hi team</div><div id="line">ok <b>hgsghl</b> ugd;l</div></div>',
+    )
+    await page.locator('#line').click()
+    await page.keyboard.press('End')
+
+    await fixLayout()
+    await expect(page.locator('#line')).toHaveText('ok السلام عليكم')
+    await expect(page.locator('#editor > div').first()).toHaveText('Hi team')
+  })
+
+  test('fixes the words just typed in an editor', async ({ openFixture, fixLayout }) => {
+    const page = await openFixture('<div id="editor" contenteditable="true"></div>')
+    const editor = page.locator('#editor')
+    await editor.click()
+    await page.keyboard.type('see you hgsghl ugd;l')
+
+    await fixLayout()
+    await expect(editor).toHaveText('see you السلام عليكم')
+  })
+
   test('copies and shows fixed text for read-only page content', async ({ openFixture, fixLayout, context }) => {
     const page = await openFixture('<p id="message">hgsghl ugd;l</p>')
     await page.locator('#message').selectText()
@@ -121,7 +166,7 @@ test.describe('fixing text on a web page', () => {
     const page = await openFixture('<p>nothing selected</p>')
 
     await fixLayout()
-    await expect(page.locator('#layout-fixer-toast')).toContainText('Select the text you want to fix first')
+    await expect(page.locator('#layout-fixer-toast')).toContainText('Nothing to fix before the cursor')
   })
 
   test('acts only in the focused iframe', async ({ openFixture, fixLayout }) => {

@@ -17,7 +17,7 @@ Layout Fixer fixes it in one keystroke — no deleting, no retyping.
 
 **How it works**
 • Select the text and press Alt+Shift+F (⌥⇧F on Mac) — or right-click → Fix keyboard layout
-• Nothing selected in a text box? The whole field is fixed
+• Nothing selected? The mistyped words right before the cursor are fixed — in text boxes, Gmail, WhatsApp Web and Slack
 • Works both ways: Arabic typed on the English layout, and English typed on the Arabic layout
 • Undo with Ctrl+Z / ⌘Z
 • Works in Gmail, WhatsApp Web, Slack, search boxes and most websites
@@ -39,7 +39,7 @@ Everything happens on your device. No data collection, no tracking, no network r
 
 **طريقة العمل**
 • حدد النص واضغط Alt+Shift+F (⌥⇧F على Mac) — أو انقر بالزر الأيمن ← تصحيح لغة الكيبورد
-• لم تحدد شيئًا داخل حقل نص؟ يُصحَّح الحقل كاملًا
+• لم تحدد شيئًا؟ تُصحَّح الكلمات المكتوبة خطأً قبل المؤشر مباشرة — في حقول النص وGmail وWhatsApp Web وSlack
 • يعمل في الاتجاهين: عربي مكتوب بالكيبورد الإنجليزي، وإنجليزي مكتوب بالكيبورد العربي
 • تراجع بـ Ctrl+Z / ⌘Z
 • يعمل في Gmail وWhatsApp Web وSlack ومربعات البحث وأغلب المواقع

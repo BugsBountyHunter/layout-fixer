@@ -5,6 +5,11 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    ignore:
+      # eslint-plugin-react, pulled in by eslint-config-next, crashes on ESLint 10 ("contextOrFilename.getFilename is
+      # not a function", #63). Drop this once eslint-config-next supports ESLint 10.
+      - dependency-name: eslint
+        update-types: ['version-update:semver-major']
     groups:
       # vitest and its coverage plugin must share a major version, so they update together — majors included.
       vitest:
@@ -26,6 +31,13 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    ignore:
+      # Stay on the gtk-rs release Tauri's Linux stack uses (glib 0.18); a newer gio adds a second glib to the app (#55).
+      - dependency-name: gio
+        update-types: ['version-update:semver-major']
+      # arboard and global-hotkey still depend on x11rb 0.13; move with them (#56).
+      - dependency-name: x11rb
+        update-types: ['version-update:semver-major']
     groups:
       # Pairs with the npm `tauri` group above.
       tauri:

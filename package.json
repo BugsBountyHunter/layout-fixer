@@ -41,6 +41,6 @@
     "check:landing": "npm run check -w @layout-fixer/landing"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.14"
+    "@biomejs/biome": "2.5.15"
   }
 }

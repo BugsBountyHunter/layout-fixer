@@ -26,17 +26,18 @@ Follow the instructions on each numbered card.
 
 | # | Check | Chrome | Firefox | Edge |
 |---|-------|:-:|:-:|:-:|
-| 1 | Input, whole field → `السلام عليكم`; undo restores | ☐ | ☐ | ☐ |
+| 1 | Input, nothing selected → `see you السلام عليكم`; undo restores | ☐ | ☐ | ☐ |
 | 2 | Input, only the selection is converted | ☐ | ☐ | ☐ |
 | 3 | Textarea, English typed on Arabic → `hello` / `world` | ☐ | ☐ | ☐ |
-| 4 | Rich editor converted; undo restores | ☐ | ☐ | ☐ |
+| 4 | Rich editor converted; undo restores; caret at the end of line 2 with nothing selected → `ok السلام عليكم`, line 1 untouched | ☐ | ☐ | ☐ |
 | 5 | Framework input: the bold line updates too | ☐ | ☐ | ☐ |
 | 6 | Read-only text: message shows the fixed text, clipboard has it, page unchanged | ☐ | ☐ | ☐ |
 | 7 | Iframe: field converted, no message on the main page | ☐ | ☐ | ☐ |
-| 8 | Nothing selected: "Select the text you want to fix first" | ☐ | ☐ | ☐ |
+| 8 | Nothing selected: "Nothing to fix before the cursor. Select the text you want to fix." | ☐ | ☐ | ☐ |
 | 9 | Mac word follows the layout setting (see section C) | ☐ | ☐ | ☐ |
 | 10 | Password field unchanged | ☐ | ☐ | ☐ |
 | — | Right-click → **Fix keyboard layout** works the same as the shortcut | ☐ | ☐ | ☐ |
+| — | Gmail, WhatsApp Web and Slack: type `see you hgsghl ugd;l`, press the shortcut without selecting → `see you السلام عليكم`; undo restores | ☐ | ☐ | ☐ |
 
 ## B. Popup
 

@@ -34,10 +34,10 @@ afterEach(() => {
 
 describe('fixActiveElement — <input> and <textarea>', () => {
   it.each(['text', 'search', 'url', 'tel'])(
-    'converts the whole value of an <input type="%s"> when nothing is selected',
+    'converts the whole value of an <input type="%s"> when it is all mistyped and nothing is selected',
     async (type) => {
       const input = mount<HTMLInputElement>(`<input type="${type}" value="hgsghl ugd;l">`)
-      input.setSelectionRange(3, 3)
+      input.setSelectionRange(12, 12)
 
       await expect(fixActiveElement()).resolves.toEqual({ status: 'replaced', language: 'ar' })
       expect(input.value).toBe('السلام عليكم')
@@ -77,9 +77,9 @@ describe('fixActiveElement — <input> and <textarea>', () => {
     expect(onInput).not.toHaveBeenCalled()
   })
 
-  it('selects the whole value before inserting when nothing was selected', async () => {
+  it('selects the mistyped word before inserting when nothing was selected', async () => {
     const input = mount<HTMLInputElement>('<input value="hgsghl">')
-    input.setSelectionRange(2, 2)
+    input.setSelectionRange(6, 6)
     let rangeAtInsert: [number | null, number | null] = [null, null]
     vi.spyOn(document, 'execCommand').mockImplementation(() => {
       rangeAtInsert = [input.selectionStart, input.selectionEnd]
@@ -128,6 +128,49 @@ describe('fixActiveElement — <input> and <textarea>', () => {
   })
 })
 
+describe('fixActiveElement — nothing selected in a field', () => {
+  it('fixes only the mistyped words before the caret and selects the result', async () => {
+    const input = mount<HTMLInputElement>('<input value="hgsghl meeting at 5 hgsghl ugd;l">')
+    input.setSelectionRange(31, 31)
+
+    await expect(fixActiveElement()).resolves.toEqual({ status: 'replaced', language: 'ar' })
+    expect(input.value).toBe('hgsghl meeting at 5 السلام عليكم')
+    expect([input.selectionStart, input.selectionEnd]).toEqual([20, 32])
+  })
+
+  it('takes the whole word when the caret is inside it', async () => {
+    const input = mount<HTMLInputElement>('<input value="ok hgsghl ugd;l">')
+    input.setSelectionRange(5, 5)
+
+    await fixActiveElement()
+    expect(input.value).toBe('ok السلام ugd;l')
+  })
+
+  it('does not take the next word when the caret is at its start', async () => {
+    const textarea = mount<HTMLTextAreaElement>('<textarea>اثممخ\nصخقمي</textarea>')
+    textarea.setSelectionRange(0, 0)
+
+    await fixActiveElement()
+    expect(textarea.value).toBe('hello\nworld')
+  })
+
+  it('works on the line before the caret in a textarea', async () => {
+    const textarea = mount<HTMLTextAreaElement>('<textarea>Hi team\nhgsghl ugd;l\nthanks</textarea>')
+    textarea.setSelectionRange(20, 20)
+
+    await fixActiveElement()
+    expect(textarea.value).toBe('Hi team\nالسلام عليكم\nthanks')
+  })
+
+  it('falls back to the whole field when no mistyped words end before the caret', async () => {
+    const input = mount<HTMLInputElement>('<input value="hello world">')
+    input.setSelectionRange(11, 11)
+
+    await fixActiveElement()
+    expect(input.value).toBe('اثممخ صخقمي')
+  })
+})
+
 describe('fixActiveElement — mixed text', () => {
   it('fixes only the mistyped words of the field', async () => {
     const input = mount<HTMLInputElement>('<input type="text" value="meeting at 5 hgsghl ugd;l">')
@@ -173,9 +216,26 @@ describe('fixActiveElement — contenteditable editors (Gmail, WhatsApp Web, Sla
     expect(clipboard.writeText).toHaveBeenCalledWith('السلام')
   })
 
-  it('reports empty when the caret is in an editor with no selection', async () => {
-    mount<HTMLDivElement>('<div contenteditable="true">hgsghl</div>')
+  it('reports empty when the caret is in an editor with no mistyped words before it', async () => {
+    const editor = mount<HTMLDivElement>('<div contenteditable="true">see you soon</div>')
+    window.getSelection()!.collapse(editor.firstChild!, 12)
     await expect(fixActiveElement()).resolves.toEqual({ status: 'empty' })
+  })
+
+  it('fixes the mistyped words before the caret in an editor', async () => {
+    const editor = mount<HTMLDivElement>('<div contenteditable="true">meeting hgsghl</div>')
+    window.getSelection()!.collapse(editor.firstChild!, 14)
+    Object.defineProperty(Selection.prototype, 'modify', {
+      configurable: true,
+      value(this: Selection) {
+        this.setBaseAndExtent(this.anchorNode!, this.anchorOffset, this.focusNode!, this.focusOffset - 1)
+      },
+    })
+    const execCommand = vi.spyOn(document, 'execCommand').mockReturnValue(true)
+
+    await expect(fixActiveElement()).resolves.toEqual({ status: 'replaced', language: 'ar' })
+    expect(execCommand).toHaveBeenCalledWith('insertText', false, 'السلام')
+    Reflect.deleteProperty(Selection.prototype, 'modify')
   })
 })
 

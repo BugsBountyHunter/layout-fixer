@@ -4,6 +4,8 @@ All notable changes to the desktop app. The browser extension has its own [CHANG
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-10-14
+
 ### Changed
 - **Mixed text keeps its correct words.** Fixing `meeting at 5 hgsghl ugd;l` now pastes
   `meeting at 5 السلام عليكم`; only the words typed on the wrong layout are retyped, each in its own direction.

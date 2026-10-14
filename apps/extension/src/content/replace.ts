@@ -1,5 +1,6 @@
-import { type Direction, fix } from '@layout-fixer/core/converter'
+import { type Direction, fix, mistypedTailStart } from '@layout-fixer/core/converter'
 import type { ArabicLayoutId } from '@layout-fixer/core/layouts'
+import { selectMistypedBeforeCaret } from './caret'
 import { copyText } from './clipboard'
 import { isTextField, type TextField } from './text-fields'
 
@@ -29,10 +30,21 @@ function fixed(text: string, conversion: Conversion): { readonly text: string; r
   return { text: result.text, language: result.direction === 'en→ar' ? 'ar' : 'en' }
 }
 
-function fieldRange(field: TextField): [number, number] {
+/** The end of the word the caret is in, so a caret inside a word fixes all of it. */
+function wordEnd(value: string, caret: number): number {
+  if (caret === 0 || /\s/.test(value[caret - 1] ?? '')) return caret
+  const rest = value.slice(caret).search(/\s/)
+  return rest < 0 ? value.length : caret + rest
+}
+
+/** The selection; with none, the mistyped words before the caret, or the whole field when there are none. */
+function fieldRange(field: TextField, conversion: Conversion): [number, number] {
   const start = field.selectionStart ?? 0
   const end = field.selectionEnd ?? 0
-  return start === end ? [0, field.value.length] : [start, end]
+  if (start !== end) return [start, end]
+  const until = wordEnd(field.value, end)
+  const tail = mistypedTailStart(field.value.slice(0, until), conversion)
+  return tail === null ? [0, field.value.length] : [tail, until]
 }
 
 async function deliverWithoutEditing(text: string): Promise<FixResult> {
@@ -40,7 +52,7 @@ async function deliverWithoutEditing(text: string): Promise<FixResult> {
 }
 
 async function fixTextField(field: TextField, conversion: Conversion): Promise<FixResult> {
-  const [from, to] = fieldRange(field)
+  const [from, to] = fieldRange(field, conversion)
   const original = field.value.slice(from, to)
   if (!original) return { status: 'empty' }
   const { text, language } = fixed(original, conversion)
@@ -57,7 +69,11 @@ async function fixTextField(field: TextField, conversion: Conversion): Promise<F
 }
 
 async function fixSelection(active: Element | null, conversion: Conversion): Promise<FixResult> {
-  const selected = window.getSelection()?.toString() ?? ''
+  const selection = window.getSelection()
+  if (selection?.isCollapsed && active instanceof HTMLElement && active.isContentEditable) {
+    selectMistypedBeforeCaret(active, selection, conversion)
+  }
+  const selected = selection?.toString() ?? ''
   if (!selected) return { status: 'empty' }
 
   // execCommand is deprecated but remains the only way to edit rich editors

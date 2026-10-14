@@ -4,6 +4,13 @@ All notable changes to the desktop app. The browser extension has its own [CHANG
 
 ## [Unreleased]
 
+### Changed
+- **Mixed text keeps its correct words.** Fixing `meeting at 5 hgsghl ugd;l` now pastes
+  `meeting at 5 السلام عليكم`; only the words typed on the wrong layout are retyped, each in its own direction.
+  When no word looks mistyped, the whole selection is converted as before.
+- After a fix, the keyboard switches to the language of the fixed words rather than the language most of the
+  selection is in.
+
 ## [1.6.1] - 2026-09-30
 
 ### Fixed

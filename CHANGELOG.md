@@ -5,6 +5,15 @@ and the project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- **Mixed text keeps its correct words.** Fixing `meeting at 5 hgsghl ugd;l` now gives
+  `meeting at 5 السلام عليكم` instead of converting the English words too. Each word is checked on your device
+  against letter statistics for Arabic and English, and only the words typed on the wrong layout are retyped, each
+  in its own direction. Links, e-mail addresses and words with digits are left alone. When no word looks mistyped,
+  the whole text is converted as before.
+- After a fix, the keyboard switches to the language of the fixed words rather than the language most of the text
+  is in.
+
 ## [1.2.1] - 2026-09-30
 
 ### Fixed

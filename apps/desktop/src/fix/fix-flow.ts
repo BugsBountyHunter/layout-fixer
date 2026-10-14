@@ -1,4 +1,4 @@
-import { convert, detectDirection } from '@layout-fixer/core/converter'
+import { fix } from '@layout-fixer/core/converter'
 import type { ArabicLayoutId } from '@layout-fixer/core/layouts'
 import { errorCode, type FixBridge, type FixErrorCode } from './bridge'
 
@@ -26,8 +26,7 @@ export async function fixSelection(
     const text = await bridge.captureSelection()
     if (text === null) return { kind: 'nothing-selected' }
 
-    const direction = detectDirection(text)
-    const fixed = convert(text, { direction, layout })
+    const { text: fixed, direction } = fix(text, { layout })
     if (fixed === text) {
       await bridge.restoreClipboard()
       return { kind: 'nothing-to-fix' }

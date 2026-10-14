@@ -15,6 +15,7 @@
       "!**/test-results",
       "!**/playwright-report",
       "!packages/core/src/layouts/fixtures",
+      "!packages/core/src/detect/model.ts",
       "!**/target",
       "!apps/desktop/src-tauri/gen",
       "!apps/landing/.next",

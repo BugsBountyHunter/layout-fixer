@@ -128,10 +128,24 @@ describe('fixActiveElement — <input> and <textarea>', () => {
   })
 })
 
+describe('fixActiveElement — mixed text', () => {
+  it('fixes only the mistyped words of the field', async () => {
+    const input = mount<HTMLInputElement>('<input type="text" value="meeting at 5 hgsghl ugd;l">')
+    await expect(fixActiveElement()).resolves.toEqual({ status: 'replaced', language: 'ar' })
+    expect(input.value).toBe('meeting at 5 السلام عليكم')
+  })
+})
+
 describe('fixActiveElement — target language', () => {
   it('reports English when Arabic-layout text was fixed', async () => {
     mount<HTMLInputElement>('<input type="text" value="اثممخ">')
     await expect(fixActiveElement()).resolves.toEqual({ status: 'replaced', language: 'en' })
+  })
+
+  it('follows the words that were fixed, not the majority of the text', async () => {
+    const input = mount<HTMLInputElement>('<input type="text" value="see you at the office اثممخ">')
+    await expect(fixActiveElement()).resolves.toEqual({ status: 'replaced', language: 'en' })
+    expect(input.value).toBe('see you at the office hello')
   })
 
   it('follows an explicit direction', async () => {

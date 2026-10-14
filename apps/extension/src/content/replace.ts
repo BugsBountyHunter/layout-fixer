@@ -1,5 +1,5 @@
-import { convert, type Direction, detectDirection } from '@layout-fixer/core/converter'
-import type { LayoutId } from '@layout-fixer/core/layouts'
+import { type Direction, fix } from '@layout-fixer/core/converter'
+import type { ArabicLayoutId } from '@layout-fixer/core/layouts'
 import { copyText } from './clipboard'
 import { isTextField, type TextField } from './text-fields'
 
@@ -13,18 +13,20 @@ export type FixResult =
   | { status: 'empty' }
 
 export interface FixOptions {
-  readonly layout?: LayoutId
+  readonly layout?: ArabicLayoutId
   /** Omit to detect from the text. */
   readonly direction?: Direction
 }
 
 interface Conversion {
-  readonly layout: LayoutId
+  readonly layout: ArabicLayoutId
   readonly direction?: Direction
 }
 
-function targetLanguage(text: string, { direction }: Conversion): TargetLanguage {
-  return (direction ?? detectDirection(text)) === 'en→ar' ? 'ar' : 'en'
+/** The fixed text and the language its fixed words are in, which is what the keyboard should switch to. */
+function fixed(text: string, conversion: Conversion): { readonly text: string; readonly language: TargetLanguage } {
+  const result = fix(text, conversion)
+  return { text: result.text, language: result.direction === 'en→ar' ? 'ar' : 'en' }
 }
 
 function fieldRange(field: TextField): [number, number] {
@@ -33,26 +35,25 @@ function fieldRange(field: TextField): [number, number] {
   return start === end ? [0, field.value.length] : [start, end]
 }
 
-async function deliverWithoutEditing(text: string, conversion: Conversion): Promise<FixResult> {
-  const fixed = convert(text, conversion)
-  return (await copyText(fixed)) ? { status: 'copied', text: fixed } : { status: 'shown', text: fixed }
+async function deliverWithoutEditing(text: string): Promise<FixResult> {
+  return (await copyText(text)) ? { status: 'copied', text } : { status: 'shown', text }
 }
 
 async function fixTextField(field: TextField, conversion: Conversion): Promise<FixResult> {
   const [from, to] = fieldRange(field)
   const original = field.value.slice(from, to)
   if (!original) return { status: 'empty' }
-  if (field.readOnly || field.disabled) return deliverWithoutEditing(original, conversion)
+  const { text, language } = fixed(original, conversion)
+  if (field.readOnly || field.disabled) return deliverWithoutEditing(text)
 
-  const fixed = convert(original, conversion)
   field.setSelectionRange(from, to)
   // setRangeText bypasses the undo stack; insertText records undo and fires the input event itself.
-  if (!document.execCommand('insertText', false, fixed)) {
-    field.setRangeText(fixed, from, to)
+  if (!document.execCommand('insertText', false, text)) {
+    field.setRangeText(text, from, to)
     field.dispatchEvent(new Event('input', { bubbles: true }))
   }
-  field.setSelectionRange(from, from + fixed.length)
-  return { status: 'replaced', language: targetLanguage(original, conversion) }
+  field.setSelectionRange(from, from + text.length)
+  return { status: 'replaced', language }
 }
 
 async function fixSelection(active: Element | null, conversion: Conversion): Promise<FixResult> {
@@ -61,14 +62,11 @@ async function fixSelection(active: Element | null, conversion: Conversion): Pro
 
   // execCommand is deprecated but remains the only way to edit rich editors
   // while preserving their undo stack and internal state.
-  if (
-    active instanceof HTMLElement &&
-    active.isContentEditable &&
-    document.execCommand('insertText', false, convert(selected, conversion))
-  ) {
-    return { status: 'replaced', language: targetLanguage(selected, conversion) }
+  const { text, language } = fixed(selected, conversion)
+  if (active instanceof HTMLElement && active.isContentEditable && document.execCommand('insertText', false, text)) {
+    return { status: 'replaced', language }
   }
-  return deliverWithoutEditing(selected, conversion)
+  return deliverWithoutEditing(text)
 }
 
 export function fixActiveElement({ layout = 'ar-pc', direction }: FixOptions = {}): Promise<FixResult> {

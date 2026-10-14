@@ -18,6 +18,12 @@ test.describe('popup', () => {
     await expect(page.locator('output')).toHaveText('hello world')
   })
 
+  test('keeps the correct words of mixed text', async ({ context }) => {
+    const page = context.pages()[0]
+    await page.getByLabel('Text typed with the wrong layout').fill('meeting at 5 hgsghl ugd;l')
+    await expect(page.locator('output')).toHaveText('meeting at 5 السلام عليكم')
+  })
+
   test('forces a direction with the segmented control', async ({ context }) => {
     const page = context.pages()[0]
     await page.getByLabel('Text typed with the wrong layout').fill('hello')

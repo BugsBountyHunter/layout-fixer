@@ -15,21 +15,21 @@
   "dependencies": {
     "@layout-fixer/core": "*",
     "@layout-fixer/ui": "*",
-    "next": "^16.3.6",
+    "next": "^16.4.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.63.0",
+    "@playwright/test": "^1.64.0",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.7",
-    "@types/node": "^26.6.3",
+    "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "@vitejs/plugin-react": "^6.1.1",
+    "@vitejs/plugin-react": "^6.1.2",
     "eslint": "^9.39.5",
-    "eslint-config-next": "^16.3.6",
-    "happy-dom": "^20.14.5",
+    "eslint-config-next": "^16.4.0",
+    "happy-dom": "^20.14.6",
     "serve": "^14.2.6",
     "typescript": "^7.0.2",
     "vitest": "^5.0.2"

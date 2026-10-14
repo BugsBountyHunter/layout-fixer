@@ -8,6 +8,11 @@ import { Hook } from './scenes/Hook'
 import { KeyboardScene } from './scenes/KeyboardScene'
 import { Outro } from './scenes/Outro'
 import { Private } from './scenes/Private'
+import { Ending } from './whats-new/Ending'
+import { MixedText } from './whats-new/MixedText'
+import { NoSelection } from './whats-new/NoSelection'
+import { Title } from './whats-new/Title'
+import { SCENES, WHATS_NEW_FRAMES, WhatsNew } from './whats-new/WhatsNew'
 
 // Scene lengths minus the six transitions: 1320 − (15 + 15 + 20 + 20 + 15 + 20) = 1215.
 export const RemotionRoot: React.FC = () => (
@@ -28,6 +33,27 @@ export const RemotionRoot: React.FC = () => (
       <Composition id="Everywhere" component={Everywhere} durationInFrames={180} fps={30} width={1920} height={1080} />
       <Composition id="Private" component={Private} durationInFrames={150} fps={30} width={1920} height={1080} />
       <Composition id="Outro" component={Outro} durationInFrames={180} fps={30} width={1920} height={1080} />
+    </Folder>
+    <Composition
+      id="WhatsNew13"
+      component={WhatsNew}
+      durationInFrames={WHATS_NEW_FRAMES}
+      fps={30}
+      width={1080}
+      height={1080}
+    />
+    <Folder name="WhatsNewScenes">
+      <Composition id="NewTitle" component={Title} durationInFrames={SCENES.title} fps={30} width={1080} height={1080} />
+      <Composition id="NewMixed" component={MixedText} durationInFrames={SCENES.mixed} fps={30} width={1080} height={1080} />
+      <Composition
+        id="NewNoSelection"
+        component={NoSelection}
+        durationInFrames={SCENES.noSelection}
+        fps={30}
+        width={1080}
+        height={1080}
+      />
+      <Composition id="NewEnding" component={Ending} durationInFrames={SCENES.ending} fps={30} width={1080} height={1080} />
     </Folder>
   </>
 )

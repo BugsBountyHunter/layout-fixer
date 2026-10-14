@@ -1,6 +1,6 @@
-import { convertBetween, detectDirection } from '../../../../packages/core/src/converter'
+import { convertBetween, detectDirection, fix, mistypedTailStart } from '../../../../packages/core/src/converter'
 
-export { convertBetween, detectDirection }
+export { convertBetween, detectDirection, fix, mistypedTailStart }
 
 /** The first `count` code points, so Arabic and emoji never split mid-character. */
 export const takeChars = (text: string, count: number): string =>

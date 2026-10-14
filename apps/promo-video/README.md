@@ -14,6 +14,22 @@ screen comes from the code, not from copy.
 | Private | 0 network calls, 0 sites read until you opt in, 47 keys, 3 layouts |
 | Outro | The U key types ع — which becomes the logo |
 
+## What's new in 1.3
+
+`WhatsNew13` is a 21-second square cut (1080×1080) for social feeds, made from the same components. Its fixes come from
+`fix()` and `mistypedTailStart()` in the core, so the video shows exactly what the extension does.
+
+| Scene | Shows |
+|-------|-------|
+| Title | Layout Fixer 1.3 — what's new |
+| Mixed text | `Hi Sara, ;dt phg;?` → only the mistyped words change: `Hi Sara, كيف حالك؟` |
+| No selection | Typing `Thanks, lu hgsghlm`, then the shortcut fixes the words before the cursor: `Thanks, مع السلامة` |
+| Ending | Desktop app gets mixed-text fixing too · layoutfixer.dev |
+
+```bash
+npm run render:whats-new   # out/whats-new-1.3.mp4
+```
+
 It is not an npm workspace, so it never affects `npm run check` or CI.
 
 ```bash

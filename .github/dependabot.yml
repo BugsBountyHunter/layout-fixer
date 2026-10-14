@@ -31,6 +31,13 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    ignore:
+      # Stay on the gtk-rs release Tauri's Linux stack uses (glib 0.18); a newer gio adds a second glib to the app (#55).
+      - dependency-name: gio
+        update-types: ['version-update:semver-major']
+      # arboard and global-hotkey still depend on x11rb 0.13; move with them (#56).
+      - dependency-name: x11rb
+        update-types: ['version-update:semver-major']
     groups:
       # Pairs with the npm `tauri` group above.
       tauri:

@@ -2191,7 +2191,7 @@ dependencies = [
  "tauri-plugin-updater",
  "wayland-client",
  "wayland-protocols-plasma",
- "windows 0.61.3",
+ "windows 0.62.2",
  "x11rb",
  "zbus",
 ]

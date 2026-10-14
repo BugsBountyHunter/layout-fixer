@@ -60,7 +60,7 @@
     "message": "Fixed text"
   },
   "toastEmpty": {
-    "message": "Select the text you want to fix first"
+    "message": "Nothing to fix before the cursor. Select the text you want to fix."
   },
   "textDirection": {
     "message": "ltr",

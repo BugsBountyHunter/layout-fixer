@@ -24,9 +24,9 @@
      After each fix, try <b>Ctrl+Z / ⌘Z</b> to undo.</p>
 
   <section>
-    <h2>1. Input — whole field</h2>
-    <p class="how">Click inside (don't select), press the shortcut. Expect <code>السلام عليكم</code>.</p>
-    <input value="hgsghl ugd;l">
+    <h2>1. Input — nothing selected</h2>
+    <p class="how">Click at the end (don't select), press the shortcut. Expect <code>see you السلام عليكم</code>.</p>
+    <input value="see you hgsghl ugd;l">
   </section>
 
   <section>
@@ -44,8 +44,10 @@
 
   <section>
     <h2>4. Rich editor (like Gmail)</h2>
-    <p class="how">Select all text inside, press the shortcut. Expect <code>السلام عليكم</code>, then undo.</p>
-    <div contenteditable="true">hgsghl ugd;l</div>
+    <p class="how">Select all text inside, press the shortcut. Expect <code>السلام عليكم</code>, then undo.
+      Then click at the end of the second line without selecting and press it again: expect
+      <code>ok السلام عليكم</code>, with the first line untouched.</p>
+    <div contenteditable="true"><div>hgsghl ugd;l</div><div>ok <b>hgsghl</b> ugd;l</div></div>
   </section>
 
   <section>
@@ -68,7 +70,7 @@
 
   <section>
     <h2>8. Nothing selected</h2>
-    <p class="how">Click on empty page space, press the shortcut. Expect “Select the text you want to fix first”.</p>
+    <p class="how">Click on empty page space, press the shortcut. Expect “Nothing to fix before the cursor. Select the text you want to fix.”</p>
   </section>
 
   <section>

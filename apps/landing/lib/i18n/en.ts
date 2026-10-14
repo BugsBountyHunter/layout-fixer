@@ -38,7 +38,7 @@ export const en = {
     steps: [
       {
         title: 'Select the text',
-        body: 'Or just click in the field — with nothing selected, the whole field is fixed.',
+        body: 'Or skip it — with nothing selected, the mistyped words right before the cursor are fixed.',
       },
       { title: 'Press the shortcut', body: 'Or right-click and choose Fix keyboard layout.' },
       { title: 'Done', body: 'The text is replaced in place. Changed your mind? Undo with Ctrl+Z / ⌘Z.' },

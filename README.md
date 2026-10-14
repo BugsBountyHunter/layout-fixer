@@ -63,7 +63,8 @@ All versions: [desktop releases](https://github.com/BugsBountyHunter/layout-fixe
 
 ## Features
 
-- **One shortcut** — fixes the selection, or the whole field when nothing is selected
+- **One shortcut** — fixes the selection, or the mistyped words just before the cursor when nothing is selected
+  (in text boxes and in Gmail, WhatsApp Web and Slack)
 - **Automatic direction** — Arabic typed on the English layout, or English typed on the Arabic layout
 - **Undo** with <kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>⌘</kbd><kbd>Z</kbd> in inputs, text areas and rich editors (Gmail, WhatsApp Web, Slack)
 - **Read-only text** (a message you received) is copied and shown instead

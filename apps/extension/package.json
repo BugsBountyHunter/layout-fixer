@@ -35,8 +35,8 @@
   "dependencies": {
     "@layout-fixer/core": "*",
     "@layout-fixer/ui": "*",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "^3.0.0",

@@ -29,7 +29,7 @@
     "@vitejs/plugin-react": "^6.1.2",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.4.0",
-    "happy-dom": "^20.14.6",
+    "happy-dom": "^21.0.3",
     "serve": "^14.2.6",
     "typescript": "^7.0.2",
     "vitest": "^5.0.2"

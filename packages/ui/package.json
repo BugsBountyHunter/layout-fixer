@@ -24,10 +24,10 @@
   },
   "devDependencies": {
     "@testing-library/react": "^16.3.3",
-    "@testing-library/user-event": "^14.6.7",
+    "@testing-library/user-event": "^14.6.8",
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
-    "@vitest/coverage-v8": "^5.0.2",
+    "@vitest/coverage-v8": "^5.0.5",
     "happy-dom": "^20.14.6",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
